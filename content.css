@@ -1,0 +1,1479 @@
+/* DeepSeek Design System & Persian/Arabic RTL Fix */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Vazirmatn:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  --ds-brand-primary: #4d6bfe;
+  --ds-brand-primary-hover: #3b5af4;
+  --ds-brand-light: rgba(77, 107, 254, 0.12);
+  --ds-bg-dark: #131415;
+  --ds-surface-dark: #1e1f22;
+  --ds-surface-card: #25262a;
+  --ds-surface-hover: #2e3035;
+  --ds-border-dark: rgba(255, 255, 255, 0.08);
+  --ds-border-highlight: rgba(77, 107, 254, 0.35);
+  --ds-text-primary: #f0f3f6;
+  --ds-text-secondary: #90949c;
+  --ds-text-muted: #62666f;
+  
+  --ds-rtl-font: 'Vazirmatn', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --ds-rtl-line-height: 1.8;
+  --ds-code-font: 'JetBrains Mono', SFMono-Regular, Menlo, Consolas, Monaco, monospace;
+}
+
+/* =========================================================================
+   CUSTOM SLEEK DEEPSEEK SCROLLBAR (Targeted & Clean)
+   ========================================================================= */
+
+/* Hide browser native scrollbars on DeepSeek virtual lists & scroll navigation */
+.ds-virtual-list,
+.ds-virtual-list-items,
+.ds-scroll-area,
+._189b4a0,
+._4ce999d,
+._490b7a1,
+._6ffc3c9,
+._2bd7b35,
+._7780f2e {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.ds-virtual-list::-webkit-scrollbar,
+.ds-virtual-list-items::-webkit-scrollbar,
+.ds-scroll-area::-webkit-scrollbar,
+._189b4a0::-webkit-scrollbar,
+._4ce999d::-webkit-scrollbar,
+._490b7a1::-webkit-scrollbar,
+._6ffc3c9::-webkit-scrollbar,
+._2bd7b35::-webkit-scrollbar,
+._7780f2e::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* Beautiful thin scrollbars only on code blocks, navigation drawers, and inputs */
+.md-code-block pre,
+.ds-code-modal-body,
+.ds-nav-drawer-content,
+.ds-pins-list,
+.ds-search-results-list,
+textarea {
+  scrollbar-width: thin !important;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent !important;
+}
+
+.md-code-block pre::-webkit-scrollbar,
+.ds-code-modal-body::-webkit-scrollbar,
+.ds-nav-drawer-content::-webkit-scrollbar,
+.ds-pins-list::-webkit-scrollbar,
+.ds-search-results-list::-webkit-scrollbar,
+textarea::-webkit-scrollbar {
+  width: 6px !important;
+  height: 6px !important;
+}
+
+.md-code-block pre::-webkit-scrollbar-track,
+.ds-code-modal-body::-webkit-scrollbar-track,
+.ds-nav-drawer-content::-webkit-scrollbar-track,
+.ds-pins-list::-webkit-scrollbar-track,
+.ds-search-results-list::-webkit-scrollbar-track,
+textarea::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+.md-code-block pre::-webkit-scrollbar-thumb,
+.ds-code-modal-body::-webkit-scrollbar-thumb,
+.ds-nav-drawer-content::-webkit-scrollbar-thumb,
+.ds-pins-list::-webkit-scrollbar-thumb,
+.ds-search-results-list::-webkit-scrollbar-thumb,
+textarea::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2) !important;
+  border-radius: 9999px !important;
+  transition: background 0.2s ease !important;
+}
+
+.md-code-block pre::-webkit-scrollbar-thumb:hover,
+.ds-code-modal-body::-webkit-scrollbar-thumb:hover,
+.ds-nav-drawer-content::-webkit-scrollbar-thumb:hover,
+.ds-pins-list::-webkit-scrollbar-thumb:hover,
+.ds-search-results-list::-webkit-scrollbar-thumb:hover,
+textarea::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.4) !important;
+}
+
+/* Remove DeepSeek artificial scrollbar overlays on the main page */
+body > #root .ds-scroll-area > .ds-scroll-area__gutters,
+._2bd7b35 > .ds-scroll-area__gutters,
+._4f9bf79 ~ .ds-scroll-area__gutters,
+.ds-chat-layout > .ds-scroll-area > .ds-scroll-area__gutters {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* History & Navigation Scrollbar (._189b4a0, ._4ce999d, ._490b7a1):
+   Strictly hide scrollbar & indicators unless DeepSeek activates hover state ._7a8ea4 */
+._189b4a0 ._6ffc3c9,
+._189b4a0 .ds-scroll-area__gutters,
+._189b4a0 .ds-scroll-area__vertical-gutter,
+._189b4a0 .ds-scroll-area__vertical-bar,
+._189b4a0 .ds-scroll-area__horizontal-gutter,
+._189b4a0 .ds-scroll-area__horizontal-bar,
+._4ce999d ._6ffc3c9,
+._4ce999d .ds-scroll-area__gutters,
+._4ce999d .ds-scroll-area__vertical-gutter,
+._4ce999d .ds-scroll-area__vertical-bar,
+._4ce999d .ds-scroll-area__horizontal-gutter,
+._4ce999d .ds-scroll-area__horizontal-bar,
+._490b7a1 ._6ffc3c9,
+._490b7a1 .ds-scroll-area__gutters,
+._490b7a1 .ds-scroll-area__vertical-gutter,
+._490b7a1 .ds-scroll-area__vertical-bar,
+._490b7a1 .ds-scroll-area__horizontal-gutter,
+._490b7a1 .ds-scroll-area__horizontal-bar {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+
+/* Show ONLY when the user directly hovers and DeepSeek activates ._7a8ea4 */
+._4ce999d._7a8ea4 ._6ffc3c9,
+._4ce999d._7a8ea4 .ds-scroll-area__gutters,
+._4ce999d._7a8ea4 .ds-scroll-area__vertical-gutter,
+._4ce999d._7a8ea4 .ds-scroll-area__vertical-bar,
+._4ce999d._7a8ea4 .ds-scroll-area__horizontal-gutter,
+._490b7a1._7a8ea4 ._6ffc3c9,
+._490b7a1._7a8ea4 .ds-scroll-area__gutters,
+._490b7a1._7a8ea4 .ds-scroll-area__vertical-gutter,
+._490b7a1._7a8ea4 .ds-scroll-area__vertical-bar,
+._490b7a1._7a8ea4 .ds-scroll-area__horizontal-gutter,
+._189b4a0:has(._7a8ea4) ._6ffc3c9,
+._189b4a0:has(._7a8ea4) .ds-scroll-area__gutters,
+._189b4a0:has(._7a8ea4) .ds-scroll-area__vertical-gutter,
+._189b4a0:has(._7a8ea4) .ds-scroll-area__vertical-bar {
+  display: block !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  visibility: visible !important;
+}
+
+._4ce999d._7a8ea4 .ds-scroll-area__vertical-bar,
+._490b7a1._7a8ea4 .ds-scroll-area__vertical-bar {
+  background: rgba(255, 255, 255, 0.28) !important;
+  border-radius: 9999px !important;
+}
+
+._4ce999d._7a8ea4 .ds-scroll-area__vertical-bar:hover,
+._490b7a1._7a8ea4 .ds-scroll-area__vertical-bar:hover {
+  background: rgba(255, 255, 255, 0.45) !important;
+}
+
+/* =========================================================================
+   RTL TYPOGRAPHY & DIRECTION
+   ========================================================================= */
+
+[data-ds-rtl="true"],
+.ds-rtl-active [data-ds-dir="rtl"],
+.ds-rtl-active .ds-rtl-element {
+  direction: rtl !important;
+  text-align: right !important;
+  unicode-bidi: plaintext !important;
+  font-family: var(--ds-rtl-font);
+}
+
+.ds-rtl-active .ds-message [data-ds-dir="rtl"],
+.ds-rtl-active .ds-collapsible-text[data-ds-dir="rtl"],
+.ds-rtl-active .ds-collapsible-text [data-ds-dir="rtl"] {
+  direction: rtl !important;
+  text-align: right !important;
+  font-family: var(--ds-rtl-font);
+}
+
+.ds-rtl-active .ds-markdown [data-ds-dir="rtl"],
+.ds-rtl-active .ds-markdown p[data-ds-dir="rtl"],
+.ds-rtl-active .ds-markdown h1[data-ds-dir="rtl"],
+.ds-rtl-active .ds-markdown h2[data-ds-dir="rtl"],
+.ds-rtl-active .ds-markdown h3[data-ds-dir="rtl"],
+.ds-rtl-active .ds-markdown h4[data-ds-dir="rtl"],
+.ds-rtl-active .ds-markdown h5[data-ds-dir="rtl"],
+.ds-rtl-active .ds-markdown h6[data-ds-dir="rtl"] {
+  direction: rtl !important;
+  text-align: right !important;
+  unicode-bidi: plaintext !important;
+  font-family: var(--ds-rtl-font);
+}
+
+.ds-rtl-active .ds-markdown ul[data-ds-dir="rtl"],
+.ds-rtl-active .ds-markdown ol[data-ds-dir="rtl"] {
+  direction: rtl !important;
+  text-align: right !important;
+  padding-right: 1.75rem !important;
+  padding-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.ds-rtl-active .ds-markdown li[data-ds-dir="rtl"],
+.ds-rtl-active .ds-markdown li [data-ds-dir="rtl"] {
+  direction: rtl !important;
+  text-align: right !important;
+  font-family: var(--ds-rtl-font);
+}
+
+.ds-rtl-active .ds-markdown blockquote[data-ds-dir="rtl"] {
+  direction: rtl !important;
+  text-align: right !important;
+  border-right: 3px solid var(--ds-brand-primary) !important;
+  border-left: none !important;
+  padding-right: 1rem !important;
+  padding-left: 0 !important;
+  margin-right: 0 !important;
+  font-family: var(--ds-rtl-font);
+}
+
+.ds-rtl-active .ds-markdown table[data-ds-dir="rtl"] {
+  direction: rtl !important;
+  text-align: right !important;
+}
+
+.ds-rtl-active .ds-markdown table[data-ds-dir="rtl"] th,
+.ds-rtl-active .ds-markdown table[data-ds-dir="rtl"] td {
+  text-align: right !important;
+  font-family: var(--ds-rtl-font);
+}
+
+/* =========================================================================
+   SCROLL AREA & DROPDOWN SCROLLBAR CLEARANCE FIX
+   ========================================================================= */
+
+/* Ensure scrollbar never overlaps item text in search/history dropdown lists */
+._4ce999d .ds-virtual-list-items,
+._490b7a1 .ds-virtual-list-items,
+._1164b3e .ds-virtual-list-items,
+.ds-scroll-area .ds-virtual-list:not(._2bd7b35) .ds-virtual-list-items {
+  padding-right: 18px !important;
+  box-sizing: border-box !important;
+}
+
+/* Dropdown list items styling, uniform LTR direction, and breathing room */
+._4ce999d ._81e7b5e,
+._490b7a1 ._81e7b5e,
+._1164b3e ._81e7b5e,
+._81e7b5e {
+  direction: ltr !important;
+  text-align: left !important;
+  padding-right: 8px !important;
+  padding-left: 8px !important;
+  margin-right: 4px !important;
+  box-sizing: border-box !important;
+}
+
+._4ce999d ._72b6158,
+._490b7a1 ._72b6158,
+._1164b3e ._72b6158,
+._72b6158 {
+  direction: ltr !important;
+  text-align: left !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  unicode-bidi: plaintext !important;
+}
+
+/* Prevent vertical scrollbar gutter from clipping content */
+.ds-scroll-area__vertical-gutter {
+  z-index: 10 !important;
+}
+
+/* =========================================================================
+   PROTECT LTR ELEMENTS (Code blocks, Math, LaTeX, Inline code)
+   ========================================================================= */
+
+.ds-rtl-active .md-code-block,
+.ds-rtl-active .md-code-block *,
+.ds-rtl-active pre,
+.ds-rtl-active pre *,
+.ds-rtl-active code.hljs,
+.ds-rtl-active .hljs {
+  direction: ltr !important;
+  text-align: left !important;
+  unicode-bidi: isolate !important;
+  font-family: var(--ds-code-font) !important;
+}
+
+.ds-rtl-active .md-code-block-banner-wrap,
+.ds-rtl-active .md-code-block-banner,
+.ds-rtl-active ._121d384 {
+  direction: ltr !important;
+  text-align: left !important;
+}
+
+.ds-rtl-active .ds-markdown :not(pre) > code {
+  direction: ltr !important;
+  display: inline-block !important;
+  unicode-bidi: isolate !important;
+  font-family: var(--ds-code-font) !important;
+  padding: 0.15em 0.4em !important;
+  margin: 0 0.2em !important;
+  vertical-align: baseline !important;
+}
+
+.ds-rtl-active .katex,
+.ds-rtl-active .katex-display,
+.ds-rtl-active .katex-html,
+.ds-rtl-active math {
+  direction: ltr !important;
+  text-align: left !important;
+  unicode-bidi: isolate !important;
+}
+
+.ds-rtl-active .ds-thinking-content[data-ds-dir="rtl"],
+.ds-rtl-active [class*="thinking"][data-ds-dir="rtl"] {
+  direction: rtl !important;
+  text-align: right !important;
+  font-family: var(--ds-rtl-font);
+}
+
+.ds-rtl-active textarea[data-ds-dir="rtl"],
+.ds-rtl-active input[data-ds-dir="rtl"],
+.ds-rtl-active textarea._27c9245[data-ds-dir="rtl"] {
+  direction: rtl !important;
+  text-align: right !important;
+  unicode-bidi: plaintext !important;
+  font-family: var(--ds-rtl-font) !important;
+}
+
+/* =========================================================================
+   2. 💻 CODE DEVELOPER TOOLS (NATIVE DEEPSEEK BUTTONS & GUTTER)
+   ========================================================================= */
+
+/* Code Content Body Container (Single scroll container with sticky gutter) */
+.ds-code-body-container {
+  display: flex !important;
+  position: relative !important;
+  width: 100% !important;
+  overflow: auto !important;
+  background: transparent !important;
+  box-sizing: border-box !important;
+}
+
+.ds-line-numbers-gutter {
+  position: sticky !important;
+  left: 0 !important;
+  z-index: 3 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  padding: 12px 10px 14px 14px !important;
+  text-align: right !important;
+  color: var(--ds-text-muted) !important;
+  font-family: var(--ds-code-font) !important;
+  font-size: 13px !important;
+  line-height: 20px !important;
+  user-select: none !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+  background: #141517 !important;
+  flex-shrink: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.ds-line-num {
+  height: 20px !important;
+  line-height: 20px !important;
+  display: block !important;
+}
+
+.ds-code-body-container > pre {
+  flex: 1 !important;
+  margin: 0 !important;
+  padding: 12px 14px 14px 12px !important;
+  overflow: visible !important;
+  line-height: 20px !important;
+  font-size: 13px !important;
+  min-width: max-content !important;
+  box-sizing: border-box !important;
+}
+
+/* Word Wrap support */
+.ds-custom-wrap-btn,
+.ds-custom-expand-btn {
+  cursor: pointer !important;
+  pointer-events: auto !important;
+  user-select: none;
+}
+
+.ds-custom-wrap-btn *,
+.ds-custom-expand-btn * {
+  pointer-events: none !important;
+}
+
+.md-code-block.ds-code-wrapped .ds-code-body-container > pre,
+.md-code-block.ds-code-wrapped pre,
+.md-code-block.ds-code-wrapped pre code,
+.md-code-block.ds-code-wrapped pre span {
+  white-space: pre-wrap !important;
+  word-break: break-word !important;
+  overflow-wrap: anywhere !important;
+  min-width: 0 !important;
+  width: 100% !important;
+}
+
+/* Custom code button active state (matches DeepSeek style) */
+.ds-button.ds-btn-active .ds-button__background {
+  opacity: 1 !important;
+  background: var(--ds-brand-primary) !important;
+}
+
+.ds-button.ds-btn-active .ds-button__icon svg,
+.ds-button.ds-btn-active .code-info-button-text {
+  color: #ffffff !important;
+}
+
+/* =========================================================================
+   FULLSCREEN CODE MODAL (WITH VIBRANT SYNTAX HIGHLIGHTING)
+   ========================================================================= */
+
+/* Preserve clean border-radius & styling on code blocks */
+.md-code-block {
+  border-radius: 10px !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  background: #18191c !important;
+}
+
+.md-code-block-banner-wrap,
+.md-code-block-banner,
+._121d384 {
+  border-top-left-radius: 9px !important;
+  border-top-right-radius: 9px !important;
+}
+
+.md-code-block .ds-code-body-container,
+.md-code-block pre {
+  border-bottom-left-radius: 9px !important;
+  border-bottom-right-radius: 9px !important;
+}
+
+html.ds-has-wallpaper .md-code-block,
+body.ds-has-wallpaper .md-code-block {
+  border-radius: 10px !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  background: rgba(22, 23, 27, 0.94) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+}
+
+.ds-code-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 11, 13, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  transition: opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.22s ease !important;
+}
+
+.ds-code-modal-backdrop.ds-modal-visible {
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
+}
+
+.ds-code-modal {
+  width: 92vw;
+  max-width: 1200px;
+  height: 88vh;
+  background: var(--ds-surface-dark);
+  border: 1px solid var(--ds-border-dark);
+  border-radius: 14px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform: scale(0.95) translateY(10px);
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.ds-code-modal-backdrop.ds-modal-visible .ds-code-modal {
+  transform: scale(1) translateY(0);
+}
+
+.ds-code-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  background: var(--ds-surface-card);
+  border-bottom: 1px solid var(--ds-border-dark);
+}
+
+.ds-code-modal-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ds-text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ds-code-modal-body-wrap {
+  display: flex !important;
+  flex: 1 !important;
+  overflow: auto !important;
+  position: relative !important;
+  background: var(--ds-bg-dark) !important;
+  box-sizing: border-box !important;
+}
+
+.ds-code-modal-body-wrap .ds-line-numbers-gutter {
+  position: sticky !important;
+  left: 0 !important;
+  z-index: 3 !important;
+  padding: 16px 12px 16px 16px !important;
+  font-size: 13.5px !important;
+  line-height: 22px !important;
+  background: #101113 !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+  flex-shrink: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.ds-code-modal-body-wrap .ds-line-num {
+  height: 22px !important;
+  line-height: 22px !important;
+  display: block !important;
+}
+
+.ds-code-modal-body {
+  flex: 1 !important;
+  overflow: visible !important;
+  padding: 16px !important;
+  background: transparent !important;
+  font-family: var(--ds-code-font) !important;
+  font-size: 13.5px !important;
+  line-height: 22px !important;
+  color: #e2e8f0 !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+  direction: ltr !important;
+  text-align: left !important;
+  min-width: max-content !important;
+}
+
+.ds-code-modal-body.wrapped {
+  white-space: pre-wrap !important;
+  word-break: break-all;
+  min-width: unset !important;
+}
+
+/* Vibrant Syntax Highlighting Colors in Fullscreen Modal */
+.ds-code-modal-body .token.keyword { color: #f97583 !important; font-weight: 600; }
+.ds-code-modal-body .token.builtin { color: #79b8ff !important; }
+.ds-code-modal-body .token.string-interpolation,
+.ds-code-modal-body .token.string { color: #9ecbff !important; }
+.ds-code-modal-body .token.function { color: #b392f0 !important; }
+.ds-code-modal-body .token.number { color: #ffab70 !important; }
+.ds-code-modal-body .token.operator { color: #f97583 !important; }
+.ds-code-modal-body .token.punctuation { color: #e1e4e8 !important; }
+.ds-code-modal-body .token.comment { color: #6a737d !important; font-style: italic; }
+.ds-code-modal-body .token.boolean { color: #ffab70 !important; font-weight: 600; }
+.ds-code-modal-body .token.class-name { color: #ffab70 !important; font-weight: 600; }
+
+.ds-code-modal-close-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+  color: var(--ds-text-secondary);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  transition: all 0.15s;
+}
+
+.ds-code-modal-close-btn:hover {
+  background: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+}
+
+/* =========================================================================
+   DEEPSEEK STYLE EXPORT TOOLBAR & TOAST (NO EMOJIS, SVG ICONS)
+   ========================================================================= */
+
+/* =========================================================================
+   DEEPSEEK STYLE FLOATING TOOLBAR & INLINE SEARCH BAR
+   ========================================================================= */
+
+.ds-export-toolbar {
+  position: fixed;
+  top: 14px;
+  right: 20px;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  direction: ltr !important;
+  user-select: none;
+}
+
+/* DeepSeek Native Toggle Button Style (ds-toggle-button--m) */
+.ds-suite-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 14px;
+  background: var(--ds-surface-dark);
+  color: var(--ds-text-primary);
+  border: 1px solid var(--ds-border-dark);
+  border-radius: 9999px;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
+}
+
+.ds-suite-btn:hover {
+  background: #282a2e;
+  border-color: rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+}
+
+.ds-suite-btn.active,
+.ds-suite-btn.selected {
+  background: rgba(77, 107, 254, 0.15) !important;
+  border-color: var(--ds-brand-primary) !important;
+  color: var(--ds-brand-primary) !important;
+  box-shadow: 0 0 10px rgba(77, 107, 254, 0.3) !important;
+}
+
+.ds-suite-btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  color: currentColor;
+}
+
+/* Inline Integrated Search Bar (Smooth Slide & Expand) */
+.ds-search-inline-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  background: #18191c;
+  border: 1px solid transparent;
+  border-radius: 9999px;
+  padding: 0;
+  max-width: 0;
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
+  transform: scaleX(0.95);
+  transform-origin: right center;
+  transition: max-width 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+              opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1), 
+              transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+              padding 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-sizing: border-box;
+}
+
+.ds-search-inline-wrap.show {
+  max-width: 340px;
+  opacity: 1;
+  pointer-events: auto;
+  transform: scaleX(1);
+  padding: 0 10px 0 14px;
+  border-color: var(--ds-brand-primary);
+  box-shadow: 0 0 14px rgba(77, 107, 254, 0.25);
+}
+
+.ds-search-input {
+  background: transparent;
+  border: none;
+  color: var(--ds-text-primary);
+  font-family: inherit;
+  font-size: 13px;
+  width: 160px;
+  outline: none;
+  line-height: 20px;
+}
+
+.ds-search-input::placeholder {
+  color: var(--ds-text-muted);
+}
+
+.ds-search-count {
+  font-size: 11.5px;
+  color: var(--ds-text-secondary);
+  font-family: var(--ds-code-font);
+  min-width: 42px;
+  text-align: center;
+  user-select: none;
+}
+
+.ds-search-btn-icon {
+  background: transparent;
+  border: none;
+  color: var(--ds-text-secondary);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.ds-search-btn-icon:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--ds-text-primary);
+}
+
+.ds-search-btn-close {
+  color: var(--ds-text-muted);
+}
+
+.ds-search-btn-close:hover {
+  background: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+}
+
+/* Floating Toast Notification */
+.ds-pro-toast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--ds-surface-card);
+  color: var(--ds-text-primary);
+  border: 1px solid var(--ds-border-highlight);
+  border-radius: 9999px;
+  padding: 10px 22px;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55);
+  z-index: 999999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  backdrop-filter: blur(12px);
+}
+
+.ds-pro-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.ds-export-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: var(--ds-surface-dark);
+  border: 1px solid var(--ds-border-dark);
+  border-radius: 12px;
+  padding: 6px;
+  min-width: 205px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(-6px) scale(0.96);
+  transform-origin: top right;
+  transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.2s ease !important;
+}
+
+.ds-export-menu.show {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+}
+
+.ds-wp-upload-zone:hover {
+  border-color: var(--ds-brand-primary) !important;
+  background: rgba(77, 107, 254, 0.08) !important;
+}
+
+.ds-export-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  color: var(--ds-text-secondary);
+  font-size: 12.5px;
+  font-weight: 500;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: transparent;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.ds-export-item:hover {
+  background: var(--ds-brand-light);
+  color: var(--ds-text-primary);
+}
+
+.ds-export-item-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  color: currentColor;
+}
+
+.ds-export-divider {
+  height: 1px;
+  background: var(--ds-border-dark);
+  margin: 4px 0;
+}
+
+.ds-search-input {
+  background: transparent;
+  border: none;
+  color: var(--ds-text-primary);
+  font-family: inherit;
+  font-size: 13px;
+  width: 160px;
+  outline: none;
+}
+
+.ds-search-input::placeholder {
+  color: var(--ds-text-muted);
+}
+
+.ds-search-count {
+  font-size: 11.5px;
+  color: var(--ds-text-secondary);
+  font-family: var(--ds-code-font);
+  min-width: 45px;
+  text-align: center;
+  user-select: none;
+}
+
+.ds-search-btn-icon {
+  background: transparent;
+  border: none;
+  color: var(--ds-text-secondary);
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.ds-search-btn-icon:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--ds-text-primary);
+}
+
+.ds-search-btn-close {
+  color: var(--ds-text-muted);
+}
+
+.ds-search-btn-close:hover {
+  background: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+}
+
+/* Keyword Highlights */
+.ds-search-highlight {
+  background: rgba(255, 213, 0, 0.35) !important;
+  color: inherit !important;
+  border-radius: 2px !important;
+  padding: 0 1px !important;
+}
+
+.ds-search-highlight-active {
+  background: var(--ds-brand-primary) !important;
+  color: #ffffff !important;
+  border-radius: 2px !important;
+  padding: 0 2px !important;
+  box-shadow: 0 0 8px rgba(77, 107, 254, 0.6) !important;
+}
+
+/* Message Flash Jump Effect */
+.ds-message-flash-target {
+  animation: dsMessageFlash 1.6s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+@keyframes dsMessageFlash {
+  0% { outline: 2px solid var(--ds-brand-primary); background: rgba(77, 107, 254, 0.15); }
+  100% { outline: 2px solid transparent; background: transparent; }
+}
+
+/* Slide-Over Navigation Drawer (Bookmarks / Pins) */
+.ds-nav-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 360px;
+  background: var(--ds-surface-dark);
+  border-left: 1px solid var(--ds-border-dark);
+  box-shadow: -10px 0 40px rgba(0, 0, 0, 0.5);
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  direction: ltr !important;
+}
+
+.ds-nav-drawer.open {
+  transform: translateX(0);
+}
+
+.ds-nav-drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--ds-border-dark);
+  background: var(--ds-surface-card);
+}
+
+.ds-nav-drawer-close {
+  background: transparent;
+  border: none;
+  color: var(--ds-text-secondary);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+
+.ds-nav-drawer-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--ds-text-primary);
+}
+
+.ds-nav-drawer-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Bookmarks / Pinned Items */
+.ds-bookmark-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px;
+  background: var(--ds-surface-card);
+  border: 1px solid var(--ds-border-dark);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.ds-bookmark-item:hover {
+  border-color: var(--ds-border-highlight);
+  background: var(--ds-surface-hover);
+}
+
+.ds-bookmark-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ds-bookmark-role {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--ds-brand-primary);
+}
+
+.ds-bookmark-unpin {
+  background: transparent;
+  border: none;
+  color: var(--ds-text-muted);
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+
+.ds-bookmark-unpin:hover {
+  background: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+}
+
+.ds-bookmark-snippet {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--ds-text-secondary);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.ds-nav-empty {
+  text-align: center;
+  color: var(--ds-text-muted);
+  font-size: 12.5px;
+  padding: 40px 10px;
+  line-height: 1.6;
+}
+
+/* Pin button pointer optimization & state (Same shape, color changes) */
+.ds-pin-btn {
+  cursor: pointer !important;
+  pointer-events: auto !important;
+  user-select: none;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.ds-pin-btn * {
+  pointer-events: none !important;
+}
+
+.ds-pin-btn.pinned {
+  color: var(--ds-brand-primary) !important;
+}
+
+.ds-pin-btn.pinned .ds-icon {
+  color: var(--ds-brand-primary) !important;
+}
+
+.ds-pin-btn.pinned svg {
+  color: var(--ds-brand-primary) !important;
+  stroke: var(--ds-brand-primary) !important;
+}
+
+.ds-pin-btn.pinned svg path {
+  stroke: var(--ds-brand-primary) !important;
+  fill: none !important;
+}
+
+.ds-pin-btn.pinned .ds-button__background {
+  opacity: 1 !important;
+  background: rgba(77, 107, 254, 0.16) !important;
+}
+
+/* =========================================================================
+   4. ✍️ PROMPTING & TYPING PRODUCTIVITY (SLASH COMMANDS & HISTORY)
+   ========================================================================= */
+
+/* Slash Command Templates Popup (Extended Height for 6 items without scroll) */
+.ds-slash-menu {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 0;
+  width: 420px;
+  max-height: 480px;
+  background: var(--ds-surface-dark);
+  border: 1px solid var(--ds-border-dark);
+  border-radius: 12px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(14px);
+  z-index: 99999;
+  display: none;
+  flex-direction: column;
+  overflow-y: auto;
+  padding: 6px;
+  gap: 3px;
+  animation: dsSlashMenuFade 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  direction: ltr !important;
+  user-select: none;
+}
+
+.ds-slash-menu.show {
+  display: flex;
+}
+
+@keyframes dsSlashMenuFade {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.ds-slash-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  width: 100%;
+  text-align: left;
+  transition: all 0.15s;
+  box-sizing: border-box;
+}
+
+.ds-slash-item:hover,
+.ds-slash-item.active {
+  background: rgba(77, 107, 254, 0.14);
+}
+
+.ds-slash-item.active {
+  border-left: 3px solid var(--ds-brand-primary);
+}
+
+.ds-slash-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: var(--ds-surface-card);
+  color: var(--ds-brand-primary);
+  flex-shrink: 0;
+}
+
+.ds-slash-item.active .ds-slash-icon {
+  background: var(--ds-brand-primary);
+  color: #ffffff;
+}
+
+.ds-slash-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow: hidden;
+}
+
+.ds-slash-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ds-slash-cmd {
+  font-size: 13px;
+  font-weight: 700;
+  font-family: var(--ds-code-font);
+  color: var(--ds-brand-primary);
+}
+
+.ds-slash-title {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ds-text-primary);
+}
+
+.ds-slash-desc {
+  font-size: 11.5px;
+  color: var(--ds-text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Inactive / Disabled state: smoothly hide all extension additions */
+.ds-export-toolbar,
+.ds-pin-btn,
+.ds-custom-wrap-btn,
+.ds-custom-expand-btn,
+.ds-line-numbers-gutter,
+.ds-nav-drawer,
+.ds-search-bar-wrap,
+.ds-slash-menu,
+.ds-code-modal-backdrop {
+  transition: opacity 0.28s cubic-bezier(0.4, 0, 0.2, 1), transform 0.28s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.28s ease !important;
+}
+
+html:not(.ds-rtl-active) .ds-export-toolbar,
+html:not(.ds-rtl-active) .ds-pin-btn,
+html:not(.ds-rtl-active) .ds-custom-wrap-btn,
+html:not(.ds-rtl-active) .ds-custom-expand-btn,
+html:not(.ds-rtl-active) .ds-line-numbers-gutter,
+html:not(.ds-rtl-active) .ds-nav-drawer,
+html:not(.ds-rtl-active) .ds-search-bar-wrap,
+html:not(.ds-rtl-active) .ds-slash-menu,
+html:not(.ds-rtl-active) .ds-code-modal-backdrop,
+html:not(.ds-rtl-active) #ds-custom-wallpaper-layer {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+
+/* =========================================================================
+   5. 🎨 UI & LAYOUT ENHANCEMENTS (AUTO-COLLAPSE)
+   ========================================================================= */
+
+/* Auto-Collapse Thinking Process */
+body.ds-auto-collapse-thoughts .ds-thinking-content,
+body.ds-auto-collapse-thoughts [class*="thinking-content"],
+body.ds-auto-collapse-thoughts [class*="reasoning-content"] {
+  display: none;
+}
+
+body.ds-auto-collapse-thoughts .ds-thinking-expanded .ds-thinking-content,
+body.ds-auto-collapse-thoughts [class*="thinking-expanded"] [class*="thinking-content"] {
+  display: block !important;
+}
+
+/* =========================================================================
+   6. 🖼️ CUSTOM BACKGROUND WALLPAPER
+   ========================================================================= */
+
+#ds-custom-wallpaper-layer {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: -9999 !important;
+  pointer-events: none !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), filter 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  will-change: opacity, filter;
+}
+
+/* Smooth background transitions for all containers when wallpaper toggles */
+body,
+#root,
+.cb86951c,
+._7780f2e,
+._765a5cd,
+._2bd7b35,
+.ds-virtual-list,
+.ds-virtual-list-items,
+._6f2c522,
+.d29f3d7d,
+.ds-message,
+._63c77b1,
+.fbb737a4,
+._74c0879,
+._245c867,
+._34a54ec,
+._5ab5d64,
+.ds-think-content,
+._871cbca,
+._77cefa5,
+._3d616d3,
+._020ab5b,
+._11d6b3a {
+  transition: background-color 0.35s cubic-bezier(0.4, 0, 0.2, 1), backdrop-filter 0.35s ease, -webkit-backdrop-filter 0.35s ease !important;
+}
+
+/* Base body background when wallpaper is active */
+body.ds-has-wallpaper {
+  background-color: #121316 !important;
+}
+
+/* Make main page background transparent so wallpaper shows strictly underneath */
+body.ds-has-wallpaper #root,
+body.ds-has-wallpaper .cb86951c,
+body.ds-has-wallpaper ._7780f2e,
+body.ds-has-wallpaper ._765a5cd,
+body.ds-has-wallpaper ._2bd7b35,
+body.ds-has-wallpaper .ds-virtual-list,
+body.ds-has-wallpaper .ds-virtual-list-items,
+body.ds-has-wallpaper ._6f2c522 {
+  background-color: transparent !important;
+  background: transparent !important;
+}
+
+/* Transparent message bubbles, rows & chat content */
+html.ds-has-wallpaper ._4f9bf79,
+html.ds-has-wallpaper ._43c05b5,
+html.ds-has-wallpaper .d29f3d7d,
+html.ds-has-wallpaper .ds-message,
+html.ds-has-wallpaper ._63c77b1,
+html.ds-has-wallpaper .fbb737a4,
+html.ds-has-wallpaper .ds-collapsible-text,
+html.ds-has-wallpaper ._9663006,
+html.ds-has-wallpaper .ds-markdown,
+body.ds-has-wallpaper ._4f9bf79,
+body.ds-has-wallpaper ._43c05b5,
+body.ds-has-wallpaper .d29f3d7d,
+body.ds-has-wallpaper .ds-message,
+body.ds-has-wallpaper ._63c77b1,
+body.ds-has-wallpaper .fbb737a4,
+body.ds-has-wallpaper .ds-collapsible-text,
+body.ds-has-wallpaper ._9663006,
+body.ds-has-wallpaper .ds-markdown {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+/* DeepSeek Thinking / Thought blocks - 100% transparent (including ::before & ::after) */
+html.ds-has-wallpaper ._74c0879,
+html.ds-has-wallpaper ._74c0879 *,
+html.ds-has-wallpaper ._74c0879::before,
+html.ds-has-wallpaper ._74c0879::after,
+html.ds-has-wallpaper ._74c0879 *::before,
+html.ds-has-wallpaper ._74c0879 *::after,
+html.ds-has-wallpaper ._245c867,
+html.ds-has-wallpaper ._245c867::before,
+html.ds-has-wallpaper ._245c867::after,
+html.ds-has-wallpaper ._34a54ec,
+html.ds-has-wallpaper ._34a54ec::before,
+html.ds-has-wallpaper ._34a54ec::after,
+html.ds-has-wallpaper ._5ab5d64,
+html.ds-has-wallpaper ._5ab5d64::before,
+html.ds-has-wallpaper ._5ab5d64::after,
+html.ds-has-wallpaper ._5ab5d64 *,
+html.ds-has-wallpaper ._5255ff8,
+html.ds-has-wallpaper ._4d41763,
+html.ds-has-wallpaper .c99b79f8,
+html.ds-has-wallpaper .c99b79f8::before,
+html.ds-has-wallpaper .c99b79f8::after,
+html.ds-has-wallpaper .c2b72bb8,
+html.ds-has-wallpaper ._8f7678d,
+html.ds-has-wallpaper .ds-think-content,
+html.ds-has-wallpaper .e1675d8b,
+html.ds-has-wallpaper ._767406f,
+html.ds-has-wallpaper .ddd26891,
+html.ds-has-wallpaper ._9ecc93a,
+body.ds-has-wallpaper ._74c0879,
+body.ds-has-wallpaper ._74c0879 *,
+body.ds-has-wallpaper ._74c0879::before,
+body.ds-has-wallpaper ._74c0879::after,
+body.ds-has-wallpaper ._74c0879 *::before,
+body.ds-has-wallpaper ._74c0879 *::after,
+body.ds-has-wallpaper ._245c867,
+body.ds-has-wallpaper ._245c867::before,
+body.ds-has-wallpaper ._245c867::after,
+body.ds-has-wallpaper ._34a54ec,
+body.ds-has-wallpaper ._34a54ec::before,
+body.ds-has-wallpaper ._34a54ec::after,
+body.ds-has-wallpaper ._5ab5d64,
+body.ds-has-wallpaper ._5ab5d64::before,
+body.ds-has-wallpaper ._5ab5d64::after,
+body.ds-has-wallpaper ._5ab5d64 *,
+body.ds-has-wallpaper ._5255ff8,
+body.ds-has-wallpaper ._4d41763,
+body.ds-has-wallpaper .c99b79f8,
+body.ds-has-wallpaper .c99b79f8::before,
+body.ds-has-wallpaper .c99b79f8::after,
+body.ds-has-wallpaper .c2b72bb8,
+body.ds-has-wallpaper ._8f7678d,
+body.ds-has-wallpaper .ds-think-content,
+body.ds-has-wallpaper .e1675d8b,
+body.ds-has-wallpaper ._767406f,
+body.ds-has-wallpaper .ddd26891,
+body.ds-has-wallpaper ._9ecc93a {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  border-color: transparent !important;
+}
+
+body.ds-has-wallpaper ._5ab5d64:hover,
+html.ds-has-wallpaper ._5ab5d64:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Bottom input wrapper, header, and gradient masks */
+body.ds-has-wallpaper ._871cbca,
+body.ds-has-wallpaper .d72636e2,
+body.ds-has-wallpaper .aaff8b8f,
+body.ds-has-wallpaper ._0706cde,
+body.ds-has-wallpaper ._0fcaa63,
+body.ds-has-wallpaper .cddfb2ed,
+body.ds-has-wallpaper ._4cbcd96,
+body.ds-has-wallpaper ._2be88ba,
+body.ds-has-wallpaper .f8d1e4c0,
+body.ds-has-wallpaper ._1aa2651 {
+  background-color: transparent !important;
+  background: transparent !important;
+  background-image: none !important;
+}
+
+/* User & Assistant message action toolbars & button backgrounds */
+html.ds-has-wallpaper ._11d6b3a,
+html.ds-has-wallpaper ._11d6b3a *,
+html.ds-has-wallpaper ._11d6b3a ._425ea0b,
+html.ds-has-wallpaper ._78e0558,
+html.ds-has-wallpaper ._0bbda35,
+html.ds-has-wallpaper ._0a3d93b,
+html.ds-has-wallpaper ._965abe9,
+html.ds-has-wallpaper .db183363,
+html.ds-has-wallpaper .d4910adc,
+html.ds-has-wallpaper .db183363 .ds-button__background,
+html.ds-has-wallpaper .d4910adc .ds-button__background,
+html.ds-has-wallpaper .ds-button--iconLabelTertiary .ds-button__background,
+body.ds-has-wallpaper ._11d6b3a,
+body.ds-has-wallpaper ._11d6b3a *,
+body.ds-has-wallpaper ._11d6b3a ._425ea0b,
+body.ds-has-wallpaper ._78e0558,
+body.ds-has-wallpaper ._0bbda35,
+body.ds-has-wallpaper ._0a3d93b,
+body.ds-has-wallpaper ._965abe9,
+body.ds-has-wallpaper .db183363,
+body.ds-has-wallpaper .d4910adc,
+body.ds-has-wallpaper .db183363 .ds-button__background,
+body.ds-has-wallpaper .d4910adc .ds-button__background,
+body.ds-has-wallpaper .ds-button--iconLabelTertiary .ds-button__background {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Chat Input Bar clean glass effect */
+body.ds-has-wallpaper ._77cefa5,
+body.ds-has-wallpaper ._3d616d3,
+body.ds-has-wallpaper ._020ab5b,
+body.ds-has-wallpaper ._8f7678d,
+body.ds-has-wallpaper ._5a50d80,
+body.ds-has-wallpaper :not(._11d6b3a) > ._425ea0b {
+  background: rgba(30, 31, 35, 0.72) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+}

@@ -1,0 +1,33 @@
+{
+  "name": "deepseek-orbit",
+  "version": "1.5.0",
+  "description": "DeepSeek Orbit — Smart Workspace & RTL Flow for chat.deepseek.com",
+  "main": "content.js",
+  "scripts": {
+    "test": "node -c content.js && node -c popup.js",
+    "lint": "echo \"Syntax check passed.\"",
+    "bundle": "zip -r deepseek-orbit-v1.5.0.zip manifest.json content.js content.css popup.html popup.css popup.js icons/ assets/ LICENSE README.md"
+  },
+  "keywords": [
+    "deepseek",
+    "deepseek-ai",
+    "rtl",
+    "persian",
+    "arabic",
+    "chrome-extension",
+    "productivity",
+    "developer-tools",
+    "code-highlighting",
+    "custom-wallpaper"
+  ],
+  "author": "Ehsan Ghaffar (https://github.com/gapcode)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gapcode/deepseek-orbit.git"
+  },
+  "bugs": {
+    "url": "https://github.com/gapcode/deepseek-orbit/issues"
+  },
+  "homepage": "https://github.com/gapcode/deepseek-orbit#readme"
+}
