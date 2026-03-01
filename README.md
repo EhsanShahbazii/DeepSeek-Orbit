@@ -1,179 +1,214 @@
-<div align="center">
+# 🌌 DeepSeek Orbit — Smart Workspace & RTL Flow (v1.5.0)
 
-  <img src="assets/banner.png" alt="DeepSeek Orbit Banner" width="100%" style="border-radius: 14px; box-shadow: 0 12px 40px rgba(0,0,0,0.6);" />
+<p align="center">
+  <img src="assets/banner.png" alt="DeepSeek Orbit Preview Banner" width="100%" style="border-radius: 12px; box-shadow: 0 16px 48px rgba(0,0,0,0.6);" />
+</p>
 
-  # 🌌 DeepSeek Orbit
-  ### *Smart Workspace & RTL Flow for DeepSeek*
-
-  <p align="center">
-    <strong>Elevating DeepSeek AI with intelligent Persian/Arabic RTL alignment, custom wallpapers, developer tools, prompt productivity, and lightning-fast chat navigation.</strong>
-  </p>
-
-  <p align="center">
-    <a href="https://github.com/gapcode/deepseek-orbit/releases"><img src="https://img.shields.io/badge/version-1.5.0-4d6bfe.svg?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Version 1.5.0"></a>
-    <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-00d26a.svg?style=for-the-badge" alt="License MIT"></a>
-    <a href="https://chat.deepseek.com"><img src="https://img.shields.io/badge/DeepSeek-Compatible-00b4d8.svg?style=for-the-badge&logo=deepseek&logoColor=white" alt="DeepSeek Compatible"></a>
-    <a href="https://developer.chrome.com/docs/extensions/mv3/intro/"><img src="https://img.shields.io/badge/Manifest-V3-f59e0b.svg?style=for-the-badge" alt="Manifest V3"></a>
-    <a href="CONTRIBUTING.md"><img src="https://img.shields.io/badge/PRs-Welcome-a855f7.svg?style=for-the-badge" alt="PRs Welcome"></a>
-  </p>
-
-</div>
+<p align="center">
+  <a href="https://github.com/gapcode"><img src="https://img.shields.io/badge/Author-Ehsan%20Shahbazi-4d6bfe?style=for-the-badge&logo=github&logoColor=white" alt="Author" /></a>
+  <a href="https://github.com/gapcode/deepseek-orbit/releases"><img src="https://img.shields.io/badge/Version-1.5.0%20Pro-4d6bfe?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Version" /></a>
+  <img src="https://img.shields.io/badge/Platform-DeepSeek%20AI%20%7C%20Manifest%20V3-00d26a?style=for-the-badge" alt="Platform" />
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-1e2025?style=for-the-badge" alt="License" /></a>
+</p>
 
 ---
 
-## ⚡ Overview
+## 📖 Overview
 
-**DeepSeek Orbit** is a premium, open-source browser extension meticulously crafted for **[chat.deepseek.com](https://chat.deepseek.com)**. It seamlessly integrates into DeepSeek's native design system to deliver an effortless bidirectional reading and typing experience, developer-grade code tools, personalized custom wallpapers, and advanced workspace management.
+**DeepSeek Orbit** is a modern open-source browser extension engineered exclusively for **[chat.deepseek.com](https://chat.deepseek.com)**. Designed and developed by **[Ehsan Shahbazi](https://github.com/gapcode)**, it elevates DeepSeek AI with seamless bidirectional Right-to-Left (RTL) Persian & Arabic typography, developer-grade code enhancements, customizable glassmorphic wallpapers, in-chat keyword search, and prompt productivity workflows.
 
-Whether you're writing in Persian/Arabic, debugging code, searching long conversations, or customizing your workspace, DeepSeek Orbit provides the missing power tools for DeepSeek AI.
-
----
-
-## ✨ Features at a Glance
-
-| Feature | Description | Status |
-| :--- | :--- | :---: |
-| 🔄 **Smart Bi-directional RTL** | Auto-detects Persian/Arabic paragraphs; keeps code & math strictly LTR | ✅ Active |
-| 🖼️ **Custom Wallpaper Studio** | Upload custom backgrounds with real-time opacity & blur sliders | ✅ Active |
-| 💻 **Developer Code Suite** | Sticky line numbers, word wrap toggling, and fullscreen syntax viewer | ✅ Active |
-| 🔍 **In-Chat Keyword Search** | Instant <kbd>Ctrl+F</kbd> search with real-time highlight & match jumping | ✅ Active |
-| 📌 **Message Bookmarks (Pins)** | One-click pin assistant answers and manage them from a slide-out drawer | ✅ Active |
-| ✍️ **Slash Commands (`/`)** | Quick prompt templates (`/fix`, `/explain`, `/refactor`, `/summarize`, etc.) | ✅ Active |
-| 📜 **Prompt History Cycling** | Cycle through previously sent prompts using <kbd>↑</kbd> and <kbd>↓</kbd> arrows | ✅ Active |
-| 🧠 **Auto-Collapse Thoughts** | Keeps long DeepSeek-R1 "Thinking Process" blocks compact by default | ✅ Active |
-| 📤 **Multi-Format Export** | Download or copy chat as Markdown, HTML/Print, or structured JSON | ✅ Active |
-| 🔤 **Persian Typography** | Beautiful fonts (Vazirmatn, Sahel, Shabnam, Estedad, Samim, Dana, Tahoma) | ✅ Active |
+Crafted with DeepSeek's authentic **Royal Blue & Dark Obsidian** aesthetic, the extension integrates seamlessly without breaking native chat mechanics or streaming responses.
 
 ---
 
-## 🚀 Key Feature Showcase
+## ⚡ Key Highlights
 
-### 1. 🔄 Smart Bidirectional RTL Alignment
-- **Intelligent Unicode Detection:** Evaluates text paragraph-by-paragraph to set proper Right-to-Left alignment for Persian, Arabic, Urdu, and Hebrew.
-- **Strict Code & Formula Isolation:** Code blocks (`pre`, `code`), markdown blocks (`.md-code-block`), and LaTeX formulas (`KaTeX`) remain strictly Left-to-Right with monospace styling.
-- **Auto-RTL Input Field:** Automatically adjusts input direction dynamically as you type Persian or English.
-- **Shortcut Toggle:** Press <kbd>Ctrl + Shift + X</kbd> (or <kbd>Cmd + Shift + X</kbd> on macOS) to instantly force-toggle text direction.
+- **🔄 Smart Bi-directional RTL Engine**: Evaluates text paragraph-by-paragraph to apply natural Right-to-Left alignment for Persian, Arabic, Hebrew, and Urdu text.
+- **🛡️ Strict Code & Formula Isolation**: Keeps all code blocks (`pre`, `code`, `.md-code-block`) and mathematical equations (`LaTeX / KaTeX`) strictly Left-to-Right in monospace font.
+- **🖼️ Custom Wallpaper Studio**: Upload personalized high-resolution wallpapers with real-time opacity (5%–60%) and background blur (0px–20px) sliders.
+- **💻 Developer Code Suite**: Sticky line numbers on all code snippets, one-click word wrap toggle, and fullscreen syntax viewer modal with smooth GPU animations.
+- **🔍 In-Chat Keyword Search**: Instant <kbd>Ctrl + F</kbd> search across active conversations with real-time match counters (`1 / 18`), keyword highlighting, and viewport auto-scrolling.
+- **📌 Stable Message Bookmarks (Pins)**: Save vital assistant responses or prompts with native pushpin buttons and browse them in a slide-out drawer.
+- **✍️ Slash Command Templates (`/`)**: Type `/` to open an instant prompt template menu (`/fix`, `/explain`, `/refactor`, `/summarize`, `/translate`, `/test`).
+- **📜 Prompt History Cycling**: Navigate past prompts directly in the input box using <kbd>↑</kbd> and <kbd>↓</kbd> keyboard arrows.
+- **🧠 Auto-Collapse DeepSeek-R1 Thoughts**: Keeps long "Thinking Process" accordions compact by default for clean and focused reading.
+- **📤 Multi-Format Chat Exporter**: Download or copy conversation history in structured **Markdown**, **HTML / Print**, or **JSON**.
+
+---
+
+## 📸 Feature Walkthrough & Screenshots
+
+### 1. 🔄 Bi-Directional RTL Alignment & Persian Typography
+<p align="center">
+  <img src="assets/screenshots/preview.png" alt="RTL Alignment & Typography Preview" width="100%" />
+</p>
+
+- **Automatic Direction Switching**: Detects Persian and Arabic characters dynamically while keeping English text and variables Left-to-Right.
+- **Font Preset Library**: Choose from **Vazirmatn**, **Sahel**, **Shabnam**, **Estedad**, **Samim**, **Dana**, **Tahoma**, or your own custom installed system fonts.
+- **Auto-RTL Input Field**: Automatically switches prompt box direction as soon as you type Persian or Arabic.
+- **Direction Hotkey**: <kbd>Ctrl + Shift + X</kbd> (or <kbd>Cmd + Shift + X</kbd> on macOS) to manually toggle input direction.
+
+---
 
 ### 2. 🖼️ Custom Wallpaper Studio & Theming
-- **Personalized Backdrops:** Upload any high-resolution wallpaper (PNG, JPG, WebP, SVG) to replace the default flat background.
-- **Real-Time Sliders:** Adjust wallpaper opacity (5%–60%) and background blur (0px–20px) with instant visual feedback.
-- **Pure Glassmorphism:** Chat bubbles, thinking accordions, and message action bars adopt smooth transparency while preserving native DeepSeek sidebar colors.
-- **Zero Distractions:** Wallpaper renders in a dedicated hardware-accelerated layer behind all UI elements.
+<p align="center">
+  <img src="assets/screenshots/preview.png" alt="Custom Wallpaper Studio Preview" width="100%" />
+</p>
 
-### 3. 💻 Developer Code Enhancements
-- **Sticky Line Numbers:** Clean, non-selectable line numbers rendered across all code blocks.
-- **Word Wrap:** Native DeepSeek-styled header button to toggle between horizontal code scrolling and wrapped lines.
-- **Fullscreen Syntax Viewer:** Click **Expand** to open any code block in a distraction-free, syntax-highlighted modal with line numbering, word wrap, and one-click copying.
-
-### 4. ✍️ Prompting Productivity & Slash Commands
-- **Slash Commands (`/`):** Type `/` in an empty prompt field to trigger instant templates:
-  - `/fix` — Analyze bugs, identify root causes, and provide corrected code.
-  - `/explain` — Clear step-by-step breakdown and conceptual explanation.
-  - `/refactor` — Improve architecture, readability, and performance.
-  - `/summarize` — Generate concise summary points.
-  - `/translate` — Translate into fluent Persian while preserving technical code terms.
-  - `/test` — Write comprehensive unit tests with edge cases.
-- **Prompt History Navigation:** Press <kbd>↑</kbd> in an empty input field to navigate previously sent prompts and <kbd>↓</kbd> to return to your current draft.
-
-### 5. 🔍 In-Chat Keyword Search & Bookmarking
-- **Integrated Search Bar:** Press <kbd>Ctrl + F</kbd> or click **Search** on the floating toolbar to search across active chats with real-time match counters (`1 / 18`) and viewport auto-scrolling.
-- **Bookmark & Pin Messages:** Click the pushpin icon on any message to save it to your Pinned Messages drawer for quick 1-click retrieval.
+- **Hardware-Accelerated Layer**: Custom wallpaper renders underneath all chat content with zero performance overhead.
+- **Live Sliders**: Instantly tweak wallpaper opacity (5%–60%) and background blur (0px–20px).
+- **Centered Studio Modal**: Open the dedicated centered dialog to drag & drop or choose background wallpapers.
+- **Glassmorphic Chat**: Message bubbles, thinking cards, and action bars turn transparent while preserving native DeepSeek sidebar colors.
 
 ---
 
-## ⌨️ Keyboard Shortcuts Reference
+### 3. 💻 Developer Code Enhancements & Fullscreen Viewer
+<p align="center">
+  <img src="assets/screenshots/preview.png" alt="Developer Code Suite Preview" width="100%" />
+</p>
 
-| Shortcut | Action | Scope |
+- **Unselectable Sticky Line Numbers**: Automatic line numbering on code snippets with synchronized scrollbars.
+- **Word Wrap Toggle**: Switch between horizontal code scrolling and wrapped view with one click.
+- **Fullscreen Syntax Viewer**: Expand code into a focused, distraction-free modal with vibrant syntax themes, line numbering, and copy buttons.
+- **Smooth Close Animation**: GPU-accelerated enter and exit transitions (<kbd>Esc</kbd> to close).
+
+---
+
+### 4. 🔍 In-Chat Keyword Search & Message Pins
+<p align="center">
+  <img src="assets/screenshots/preview.png" alt="Search and Pins Preview" width="100%" />
+</p>
+
+- **Integrated Search Bar**: Press <kbd>Ctrl + F</kbd> or click Search on the floating toolbar to locate words across long conversations.
+- **Quick Navigation**: Use <kbd>Enter</kbd> / <kbd>Shift + Enter</kbd> to jump between matches with viewport auto-scroll.
+- **Pinned Messages Drawer**: Click the pushpin icon on any response to save it to your bookmarks drawer for instant 1-click jump.
+
+---
+
+### 5. ✍️ Slash Commands & Prompt History
+<p align="center">
+  <img src="assets/screenshots/preview.png" alt="Slash Commands & History Preview" width="100%" />
+</p>
+
+- **Instant Templates (`/`)**: Trigger structured coding, explanation, refactoring, and translation prompts in milliseconds.
+- **History Cycling (<kbd>↑</kbd> / <kbd>↓</kbd>)**: Recall past prompts sequentially without re-typing.
+- **Auto-Collapse R1 Thinking**: Keeps DeepSeek-R1 reasoning accordions neatly collapsed until you choose to expand them.
+
+---
+
+## 🏗️ System Architecture
+
+```mermaid
+flowchart TD
+    A["DeepSeek Web Application"] -->|"MutationObserver Stream"| B["DeepSeek Orbit Engine (content.js)"]
+    
+    subgraph CoreEngine["DeepSeek Orbit Core Modules"]
+        B --> C["Unicode RTL Detector & Parser"]
+        B --> D["Code Block Syntax & Line Numbers"]
+        B --> E["In-Chat Keyword Search & Highlighter"]
+        B --> F["Bookmark & Pin Storage Manager"]
+        B --> G["Wallpaper & Glassmorphism Engine"]
+        B --> H["Slash Commands & History Navigator"]
+    end
+    
+    subgraph StateManagement["Persistent State & Sync"]
+        I["Extension Popup Dashboard (popup.js)"] <-->|"chrome.storage.local"| J[("Chrome Storage")]
+        J <-->|"chrome.runtime.onMessage"| B
+    end
+    
+    C -->|"Dynamic RTL/LTR Styles"| A
+    D -->|"Line Numbers & Fullscreen Modal"| A
+    E -->|"Search Highlights & Viewport Jump"| A
+    G -->|"Background Layer (-9999 z-index)"| A
+```
+
+---
+
+## 📂 Modular Project Structure
+
+```
+deepseek-orbit/
+├── manifest.json              # Chrome Extension Manifest (V3)
+├── content.js                 # Core engine (RTL parser, UI injections, search, pins, wallpaper)
+├── content.css                # DeepSeek design system styles, animations & glassmorphism
+├── popup.html                 # Extension popup dashboard & settings UI
+├── popup.css                  # Popup styling & Dark theme controls
+├── popup.js                   # Settings persistence & cross-tab runtime sync
+├── assets/
+│   ├── banner.png             # Official repository hero banner
+│   ├── icon.png               # Official 3D glassmorphic logo
+│   ├── icons/
+│   │   ├── icon16.png         # 16x16 HD Icon
+│   │   ├── icon48.png         # 48x48 HD Icon
+│   │   └── icon128.png        # 128x128 HD Icon
+│   └── screenshots/
+│       └── preview.png        # Extension preview screenshot
+├── docs/
+│   └── ARCHITECTURE.md        # Technical architecture reference
+├── CHANGELOG.md               # Version release notes (v1.0.0 → v1.5.0)
+├── CONTRIBUTING.md            # Open-source contribution guide
+├── LICENSE                    # MIT License (Copyright 2026 Ehsan Shahbazi)
+└── package.json               # Development metadata & bundling scripts
+```
+
+---
+
+## ⌨️ Keyboard Shortcuts
+
+| Shortcut | Action | Description |
 | :--- | :--- | :--- |
-| <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd> / <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd> | Toggle Input Field Text Direction (RTL / LTR) | Input Box |
-| <kbd>Ctrl</kbd> + <kbd>F</kbd> | Open In-Chat Keyword Search Bar | Global |
-| <kbd>Enter</kbd> / <kbd>Shift</kbd> + <kbd>Enter</kbd> | Jump to Next / Previous Search Match | Search Active |
-| <kbd>↑</kbd> / <kbd>↓</kbd> | Cycle through Previous / Next Sent Prompts | Empty Input Box |
-| <kbd>/</kbd> | Open Slash Command Templates Menu | Empty Input Box |
-| <kbd>Esc</kbd> | Close Search Bar, Fullscreen Code, or Drawers | Global |
+| <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd> / <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd> | **Toggle Direction** | Instantly switches the prompt input box between RTL and LTR |
+| <kbd>Ctrl</kbd> + <kbd>F</kbd> | **In-Chat Search** | Opens the keyword search bar with real-time match highlighting |
+| <kbd>Enter</kbd> / <kbd>Shift</kbd> + <kbd>Enter</kbd> | **Next / Prev Match** | Jumps to the next or previous keyword match |
+| <kbd>↑</kbd> / <kbd>↓</kbd> | **Prompt History** | Cycles through previously sent prompts in the input field |
+| <kbd>/</kbd> | **Slash Templates** | Opens the instant prompt templates dropdown |
+| <kbd>Esc</kbd> | **Close Overlays** | Closes search bar, fullscreen code modal, or pinned messages drawer |
 
 ---
 
-## 🛠️ Installation & Setup
+## 🚀 Installation Guide
 
-### Method 1: Load as Developer Extension (Recommended)
+### Chrome / Brave / Edge / Chromium
 
-1. **Clone or Download** this repository:
+1. Clone or download this repository:
    ```bash
    git clone https://github.com/gapcode/deepseek-orbit.git
    cd deepseek-orbit
    ```
-2. Open Google Chrome / Chromium (Brave, Edge, Arc, Opera).
-3. Navigate to **`chrome://extensions`**.
-4. Enable **Developer mode** using the toggle in the top-right corner.
-5. Click **Load unpacked** in the top-left corner.
-6. Select the `deepseek-orbit` directory.
-7. Navigate to **[chat.deepseek.com](https://chat.deepseek.com)** and enjoy!
+2. Open your browser and navigate to **`chrome://extensions/`**.
+3. Enable **Developer mode** in the top-right corner.
+4. Click **Load unpacked** in the top-left corner.
+5. Select the `deepseek-orbit` root directory.
+6. Open **[chat.deepseek.com](https://chat.deepseek.com)** and enjoy a supercharged DeepSeek experience!
 
 ---
 
-## 🏗️ Project Architecture
+## 🛡️ Privacy & Security
 
-```mermaid
-graph TD
-    A[DeepSeek Chat DOM] -->|MutationObserver| B[Core Engine: content.js]
-    B --> C[Bi-directional RTL Parser]
-    B --> D[Code Block Enhancer]
-    B --> E[In-Chat Search & Pins]
-    B --> F[Wallpaper & Theming Engine]
-    B --> G[Slash Commands & History]
-    
-    H[Popup Dashboard: popup.html] -->|chrome.storage.local| I[(Storage & Config)]
-    I -->|chrome.runtime.onMessage| B
-```
+> [!NOTE]
+> **DeepSeek Orbit** is 100% client-side and open-source.
+>
+> - **Zero Analytics / Tracking**: No tracking pixels, remote telemetries, or data collection.
+> - **Local Storage Only**: All settings, custom wallpapers, and pins stay strictly inside your browser's `chrome.storage.local`.
+> - **No Remote Dependencies**: Loads zero external scripts at runtime.
 
 ---
 
-## 🗂️ Repository Structure
+## 👨‍💻 Author & Credits
 
-```
-deepseek-orbit/
-├── manifest.json         # Chrome Extension Manifest V3 configuration
-├── content.js            # Main content script (RTL engine, UI suite, modals)
-├── content.css           # DeepSeek native design system styles & animations
-├── popup.html            # Extension popup dashboard & settings UI
-├── popup.css             # Popup styling & Dark theme controls
-├── popup.js              # Settings persistence & runtime cross-tab broadcasting
-├── icons/                # Extension icons (16px, 48px, 128px)
-├── assets/               # Banner, logos, and documentation assets
-├── CHANGELOG.md          # Version release history
-├── CONTRIBUTING.md       # Open-source contribution guidelines
-├── LICENSE               # MIT License
-└── package.json          # Development metadata & bundling scripts
-```
+- **Architect & Lead Developer**: **Ehsan Shahbazi**
+- **GitHub**: [@gapcode](https://github.com/gapcode)
 
 ---
 
 ## 🤝 Contributing
 
-Contributions make the open-source community an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-1. Fork the Project.
-2. Create your Feature Branch (`git checkout -b feat/AmazingFeature`).
-3. Commit your Changes (`git commit -m 'feat: Add some AmazingFeature'`).
-4. Push to the Branch (`git push origin feat/AmazingFeature`).
-5. Open a Pull Request.
-
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct and development standards.
-
----
-
-## 👤 Author
-
-**Ehsan Ghaffar**
-* GitHub: [@gapcode](https://github.com/gapcode)
+Contributions are warmly welcomed! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct and pull request process.
 
 ---
 
 ## 📄 License
 
-Distributed under the **MIT License**. See [`LICENSE`](LICENSE) for more information.
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
 
-<div align="center">
-  <sub>Built with ❤️ for the DeepSeek AI community worldwide.</sub>
-</div>
+Copyright (c) 2026 **Ehsan Shahbazi**.
