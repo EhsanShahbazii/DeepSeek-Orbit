@@ -33,6 +33,15 @@
         "https://*.deepseek.com/*"
       ],
       "js": [
+        "src/core/constants.js",
+        "src/core/detector.js",
+        "src/core/storage.js",
+        "src/ui/code-enhancer.js",
+        "src/ui/search.js",
+        "src/ui/pins.js",
+        "src/ui/wallpaper.js",
+        "src/ui/slash-commands.js",
+        "src/ui/toolbar.js",
         "content.js"
       ],
       "css": [
