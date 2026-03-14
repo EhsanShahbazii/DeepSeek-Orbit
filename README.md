@@ -40,7 +40,7 @@ Crafted with DeepSeek's authentic **Royal Blue & Dark Obsidian** aesthetic, the 
 
 ### 1. 🔄 Bi-Directional RTL Alignment & Persian Typography
 <p align="center">
-  <img src="assets/screenshots/preview.png" alt="RTL Alignment & Typography Preview" width="100%" />
+  <img src="assets/screenshots/preview_1.png" alt="RTL Alignment & Typography Preview" width="100%" />
 </p>
 
 - **Automatic Direction Switching**: Detects Persian and Arabic characters dynamically while keeping English text and variables Left-to-Right.
@@ -52,7 +52,7 @@ Crafted with DeepSeek's authentic **Royal Blue & Dark Obsidian** aesthetic, the 
 
 ### 2. 🖼️ Custom Wallpaper Studio & Theming
 <p align="center">
-  <img src="assets/screenshots/preview.png" alt="Custom Wallpaper Studio Preview" width="100%" />
+  <img src="assets/screenshots/preview_2.png" alt="Custom Wallpaper Studio Preview" width="100%" />
 </p>
 
 - **Hardware-Accelerated Layer**: Custom wallpaper renders underneath all chat content with zero performance overhead.
@@ -64,7 +64,7 @@ Crafted with DeepSeek's authentic **Royal Blue & Dark Obsidian** aesthetic, the 
 
 ### 3. 💻 Developer Code Enhancements & Fullscreen Viewer
 <p align="center">
-  <img src="assets/screenshots/preview.png" alt="Developer Code Suite Preview" width="100%" />
+  <img src="assets/screenshots/preview_3.png" alt="Developer Code Suite Preview" width="100%" />
 </p>
 
 - **Unselectable Sticky Line Numbers**: Automatic line numbering on code snippets with synchronized scrollbars.
@@ -76,7 +76,7 @@ Crafted with DeepSeek's authentic **Royal Blue & Dark Obsidian** aesthetic, the 
 
 ### 4. 🔍 In-Chat Keyword Search & Message Pins
 <p align="center">
-  <img src="assets/screenshots/preview.png" alt="Search and Pins Preview" width="100%" />
+  <img src="assets/screenshots/preview_4.png" alt="Search and Pins Preview" width="100%" />
 </p>
 
 - **Integrated Search Bar**: Press <kbd>Ctrl + F</kbd> or click Search on the floating toolbar to locate words across long conversations.
@@ -87,7 +87,7 @@ Crafted with DeepSeek's authentic **Royal Blue & Dark Obsidian** aesthetic, the 
 
 ### 5. ✍️ Slash Commands & Prompt History
 <p align="center">
-  <img src="assets/screenshots/preview.png" alt="Slash Commands & History Preview" width="100%" />
+  <img src="assets/screenshots/preview_5.png" alt="Slash Commands & History Preview" width="100%" />
 </p>
 
 - **Instant Templates (`/`)**: Trigger structured coding, explanation, refactoring, and translation prompts in milliseconds.
@@ -129,20 +129,32 @@ flowchart TD
 ```
 deepseek-orbit/
 ├── manifest.json              # Chrome Extension Manifest (V3)
-├── content.js                 # Core engine (RTL parser, UI injections, search, pins, wallpaper)
-├── content.css                # DeepSeek design system styles, animations & glassmorphism
-├── popup.html                 # Extension popup dashboard & settings UI
-├── popup.css                  # Popup styling & Dark theme controls
-├── popup.js                   # Settings persistence & cross-tab runtime sync
+├── src/
+│   ├── core/
+│   │   ├── constants.js       # SVG icon library, font maps, slash templates & default state
+│   │   ├── detector.js        # Unicode bi-directional RTL detection algorithm
+│   │   └── storage.js         # Settings persistence & chrome.storage.local sync
+│   ├── ui/
+│   │   ├── code-enhancer.js   # Sticky line numbers, word wrap & fullscreen syntax modal
+│   │   ├── search.js          # In-chat keyword search, match counter & auto-scroller
+│   │   ├── pins.js            # Message bookmarking system & slide-out pinned drawer
+│   │   ├── wallpaper.js       # Wallpaper compositor & centered Wallpaper Studio modal
+│   │   ├── slash-commands.js  # Slash templates (/) & prompt history cycling (↑/↓)
+│   │   └── toolbar.js         # Floating suite toolbar & multi-format export dropdown
+│   ├── popup/
+│   │   ├── popup.html         # Extension popup dashboard
+│   │   ├── popup.css          # Glassmorphic dark theme styles
+│   │   └── popup.js           # Real-time state persistence & cross-tab sync
+│   ├── content.js             # Content script runtime coordinator
+│   └── content.css            # DeepSeek native design system styles & animations
+├── icons/
+│   ├── icon16.png             # 16x16 HD Extension Icon
+│   ├── icon48.png             # 48x48 HD Extension Icon
+│   └── icon128.png            # 128x128 HD Extension Icon
 ├── assets/
-│   ├── banner.png             # Official repository hero banner
+│   ├── banner.png             # Official 16:9 glowing orbital hero banner
 │   ├── icon.png               # Official 3D glassmorphic logo
-│   ├── icons/
-│   │   ├── icon16.png         # 16x16 HD Icon
-│   │   ├── icon48.png         # 48x48 HD Icon
-│   │   └── icon128.png        # 128x128 HD Icon
-│   └── screenshots/
-│       └── preview.png        # Extension preview screenshot
+│   └── screenshots/           # Extension interface preview screenshots
 ├── docs/
 │   └── ARCHITECTURE.md        # Technical architecture reference
 ├── CHANGELOG.md               # Version release notes (v1.0.0 → v1.5.0)

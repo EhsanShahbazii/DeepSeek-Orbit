@@ -2,11 +2,11 @@
   "name": "deepseek-orbit",
   "version": "1.5.0",
   "description": "DeepSeek Orbit — Smart Workspace & RTL Flow for chat.deepseek.com",
-  "main": "content.js",
+  "main": "src/content.js",
   "scripts": {
-    "test": "node -c content.js && node -c popup.js",
+    "test": "node -c src/core/constants.js && node -c src/core/detector.js && node -c src/core/storage.js && node -c src/ui/code-enhancer.js && node -c src/ui/search.js && node -c src/ui/pins.js && node -c src/ui/wallpaper.js && node -c src/ui/slash-commands.js && node -c src/ui/toolbar.js && node -c src/popup/popup.js && node -c src/content.js",
     "lint": "echo \"Syntax check passed.\"",
-    "bundle": "zip -r deepseek-orbit-v1.5.0.zip manifest.json content.js content.css popup.html popup.css popup.js icons/ assets/ LICENSE README.md"
+    "bundle": "zip -r deepseek-orbit-v1.5.0.zip manifest.json src/ icons/ assets/ docs/ LICENSE README.md"
   },
   "keywords": [
     "deepseek",
