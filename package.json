@@ -20,14 +20,14 @@
     "code-highlighting",
     "custom-wallpaper"
   ],
-  "author": "Ehsan Ghaffar (https://github.com/gapcode)",
+  "author": "Ehsan Shahbazi <ehsan.shahbazipc@gmail.com> (https://github.com/EhsanShahbazii)",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/gapcode/deepseek-orbit.git"
+    "url": "https://github.com/EhsanShahbazii/DeepSeek-Orbit.git"
   },
   "bugs": {
-    "url": "https://github.com/gapcode/deepseek-orbit/issues"
+    "url": "https://github.com/EhsanShahbazii/DeepSeek-Orbit/issues"
   },
-  "homepage": "https://github.com/gapcode/deepseek-orbit#readme"
+  "homepage": "https://github.com/EhsanShahbazii/DeepSeek-Orbit#readme"
 }

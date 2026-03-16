@@ -5,8 +5,8 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/gapcode"><img src="https://img.shields.io/badge/Author-Ehsan%20Shahbazi-4d6bfe?style=for-the-badge&logo=github&logoColor=white" alt="Author" /></a>
-  <a href="https://github.com/gapcode/deepseek-orbit/releases"><img src="https://img.shields.io/badge/Version-1.5.0%20Pro-4d6bfe?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Version" /></a>
+  <a href="https://github.com/EhsanShahbazii"><img src="https://img.shields.io/badge/Author-Ehsan%20Shahbazi-4d6bfe?style=for-the-badge&logo=github&logoColor=white" alt="Author" /></a>
+  <a href="https://github.com/EhsanShahbazii/DeepSeek-Orbit/releases"><img src="https://img.shields.io/badge/Version-1.5.0%20Pro-4d6bfe?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Version" /></a>
   <img src="https://img.shields.io/badge/Platform-DeepSeek%20AI%20%7C%20Manifest%20V3-00d26a?style=for-the-badge" alt="Platform" />
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-1e2025?style=for-the-badge" alt="License" /></a>
 </p>
@@ -15,7 +15,7 @@
 
 ## 📖 Overview
 
-**DeepSeek Orbit** is a modern open-source browser extension engineered exclusively for **[chat.deepseek.com](https://chat.deepseek.com)**. Designed and developed by **[Ehsan Shahbazi](https://github.com/gapcode)**, it elevates DeepSeek AI with seamless bidirectional Right-to-Left (RTL) Persian & Arabic typography, developer-grade code enhancements, customizable glassmorphic wallpapers, in-chat keyword search, and prompt productivity workflows.
+**DeepSeek Orbit** is a modern open-source browser extension engineered exclusively for **[chat.deepseek.com](https://chat.deepseek.com)**. Designed and developed by **[Ehsan Shahbazi](https://github.com/EhsanShahbazii)**, it elevates DeepSeek AI with seamless bidirectional Right-to-Left (RTL) Persian & Arabic typography, developer-grade code enhancements, customizable glassmorphic wallpapers, in-chat keyword search, and prompt productivity workflows.
 
 Crafted with DeepSeek's authentic **Royal Blue & Dark Obsidian** aesthetic, the extension integrates seamlessly without breaking native chat mechanics or streaming responses.
 
@@ -184,13 +184,13 @@ deepseek-orbit/
 
 1. Clone or download this repository:
    ```bash
-   git clone https://github.com/gapcode/deepseek-orbit.git
-   cd deepseek-orbit
+   git clone https://github.com/EhsanShahbazii/DeepSeek-Orbit.git
+   cd DeepSeek-Orbit
    ```
 2. Open your browser and navigate to **`chrome://extensions/`**.
 3. Enable **Developer mode** in the top-right corner.
 4. Click **Load unpacked** in the top-left corner.
-5. Select the `deepseek-orbit` root directory.
+5. Select the `DeepSeek-Orbit` root directory.
 6. Open **[chat.deepseek.com](https://chat.deepseek.com)** and enjoy a supercharged DeepSeek experience!
 
 ---
@@ -209,7 +209,8 @@ deepseek-orbit/
 ## 👨‍💻 Author & Credits
 
 - **Architect & Lead Developer**: **Ehsan Shahbazi**
-- **GitHub**: [@gapcode](https://github.com/gapcode)
+- **GitHub**: [@EhsanShahbazii](https://github.com/EhsanShahbazii)
+- **Email**: [ehsan.shahbazipc@gmail.com](mailto:ehsan.shahbazipc@gmail.com)
 
 ---
 

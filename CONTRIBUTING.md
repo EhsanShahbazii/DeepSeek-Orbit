@@ -9,13 +9,13 @@ Thank you for your interest in making **DeepSeek Orbit** even better! We welcome
 1. **Fork the repository** on GitHub.
 2. **Clone your fork** locally:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/deepseek-orbit.git
-   cd deepseek-orbit
+   git clone https://github.com/EhsanShahbazii/DeepSeek-Orbit.git
+   cd DeepSeek-Orbit
    ```
 3. **Load into Google Chrome / Chromium**:
    - Open `chrome://extensions`.
    - Enable **Developer mode** (toggle in the top-right corner).
-   - Click **Load unpacked** and select the `deepseek-orbit` repository folder.
+   - Click **Load unpacked** and select the repository root folder.
    - Navigate to [chat.deepseek.com](https://chat.deepseek.com).
 
 ---
@@ -24,18 +24,20 @@ Thank you for your interest in making **DeepSeek Orbit** even better! We welcome
 
 ```
 deepseek-orbit/
-├── manifest.json         # Chrome Extension Manifest V3 configuration
-├── content.js            # Core engine: RTL auto-detector, UI injections, Slash commands, Search, Pins, Wallpapers
-├── content.css           # DeepSeek design-matched styling, modal animations, glassmorphism, typography
-├── popup.html            # Extension popup dashboard & settings UI
-├── popup.css             # Popup styling & Dark theme controls
-├── popup.js              # Settings persistence & runtime cross-tab broadcasting
-├── icons/                # Extension icon assets (16x16, 48x48, 128x128)
-├── assets/               # README banner, badges, and documentation assets
-├── CHANGELOG.md          # Release notes and version history
-├── CONTRIBUTING.md       # Contribution guidelines
-├── LICENSE               # MIT License
-└── package.json          # Development metadata and packaging scripts
+├── manifest.json              # Chrome Extension Manifest (V3)
+├── src/
+│   ├── core/                  # Core algorithms (detector, storage, constants)
+│   ├── ui/                    # UI suite (code-enhancer, search, pins, wallpaper, slash-commands, toolbar)
+│   ├── popup/                 # Extension popup dashboard & settings UI
+│   ├── content.js             # Content script runtime coordinator
+│   └── content.css            # DeepSeek native design system styles & animations
+├── icons/                     # Extension HD icon assets (16px, 48px, 128px)
+├── assets/                    # README banner, badges, and documentation assets
+├── docs/                      # Technical architecture documentation
+├── CHANGELOG.md               # Release notes and version history
+├── CONTRIBUTING.md            # Contribution guidelines
+├── LICENSE                    # MIT License
+└── package.json               # Development metadata and bundling scripts
 ```
 
 ---
