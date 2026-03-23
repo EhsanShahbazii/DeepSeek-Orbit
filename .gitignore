@@ -29,3 +29,4 @@ build/
 # Temporary artifacts
 .tempmediaStorage/
 scratch/
+*.zip

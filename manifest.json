@@ -26,7 +26,9 @@
   ],
   "host_permissions": [
     "https://chat.deepseek.com/*",
-    "https://*.deepseek.com/*"
+    "https://*.deepseek.com/*",
+    "https://api.github.com/*",
+    "https://raw.githubusercontent.com/*"
   ],
   "content_scripts": [
     {
@@ -44,6 +46,7 @@
         "src/ui/wallpaper.js",
         "src/ui/slash-commands.js",
         "src/ui/toolbar.js",
+        "src/ui/context-importer.js",
         "src/content.js"
       ],
       "css": [
