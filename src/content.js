@@ -1369,9 +1369,6 @@
       <button type="button" class="ds-suite-btn" id="dsToolbarSearchBtn" title="Search (Ctrl + F)">
         <span class="ds-suite-btn-icon">${ICONS.search}</span> <span>Search</span>
       </button>
-      <button type="button" class="ds-suite-btn" id="dsToolbarContextBtn" title="Ingest Context (Folder, GitHub Repo, Web)">
-        <span class="ds-suite-btn-icon" style="color: var(--ds-brand-primary);">${ICONS.upload}</span> <span>Context</span>
-      </button>
       <button type="button" class="ds-suite-btn" id="dsToolbarPinsBtn" title="Pinned Messages">
         <span class="ds-suite-btn-icon">${ICONS.pinFilled}</span> <span>Pins</span>
       </button>
@@ -1398,7 +1395,6 @@
     document.body.appendChild(toolbar);
 
     const searchBtn = toolbar.querySelector('#dsToolbarSearchBtn');
-    const contextBtn = toolbar.querySelector('#dsToolbarContextBtn');
     const searchInput = toolbar.querySelector('#dsSearchInput');
     const searchPrevBtn = toolbar.querySelector('#dsSearchPrevBtn');
     const searchNextBtn = toolbar.querySelector('#dsSearchNextBtn');
@@ -1424,11 +1420,6 @@
     searchNextBtn.addEventListener('click', nextSearchMatch);
     searchCloseBtn.addEventListener('click', closeSearchBar);
     searchBtn.addEventListener('click', toggleSearchBar);
-    contextBtn.addEventListener('click', () => {
-      if (window.DeepSeekOrbit && window.DeepSeekOrbit.ContextImporter) {
-        window.DeepSeekOrbit.ContextImporter.openContextModal();
-      }
-    });
     pinsBtn.addEventListener('click', openPinsDrawer);
 
     toggleExportBtn.addEventListener('click', (e) => {

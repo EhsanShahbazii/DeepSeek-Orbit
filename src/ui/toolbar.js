@@ -153,9 +153,6 @@
       <button type="button" class="ds-suite-btn" id="dsToolbarSearchBtn" title="Search (Ctrl + F)">
         <span class="ds-suite-btn-icon">${ICONS.search}</span> <span>Search</span>
       </button>
-      <button type="button" class="ds-suite-btn" id="dsToolbarContextBtn" title="Ingest Context (Folder, GitHub Repo, Web)">
-        <span class="ds-suite-btn-icon" style="color: var(--ds-brand-primary);">${ICONS.upload}</span> <span>Context</span>
-      </button>
       <button type="button" class="ds-suite-btn" id="dsToolbarPinsBtn" title="Pinned Messages">
         <span class="ds-suite-btn-icon">${ICONS.pinFilled}</span> <span>Pins</span>
       </button>
@@ -182,7 +179,6 @@
     document.body.appendChild(toolbar);
 
     const searchBtn = toolbar.querySelector('#dsToolbarSearchBtn');
-    const contextBtn = toolbar.querySelector('#dsToolbarContextBtn');
     const searchInput = toolbar.querySelector('#dsSearchInput');
     const searchPrevBtn = toolbar.querySelector('#dsSearchPrevBtn');
     const searchNextBtn = toolbar.querySelector('#dsSearchNextBtn');
@@ -196,7 +192,6 @@
     if (callbacks.onSearchPrev) searchPrevBtn.addEventListener('click', callbacks.onSearchPrev);
     if (callbacks.onSearchClose) searchCloseBtn.addEventListener('click', callbacks.onSearchClose);
     if (callbacks.onSearchToggle) searchBtn.addEventListener('click', callbacks.onSearchToggle);
-    if (callbacks.onContextOpen) contextBtn.addEventListener('click', callbacks.onContextOpen);
     if (callbacks.onPinsOpen) pinsBtn.addEventListener('click', callbacks.onPinsOpen);
 
     toggleExportBtn.addEventListener('click', (e) => {
