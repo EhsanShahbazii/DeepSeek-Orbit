@@ -329,13 +329,13 @@
           </button>
         </div>
 
-        <!-- Constant Fixed Height Body Container to Prevent Shaking -->
-        <div class="ds-ctx-body" style="padding: 20px; height: 230px; min-height: 230px; max-height: 230px; box-sizing: border-box; overflow: hidden; position: relative; display: flex; flex-direction: column;">
+        <!-- Constant Fixed Height Body Container to Prevent Shaking (Flex-Start Top Alignment) -->
+        <div class="ds-ctx-body" style="padding: 16px 20px; height: 230px; min-height: 230px; max-height: 230px; box-sizing: border-box; overflow: hidden; position: relative; display: flex; flex-direction: column;">
           
-          <!-- TAB 1: LOCAL FOLDER -->
+          <!-- TAB 1: LOCAL FOLDER (Top Aligned) -->
           <div class="ds-ctx-tab-panel active" id="panelFolder">
             <input type="file" id="ctxFolderInput" webkitdirectory directory multiple style="display: none;" />
-            <div class="ds-ctx-dropzone" id="ctxFolderDropzone">
+            <div class="ds-ctx-dropzone" id="ctxFolderDropzone" style="height: 100%; box-sizing: border-box; justify-content: center;">
               <div style="color: var(--ds-brand-primary); margin-bottom: 8px;">${ICONS.folder}</div>
               <div style="font-weight: 600; color: #fff; font-size: 14px; margin-bottom: 4px;">Choose a Project Folder</div>
               <div style="font-size: 12px; color: var(--ds-text-secondary); max-width: 380px; margin: 0 auto 12px; line-height: 1.4;">
@@ -347,33 +347,39 @@
             </div>
           </div>
 
-          <!-- TAB 2: GITHUB REPO (Clean Inputs, No Password autofill, No Scrollbar) -->
+          <!-- TAB 2: GITHUB REPO (Top Aligned, Exact Baseline) -->
           <div class="ds-ctx-tab-panel" id="panelGithub">
-            <div style="display: flex; flex-direction: column; gap: 12px; height: 100%; justify-content: center;">
+            <div style="display: flex; flex-direction: column; gap: 14px; width: 100%;">
               <div>
-                <label style="display: block; font-size: 12px; font-weight: 600; color: #fff; margin-bottom: 6px;">Repository URL or owner/repo</label>
+                <label style="display: block; font-size: 12.5px; font-weight: 600; color: #fff; margin-bottom: 6px;">Repository URL or owner/repo</label>
                 <input type="text" class="ds-search-input" id="ctxGithubUrlInput" placeholder="e.g. facebook/react or https://github.com/owner/repo" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" style="width: 100%; border-radius: 8px; padding: 9px 12px; font-size: 13px; box-sizing: border-box;" />
               </div>
               
-              <div style="display: flex; gap: 8px; align-items: center;">
-                <input type="text" class="ds-search-input" id="ctxGithubTokenInput" name="gh_token_orbit" placeholder="GitHub PAT Token (Optional for private repos)" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-lpignore="true" data-1p-ignore="true" style="flex: 1; border-radius: 8px; padding: 9px 12px; font-size: 12px; box-sizing: border-box;" />
-                <button type="button" class="ds-suite-btn ds-ctx-action-btn" id="ctxFetchGithubBtn" style="white-space: nowrap; height: 34px;">
-                  <span>Fetch Codebase</span>
-                </button>
+              <div>
+                <label style="display: block; font-size: 12px; font-weight: 500; color: var(--ds-text-secondary); margin-bottom: 6px;">Personal Access Token (Optional)</label>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                  <input type="text" class="ds-search-input" id="ctxGithubTokenInput" name="gh_token_orbit" placeholder="GitHub PAT Token (Optional for private repos)" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-lpignore="true" data-1p-ignore="true" style="flex: 1; border-radius: 8px; padding: 9px 12px; font-size: 12px; box-sizing: border-box;" />
+                  <button type="button" class="ds-suite-btn ds-ctx-action-btn" id="ctxFetchGithubBtn" style="white-space: nowrap; height: 34px;">
+                    <span>Fetch Codebase</span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
 
-          <!-- TAB 3: WEB PAGE -->
+          <!-- TAB 3: WEB PAGE (Top Aligned, Exact Baseline) -->
           <div class="ds-ctx-tab-panel" id="panelWeb">
-            <div style="display: flex; flex-direction: column; gap: 12px; height: 100%; justify-content: center;">
+            <div style="display: flex; flex-direction: column; gap: 14px; width: 100%;">
               <div>
-                <label style="display: block; font-size: 12px; font-weight: 600; color: #fff; margin-bottom: 6px;">Web Article / Documentation URL</label>
+                <label style="display: block; font-size: 12.5px; font-weight: 600; color: #fff; margin-bottom: 6px;">Web Article / Documentation URL</label>
                 <div style="display: flex; gap: 8px;">
                   <input type="text" class="ds-search-input" id="ctxWebUrlInput" placeholder="https://docs.example.com/guide" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" style="flex: 1; border-radius: 8px; padding: 9px 12px; font-size: 13px; box-sizing: border-box;" />
                   <button type="button" class="ds-suite-btn ds-ctx-action-btn" id="ctxFetchWebBtn" style="white-space: nowrap; height: 34px;">
                     <span>Fetch Page</span>
                   </button>
+                </div>
+                <div style="font-size: 12px; color: var(--ds-text-secondary); margin-top: 8px; line-height: 1.4;">
+                  Extracts article content, clean code snippets, and documentation while stripping navigation and ads.
                 </div>
               </div>
             </div>

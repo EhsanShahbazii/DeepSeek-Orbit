@@ -1489,10 +1489,6 @@ body.ds-has-wallpaper :not(._11d6b3a) > ._425ea0b {
   transition: transform 0.15s ease, opacity 0.15s ease;
 }
 
-.ds-orbit-context-btn:hover .ds-icon {
-  color: var(--ds-brand-primary) !important;
-}
-
 .ds-orbit-context-btn:active {
   transform: scale(0.94);
 }
@@ -1539,17 +1535,20 @@ body.ds-has-wallpaper :not(._11d6b3a) > ._425ea0b {
 .ds-ctx-tab-panel {
   display: none;
   height: 100%;
+  width: 100%;
   box-sizing: border-box;
   opacity: 0;
-  transform: translateY(6px);
-  transition: opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1), transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(4px);
+  transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   overflow: hidden;
+  padding-top: 6px;
 }
 
 .ds-ctx-tab-panel.active {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
+  align-items: stretch;
   opacity: 1;
   transform: translateY(0);
 }
