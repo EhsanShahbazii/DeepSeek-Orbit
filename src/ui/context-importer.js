@@ -47,7 +47,7 @@
      1. LOCAL FOLDER INGESTION ENGINE
      ========================================================================= */
 
-  async function parseLocalDirectoryWithPicker(onProgress) {
+  async function parseLocalDirectoryWithPicker(onProgress, signal) {
     if (!('showDirectoryPicker' in window)) {
       throw new Error('File System Access API not supported in this browser.');
     }
@@ -57,6 +57,7 @@
     const treeLines = [];
 
     async function traverse(handle, path = '', depth = 0) {
+      if (signal && signal.aborted) throw new DOMException('Aborted', 'AbortError');
       const indent = '  '.repeat(depth);
       treeLines.push(`${indent}├── ${handle.name}${handle.kind === 'directory' ? '/' : ''}`);
 
@@ -64,6 +65,7 @@
         if (IGNORED_DIRS.has(handle.name)) return;
 
         for await (const entry of handle.values()) {
+          if (signal && signal.aborted) throw new DOMException('Aborted', 'AbortError');
           const entryPath = path ? `${path}/${entry.name}` : entry.name;
           if (entry.kind === 'directory') {
             await traverse(entry, entryPath, depth + 1);
@@ -97,10 +99,11 @@
     };
   }
 
-  async function parseLocalDirectoryWithInput(fileList, onProgress) {
+  async function parseLocalDirectoryWithInput(fileList, onProgress, signal) {
     const files = [];
 
     for (let i = 0; i < fileList.length; i++) {
+      if (signal && signal.aborted) throw new DOMException('Aborted', 'AbortError');
       const file = fileList[i];
       const relPath = file.webkitRelativePath || file.name;
       const parts = relPath.split('/');
@@ -133,7 +136,7 @@
   }
 
   /* =========================================================================
-     2. GITHUB REPOSITORY INGESTION ENGINE
+     2. GITHUB REPOSITORY INGESTION ENGINE (WITH ABORT SIGNAL SUPPORT)
      ========================================================================= */
 
   function parseGitHubUrl(url) {
@@ -150,7 +153,7 @@
     return null;
   }
 
-  async function fetchGitHubRepository(repoInput, token, onProgress) {
+  async function fetchGitHubRepository(repoInput, token, onProgress, signal) {
     const parsed = parseGitHubUrl(repoInput);
     if (!parsed) {
       throw new Error('Invalid format. Please use "owner/repo" or full GitHub URL.');
@@ -160,7 +163,7 @@
     if (token) headers['Authorization'] = `token ${token}`;
 
     let branch = parsed.branch;
-    const repoRes = await fetch(`https://api.github.com/repos/${parsed.owner}/${parsed.repo}`, { headers });
+    const repoRes = await fetch(`https://api.github.com/repos/${parsed.owner}/${parsed.repo}`, { headers, signal });
     if (!repoRes.ok) {
       if (repoRes.status === 404) throw new Error('Repository not found or private (add GitHub token).');
       if (repoRes.status === 403) throw new Error('GitHub API rate limit reached. Add a Personal Access Token.');
@@ -171,7 +174,7 @@
       branch = repoInfo.default_branch || 'main';
     }
 
-    const treeRes = await fetch(`https://api.github.com/repos/${parsed.owner}/${parsed.repo}/git/trees/${branch}?recursive=1`, { headers });
+    const treeRes = await fetch(`https://api.github.com/repos/${parsed.owner}/${parsed.repo}/git/trees/${branch}?recursive=1`, { headers, signal });
     if (!treeRes.ok) throw new Error(`Failed to fetch tree: ${treeRes.statusText}`);
     const treeData = await treeRes.json();
 
@@ -192,11 +195,12 @@
 
     const BATCH_SIZE = 6;
     for (let i = 0; i < candidateFiles.length; i += BATCH_SIZE) {
+      if (signal && signal.aborted) throw new DOMException('Aborted', 'AbortError');
       const batch = candidateFiles.slice(i, i + BATCH_SIZE);
       await Promise.all(batch.map(async (item) => {
         try {
           const rawUrl = `https://raw.githubusercontent.com/${parsed.owner}/${parsed.repo}/${branch}/${item.path}`;
-          const fileRes = await fetch(rawUrl, { headers });
+          const fileRes = await fetch(rawUrl, { headers, signal });
           if (fileRes.ok) {
             const content = await fileRes.text();
             if (content.length <= MAX_FILE_SIZE) {
@@ -209,7 +213,9 @@
               if (onProgress) onProgress(files.length, item.path, candidateFiles.length);
             }
           }
-        } catch (err) {}
+        } catch (err) {
+          if (err.name === 'AbortError') throw err;
+        }
       }));
     }
 
@@ -225,13 +231,13 @@
      3. WEB PAGE / ARTICLE INGESTION ENGINE
      ========================================================================= */
 
-  async function fetchWebPageMarkdown(url) {
+  async function fetchWebPageMarkdown(url, signal) {
     let targetUrl = (url || '').trim();
     if (!targetUrl.startsWith('http://') && !targetUrl.startsWith('https://')) {
       targetUrl = 'https://' + targetUrl;
     }
 
-    const res = await fetch(targetUrl);
+    const res = await fetch(targetUrl, { signal });
     if (!res.ok) throw new Error(`HTTP ${res.status}: Failed to fetch webpage.`);
     const htmlText = await res.text();
 
@@ -293,7 +299,7 @@
   }
 
   /* =========================================================================
-     5. CONTEXT STUDIO MODAL (FIXED HEIGHT, SMOOTH TRANSITION, NO OVERFLOW)
+     5. CONTEXT STUDIO MODAL (FIXED HEIGHT, TOP-ALIGNED, CANCEL & REDESIGNED RESULTS)
      ========================================================================= */
 
   function openContextModal() {
@@ -329,10 +335,10 @@
           </button>
         </div>
 
-        <!-- Constant Fixed Height Body Container to Prevent Shaking (Flex-Start Top Alignment) -->
-        <div class="ds-ctx-body" style="padding: 16px 20px; height: 230px; min-height: 230px; max-height: 230px; box-sizing: border-box; overflow: hidden; position: relative; display: flex; flex-direction: column;">
+        <!-- Constant Fixed Height Body Container (Flex-Start Top Alignment) -->
+        <div class="ds-ctx-body" style="padding: 16px 20px; height: 236px; min-height: 236px; max-height: 236px; box-sizing: border-box; overflow: hidden; position: relative; display: flex; flex-direction: column;">
           
-          <!-- TAB 1: LOCAL FOLDER (Top Aligned) -->
+          <!-- TAB 1: LOCAL FOLDER -->
           <div class="ds-ctx-tab-panel active" id="panelFolder">
             <input type="file" id="ctxFolderInput" webkitdirectory directory multiple style="display: none;" />
             <div class="ds-ctx-dropzone" id="ctxFolderDropzone" style="height: 100%; box-sizing: border-box; justify-content: center;">
@@ -347,19 +353,19 @@
             </div>
           </div>
 
-          <!-- TAB 2: GITHUB REPO (Top Aligned, Exact Baseline) -->
+          <!-- TAB 2: GITHUB REPO (Colored Styled Inputs, No Auto-Paste, Top Aligned) -->
           <div class="ds-ctx-tab-panel" id="panelGithub">
-            <div style="display: flex; flex-direction: column; gap: 14px; width: 100%;">
+            <div style="display: flex; flex-direction: column; gap: 13px; width: 100%;">
               <div>
-                <label style="display: block; font-size: 12.5px; font-weight: 600; color: #fff; margin-bottom: 6px;">Repository URL or owner/repo</label>
-                <input type="text" class="ds-search-input" id="ctxGithubUrlInput" placeholder="e.g. facebook/react or https://github.com/owner/repo" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" style="width: 100%; border-radius: 8px; padding: 9px 12px; font-size: 13px; box-sizing: border-box;" />
+                <label style="display: block; font-size: 12.5px; font-weight: 600; color: #f8fafc; margin-bottom: 6px;">Repository URL or owner/repo</label>
+                <input type="text" class="ds-ctx-input" id="ctxGithubUrlInput" placeholder="e.g. facebook/react or https://github.com/owner/repo" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
               </div>
               
               <div>
                 <label style="display: block; font-size: 12px; font-weight: 500; color: var(--ds-text-secondary); margin-bottom: 6px;">Personal Access Token (Optional)</label>
                 <div style="display: flex; gap: 8px; align-items: center;">
-                  <input type="text" class="ds-search-input" id="ctxGithubTokenInput" name="gh_token_orbit" placeholder="GitHub PAT Token (Optional for private repos)" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-lpignore="true" data-1p-ignore="true" style="flex: 1; border-radius: 8px; padding: 9px 12px; font-size: 12px; box-sizing: border-box;" />
-                  <button type="button" class="ds-suite-btn ds-ctx-action-btn" id="ctxFetchGithubBtn" style="white-space: nowrap; height: 34px;">
+                  <input type="text" class="ds-ctx-input" id="ctxGithubTokenInput" name="gh_token_orbit" placeholder="GitHub PAT Token (Optional for private repos)" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-lpignore="true" data-1p-ignore="true" style="flex: 1;" />
+                  <button type="button" class="ds-suite-btn ds-ctx-action-btn" id="ctxFetchGithubBtn" style="white-space: nowrap; height: 36px; padding: 0 14px;">
                     <span>Fetch Codebase</span>
                   </button>
                 </div>
@@ -367,14 +373,14 @@
             </div>
           </div>
 
-          <!-- TAB 3: WEB PAGE (Top Aligned, Exact Baseline) -->
+          <!-- TAB 3: WEB PAGE (Colored Styled Inputs, Top Aligned) -->
           <div class="ds-ctx-tab-panel" id="panelWeb">
-            <div style="display: flex; flex-direction: column; gap: 14px; width: 100%;">
+            <div style="display: flex; flex-direction: column; gap: 13px; width: 100%;">
               <div>
-                <label style="display: block; font-size: 12.5px; font-weight: 600; color: #fff; margin-bottom: 6px;">Web Article / Documentation URL</label>
+                <label style="display: block; font-size: 12.5px; font-weight: 600; color: #f8fafc; margin-bottom: 6px;">Web Article / Documentation URL</label>
                 <div style="display: flex; gap: 8px;">
-                  <input type="text" class="ds-search-input" id="ctxWebUrlInput" placeholder="https://docs.example.com/guide" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" style="flex: 1; border-radius: 8px; padding: 9px 12px; font-size: 13px; box-sizing: border-box;" />
-                  <button type="button" class="ds-suite-btn ds-ctx-action-btn" id="ctxFetchWebBtn" style="white-space: nowrap; height: 34px;">
+                  <input type="text" class="ds-ctx-input" id="ctxWebUrlInput" placeholder="https://docs.example.com/guide" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" style="flex: 1;" />
+                  <button type="button" class="ds-suite-btn ds-ctx-action-btn" id="ctxFetchWebBtn" style="white-space: nowrap; height: 36px; padding: 0 14px;">
                     <span>Fetch Page</span>
                   </button>
                 </div>
@@ -385,31 +391,60 @@
             </div>
           </div>
 
-          <!-- PROGRESS OVERLAY -->
-          <div id="ctxProgressWrap" style="display: none; height: 100%; flex-direction: column; justify-content: center; background: rgba(255,255,255,0.02); border: 1px solid var(--ds-border-dark); border-radius: 10px; padding: 16px; box-sizing: border-box;">
-            <div style="display: flex; justify-content: space-between; font-size: 12.5px; color: #fff; margin-bottom: 8px;">
-              <span id="ctxStatusText">Scanning files...</span>
-              <span id="ctxCountText" style="color: var(--ds-brand-primary); font-weight: 600;">0 files</span>
+          <!-- PROGRESS OVERLAY WITH CANCEL BUTTON -->
+          <div id="ctxProgressWrap" class="ds-ctx-progress-card" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span class="ds-loading-spin" style="display: inline-flex; color: var(--ds-brand-primary);">${ICONS.globe}</span>
+                <span id="ctxStatusText" style="font-size: 13px; font-weight: 500; color: #f8fafc;">Scanning files...</span>
+              </div>
+              <span id="ctxCountText" class="ds-ctx-count-badge">0 files</span>
             </div>
-            <div class="ds-ctx-progressbar-bg" style="width: 100%; height: 6px; background: rgba(255,255,255,0.08); border-radius: 9999px; overflow: hidden;">
-              <div id="ctxProgressBar" style="width: 25%; height: 100%; background: var(--ds-brand-primary); transition: width 0.2s cubic-bezier(0.16, 1, 0.3, 1);"></div>
+            <div class="ds-ctx-progressbar-bg">
+              <div id="ctxProgressBar" class="ds-ctx-progressbar-fill"></div>
+            </div>
+            <div style="display: flex; justify-content: flex-end; margin-top: 14px;">
+              <button type="button" class="ds-suite-btn ds-ctx-cancel-btn" id="ctxCancelBtn">
+                <span class="ds-suite-btn-icon">${ICONS.close}</span> <span>Cancel</span>
+              </button>
             </div>
           </div>
 
-          <!-- RESULTS OVERLAY -->
-          <div id="ctxResultPreview" style="display: none; height: 100%; flex-direction: column; justify-content: space-between; background: rgba(0,0,0,0.3); border: 1px solid var(--ds-border-dark); border-radius: 10px; padding: 12px 14px; box-sizing: border-box;">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <span style="font-size: 13px; font-weight: 600; color: #fff;" id="ctxResultTitle">Context Ready</span>
+          <!-- REDESIGNED BEAUTIFUL RESULTS OVERLAY -->
+          <div id="ctxResultPreview" class="ds-ctx-result-card" style="display: none;">
+            <div class="ds-ctx-result-header">
+              <div style="display: flex; align-items: center; gap: 8px; overflow: hidden;">
+                <div class="ds-ctx-success-icon">${ICONS.check}</div>
+                <div style="overflow: hidden;">
+                  <div style="font-size: 13px; font-weight: 600; color: #f8fafc; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" id="ctxResultTitle">Context Ready</div>
+                  <div style="font-size: 11px; color: var(--ds-text-secondary);" id="ctxResultSubtitle">Ready for prompt insertion</div>
+                </div>
+              </div>
               <span class="ds-ctx-token-pill" id="ctxTokenPill">~0 tokens</span>
             </div>
-            <div style="font-size: 11.5px; color: var(--ds-text-secondary); max-height: 105px; overflow-y: auto; font-family: var(--ds-code-font); white-space: pre-wrap; line-height: 1.4; border-radius: 6px; background: rgba(0,0,0,0.25); padding: 8px;" id="ctxFileListPreview"></div>
-            <div style="display: flex; justify-content: flex-end; gap: 8px;">
-              <button type="button" class="ds-suite-btn" id="ctxCopyBtn">
-                <span class="ds-suite-btn-icon">${ICONS.copy}</span> <span>Copy Markdown</span>
+
+            <div class="ds-ctx-preview-box">
+              <div class="ds-ctx-preview-topbar">
+                <span style="display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--ds-text-muted); font-family: var(--ds-code-font);">
+                  ${ICONS.fileText} <span>manifest-preview.md</span>
+                </span>
+                <span style="font-size: 10.5px; color: var(--ds-brand-primary);" id="ctxPreviewFilesBadge">Ready</span>
+              </div>
+              <div class="ds-ctx-code-scroll" id="ctxFileListPreview"></div>
+            </div>
+
+            <div class="ds-ctx-result-actions">
+              <button type="button" class="ds-suite-btn ds-ctx-btn-secondary" id="ctxRescanBtn">
+                <span class="ds-suite-btn-icon">${ICONS.arrowUp}</span> <span>Rescan</span>
               </button>
-              <button type="button" class="ds-suite-btn" id="ctxInsertBtn" style="background: var(--ds-brand-primary); color: #fff; border-color: transparent; font-weight: 600;">
-                <span>Insert into Chat</span>
-              </button>
+              <div style="display: flex; gap: 8px;">
+                <button type="button" class="ds-suite-btn ds-ctx-btn-secondary" id="ctxCopyBtn">
+                  <span class="ds-suite-btn-icon">${ICONS.copy}</span> <span>Copy Markdown</span>
+                </button>
+                <button type="button" class="ds-suite-btn ds-ctx-btn-primary" id="ctxInsertBtn">
+                  <span class="ds-suite-btn-icon">${ICONS.check}</span> <span>Insert into Chat</span>
+                </button>
+              </div>
             </div>
           </div>
 
@@ -422,6 +457,8 @@
     backdrop.classList.add('ds-modal-visible');
 
     let activeMarkdownResult = '';
+    let activeAbortController = null;
+    let currentActiveTabName = 'folder';
 
     const closeBtn = backdrop.querySelector('#ctxCloseBtn');
     const tabs = backdrop.querySelectorAll('.ds-ctx-tab');
@@ -443,12 +480,16 @@
     const statusText = backdrop.querySelector('#ctxStatusText');
     const countText = backdrop.querySelector('#ctxCountText');
     const progressBar = backdrop.querySelector('#ctxProgressBar');
+    const cancelBtn = backdrop.querySelector('#ctxCancelBtn');
 
     const resultPreview = backdrop.querySelector('#ctxResultPreview');
     const resultTitle = backdrop.querySelector('#ctxResultTitle');
+    const resultSubtitle = backdrop.querySelector('#ctxResultSubtitle');
     const tokenPill = backdrop.querySelector('#ctxTokenPill');
     const fileListPreview = backdrop.querySelector('#ctxFileListPreview');
+    const previewFilesBadge = backdrop.querySelector('#ctxPreviewFilesBadge');
 
+    const rescanBtn = backdrop.querySelector('#ctxRescanBtn');
     const copyBtn = backdrop.querySelector('#ctxCopyBtn');
     const insertBtn = backdrop.querySelector('#ctxInsertBtn');
 
@@ -464,6 +505,7 @@
     const closeModal = () => {
       if (isClosing) return;
       isClosing = true;
+      if (activeAbortController) activeAbortController.abort();
       backdrop.classList.remove('ds-modal-visible');
       document.removeEventListener('keydown', escHandler);
       setTimeout(() => {
@@ -481,17 +523,41 @@
     };
     document.addEventListener('keydown', escHandler);
 
+    // Cancel Button Handler
+    cancelBtn.addEventListener('click', () => {
+      if (activeAbortController) {
+        activeAbortController.abort();
+        activeAbortController = null;
+      }
+      progressWrap.style.display = 'none';
+      if (panels[currentActiveTabName]) {
+        panels[currentActiveTabName].classList.add('active');
+      }
+    });
+
+    // Rescan Button Handler
+    rescanBtn.addEventListener('click', () => {
+      resultPreview.style.display = 'none';
+      if (panels[currentActiveTabName]) {
+        panels[currentActiveTabName].classList.add('active');
+      }
+    });
+
     // Smooth Tab Switching
     tabs.forEach(tab => {
       tab.addEventListener('click', () => {
-        if (progressWrap.style.display === 'flex' || resultPreview.style.display === 'flex') {
-          progressWrap.style.display = 'none';
-          resultPreview.style.display = 'none';
+        if (activeAbortController) {
+          activeAbortController.abort();
+          activeAbortController = null;
         }
+
+        progressWrap.style.display = 'none';
+        resultPreview.style.display = 'none';
 
         tabs.forEach(t => t.classList.remove('active'));
         tab.classList.add('active');
         const tabName = tab.dataset.tab;
+        currentActiveTabName = tabName;
 
         Object.keys(panels).forEach(k => {
           if (k === tabName) {
@@ -503,20 +569,23 @@
       });
     });
 
-    function showResults(title, md, filesCount) {
+    function showResults(title, subtitle, md, filesCount) {
       activeMarkdownResult = md;
       progressWrap.style.display = 'none';
       Object.keys(panels).forEach(k => panels[k].classList.remove('active'));
       resultPreview.style.display = 'flex';
 
       resultTitle.textContent = title;
+      resultSubtitle.textContent = subtitle;
       const tokens = estimateTokens(md);
-      tokenPill.textContent = `~${tokens.toLocaleString()} tokens (${(md.length / 1024).toFixed(1)} KB)`;
-      fileListPreview.textContent = md.substring(0, 1800) + (md.length > 1800 ? '\n\n... (Full codebase ready for analysis)' : '');
+      tokenPill.textContent = `~${tokens.toLocaleString()} tokens`;
+      previewFilesBadge.textContent = `${filesCount} ${filesCount === 1 ? 'file' : 'files'} (${(md.length / 1024).toFixed(1)} KB)`;
+      fileListPreview.textContent = md.substring(0, 2400) + (md.length > 2400 ? '\n\n... [Full codebase formatted and ready]' : '');
     }
 
     // Folder Actions
     selectFolderBtn.addEventListener('click', async () => {
+      activeAbortController = new AbortController();
       progressWrap.style.display = 'flex';
       Object.keys(panels).forEach(k => panels[k].classList.remove('active'));
       progressBar.style.width = '20%';
@@ -528,9 +597,9 @@
             countText.textContent = `${count} files`;
             statusText.textContent = `Reading ${file.split('/').pop()}...`;
             progressBar.style.width = `${Math.min(95, 20 + count * 2)}%`;
-          });
+          }, activeAbortController.signal);
           const md = formatContextMarkdown(data, 'folder');
-          showResults(`Local: ${data.name} (${data.files.length} files)`, md, data.files.length);
+          showResults(data.name, `${data.files.length} source files ingested`, md, data.files.length);
         } else {
           folderInput.click();
         }
@@ -541,24 +610,34 @@
           progressWrap.style.display = 'none';
           panels.folder.classList.add('active');
         }
+      } finally {
+        activeAbortController = null;
       }
     });
 
     folderInput.addEventListener('change', async (e) => {
       if (e.target.files && e.target.files.length > 0) {
+        activeAbortController = new AbortController();
         progressWrap.style.display = 'flex';
         Object.keys(panels).forEach(k => panels[k].classList.remove('active'));
         statusText.textContent = 'Scanning files...';
-        const data = await parseLocalDirectoryWithInput(e.target.files, (count) => {
-          countText.textContent = `${count} files`;
-          progressBar.style.width = `${Math.min(95, 20 + count * 2)}%`;
-        });
-        const md = formatContextMarkdown(data, 'folder');
-        showResults(`Local Folder (${data.files.length} files)`, md, data.files.length);
+        try {
+          const data = await parseLocalDirectoryWithInput(e.target.files, (count) => {
+            countText.textContent = `${count} files`;
+            progressBar.style.width = `${Math.min(95, 20 + count * 2)}%`;
+          }, activeAbortController.signal);
+          const md = formatContextMarkdown(data, 'folder');
+          showResults(data.name, `${data.files.length} source files ingested`, md, data.files.length);
+        } catch (err) {
+          progressWrap.style.display = 'none';
+          panels.folder.classList.add('active');
+        } finally {
+          activeAbortController = null;
+        }
       }
     });
 
-    // GitHub Actions
+    // GitHub Actions (with Cancel & Signal Support)
     fetchGithubBtn.addEventListener('click', async () => {
       const url = githubUrlInput.value.trim();
       const token = githubTokenInput.value.trim();
@@ -568,23 +647,29 @@
         chrome.storage.local.set({ githubPatToken: token });
       }
 
+      activeAbortController = new AbortController();
       progressWrap.style.display = 'flex';
       Object.keys(panels).forEach(k => panels[k].classList.remove('active'));
       progressBar.style.width = '15%';
       statusText.textContent = 'Connecting to GitHub API...';
+      countText.textContent = 'Connecting...';
 
       try {
         const data = await fetchGitHubRepository(url, token, (count, file, total) => {
           countText.textContent = `${count} / ${total} files`;
-          statusText.textContent = `Fetching ${file}...`;
+          statusText.textContent = `Fetching ${file.split('/').pop()}...`;
           progressBar.style.width = `${Math.min(95, Math.round((count / total) * 100))}%`;
-        });
+        }, activeAbortController.signal);
         const md = formatContextMarkdown(data, 'github');
-        showResults(`GitHub: ${data.name} (${data.files.length} files)`, md, data.files.length);
+        showResults(data.name, `Branch: ${data.branch} (${data.files.length} files)`, md, data.files.length);
       } catch (err) {
         progressWrap.style.display = 'none';
         panels.github.classList.add('active');
-        alert(`GitHub Fetch Error: ${err.message}`);
+        if (err.name !== 'AbortError') {
+          alert(`GitHub Fetch Error: ${err.message}`);
+        }
+      } finally {
+        activeAbortController = null;
       }
     });
 
@@ -593,20 +678,26 @@
       const url = webUrlInput.value.trim();
       if (!url) return;
 
+      activeAbortController = new AbortController();
       progressWrap.style.display = 'flex';
       Object.keys(panels).forEach(k => panels[k].classList.remove('active'));
       progressBar.style.width = '40%';
       statusText.textContent = 'Fetching webpage content...';
+      countText.textContent = '1 page';
 
       try {
-        const data = await fetchWebPageMarkdown(url);
+        const data = await fetchWebPageMarkdown(url, activeAbortController.signal);
         progressBar.style.width = '100%';
         const md = formatContextMarkdown(data, 'web');
-        showResults(`Web: ${data.title}`, md, 1);
+        showResults(data.title, data.url, md, 1);
       } catch (err) {
         progressWrap.style.display = 'none';
         panels.web.classList.add('active');
-        alert(`Webpage Fetch Error: ${err.message}`);
+        if (err.name !== 'AbortError') {
+          alert(`Webpage Fetch Error: ${err.message}`);
+        }
+      } finally {
+        activeAbortController = null;
       }
     });
 
@@ -635,7 +726,6 @@
      ========================================================================= */
 
   function ensureAttachContextButton(root = document) {
-    // Look for DeepSeek's native button container (.bf38813a)
     const targetWrappers = root.querySelectorAll('.bf38813a, ._78e0558, ._0bbda35, ._0a3d93b');
 
     targetWrappers.forEach(wrap => {
@@ -666,7 +756,6 @@
         openContextModal();
       });
 
-      // Insert as the first item inside .bf38813a or prepend next to paperclip upload
       wrap.insertBefore(btn, wrap.firstChild);
     });
   }

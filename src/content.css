@@ -1571,6 +1571,184 @@ body.ds-has-wallpaper :not(._11d6b3a) > ._425ea0b {
   background: rgba(77, 107, 254, 0.04);
 }
 
+/* Styled High-Contrast Input Boxes */
+.ds-ctx-input {
+  width: 100%;
+  background: #18191d !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 8px !important;
+  padding: 9px 12px !important;
+  font-size: 13px !important;
+  color: #f8fafc !important;
+  box-sizing: border-box;
+  outline: none;
+  font-family: inherit;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ds-ctx-input:focus {
+  border-color: var(--ds-brand-primary) !important;
+  background: #1e2026 !important;
+  box-shadow: 0 0 0 3px rgba(77, 107, 254, 0.22) !important;
+  color: #ffffff !important;
+}
+
+.ds-ctx-input::placeholder {
+  color: #64748b !important;
+}
+
+/* Progress Overlay & Cancel Button */
+.ds-ctx-progress-card {
+  height: 100%;
+  box-sizing: border-box;
+  flex-direction: column;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--ds-border-dark);
+  border-radius: 12px;
+  padding: 18px;
+}
+
+.ds-ctx-count-badge {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--ds-brand-primary);
+  background: rgba(77, 107, 254, 0.12);
+  padding: 2px 8px;
+  border-radius: 9999px;
+}
+
+.ds-ctx-progressbar-bg {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 9999px;
+  overflow: hidden;
+  margin-top: 4px;
+}
+
+.ds-ctx-progressbar-fill {
+  width: 20%;
+  height: 100%;
+  background: linear-gradient(90deg, #4d6bfe, #38bdf8);
+  transition: width 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ds-ctx-cancel-btn {
+  height: 30px !important;
+  padding: 0 12px !important;
+  font-size: 12px !important;
+  border-color: rgba(239, 68, 68, 0.3) !important;
+  color: #f87171 !important;
+  background: rgba(239, 68, 68, 0.08) !important;
+}
+
+.ds-ctx-cancel-btn:hover {
+  background: rgba(239, 68, 68, 0.16) !important;
+  border-color: #ef4444 !important;
+  color: #ffffff !important;
+}
+
+/* Redesigned Pretty Result Card */
+.ds-ctx-result-card {
+  height: 100%;
+  box-sizing: border-box;
+  flex-direction: column;
+  justify-content: space-between;
+  background: #141518;
+  border: 1px solid rgba(77, 107, 254, 0.3);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+
+.ds-ctx-result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 6px;
+}
+
+.ds-ctx-success-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 9999px;
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.ds-ctx-token-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 9px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 600;
+  background: rgba(77, 107, 254, 0.15);
+  color: var(--ds-brand-primary);
+  border: 1px solid rgba(77, 107, 254, 0.3);
+  white-space: nowrap;
+}
+
+.ds-ctx-preview-box {
+  display: flex;
+  flex-direction: column;
+  background: #0f1013;
+  border: 1px solid var(--ds-border-dark);
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 4px 0;
+}
+
+.ds-ctx-preview-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.ds-ctx-code-scroll {
+  font-size: 11px;
+  color: var(--ds-text-secondary);
+  height: 80px;
+  max-height: 80px;
+  overflow-y: auto;
+  font-family: var(--ds-code-font);
+  white-space: pre-wrap;
+  line-height: 1.4;
+  padding: 8px 10px;
+}
+
+.ds-ctx-result-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 4px;
+}
+
+.ds-ctx-btn-primary {
+  background: linear-gradient(135deg, #4d6bfe, #3b55db) !important;
+  color: #ffffff !important;
+  border: none !important;
+  font-weight: 600 !important;
+  box-shadow: 0 2px 10px rgba(77, 107, 254, 0.35) !important;
+}
+
+.ds-ctx-btn-primary:hover {
+  background: linear-gradient(135deg, #5b79ff, #435fe6) !important;
+}
+
+.ds-ctx-btn-secondary {
+  height: 32px !important;
+  padding: 0 12px !important;
+}
+
 .ds-ctx-token-pill {
   display: inline-flex;
   align-items: center;
