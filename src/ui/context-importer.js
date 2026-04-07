@@ -734,7 +734,7 @@
       const btn = document.createElement('div');
       btn.setAttribute('role', 'button');
       btn.setAttribute('tabindex', '0');
-      btn.className = 'ds-button ds-button--iconLabelPrimary ds-button--icon ds-button--capsule ds-button--s ds-button--icon-relative-m ds-orbit-context-btn';
+      btn.className = 'ds-button ds-button--iconLabelPrimary ds-button--icon ds-button--capsule ds-button--s ds-button--icon-relative-m f02f0e25 ds-orbit-context-btn';
       btn.setAttribute('style', '--dsl-button-height: 34px;');
       btn.title = 'Add Context (Folder, GitHub Repo, Webpage)';
 

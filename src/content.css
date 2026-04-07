@@ -1486,11 +1486,6 @@ body.ds-has-wallpaper :not(._11d6b3a) > ._425ea0b {
   margin-right: 4px;
   cursor: pointer;
   user-select: none;
-  transition: transform 0.15s ease, opacity 0.15s ease;
-}
-
-.ds-orbit-context-btn:active {
-  transform: scale(0.94);
 }
 
 .ds-ctx-tabs {
