@@ -43,6 +43,23 @@
     return Math.round(text.length / 3.8);
   }
 
+  function showToast(text, icon = ICONS.check, isError = false) {
+    const existing = document.querySelector('.ds-pro-toast');
+    if (existing) existing.remove();
+
+    const toast = document.createElement('div');
+    toast.className = 'ds-pro-toast' + (isError ? ' ds-toast-error' : '');
+    const iconHtml = isError ? `<span style="color: #f87171; display: inline-flex;">${ICONS.close}</span>` : `<span style="display: inline-flex;">${icon}</span>`;
+    toast.innerHTML = `${iconHtml} <span>${text}</span>`;
+    document.body.appendChild(toast);
+
+    setTimeout(() => toast.classList.add('show'), 10);
+    setTimeout(() => {
+      toast.classList.remove('show');
+      setTimeout(() => toast.remove(), 250);
+    }, isError ? 3600 : 2400);
+  }
+
   /* =========================================================================
      1. LOCAL FOLDER INGESTION ENGINE
      ========================================================================= */
@@ -666,7 +683,7 @@
         progressWrap.style.display = 'none';
         panels.github.classList.add('active');
         if (err.name !== 'AbortError') {
-          alert(`GitHub Fetch Error: ${err.message}`);
+          showToast(err.message || 'Failed to fetch GitHub repository', ICONS.close, true);
         }
       } finally {
         activeAbortController = null;
@@ -676,7 +693,10 @@
     // Web Page Actions
     fetchWebBtn.addEventListener('click', async () => {
       const url = webUrlInput.value.trim();
-      if (!url) return;
+      if (!url) {
+        showToast('Please enter a valid webpage URL', ICONS.close, true);
+        return;
+      }
 
       activeAbortController = new AbortController();
       progressWrap.style.display = 'flex';
@@ -694,7 +714,7 @@
         progressWrap.style.display = 'none';
         panels.web.classList.add('active');
         if (err.name !== 'AbortError') {
-          alert(`Webpage Fetch Error: ${err.message}`);
+          showToast(err.message || 'Failed to fetch webpage content', ICONS.close, true);
         }
       } finally {
         activeAbortController = null;
@@ -706,17 +726,23 @@
       if (!activeMarkdownResult) return;
       try {
         await navigator.clipboard.writeText(activeMarkdownResult);
+        showToast('Context copied to clipboard!');
         copyBtn.querySelector('span:last-child').textContent = 'Copied!';
         setTimeout(() => {
           copyBtn.querySelector('span:last-child').textContent = 'Copy Markdown';
         }, 2000);
-      } catch (e) {}
+      } catch (e) {
+        showToast('Failed to copy to clipboard', ICONS.close, true);
+      }
     });
 
     // Insert Action
     insertBtn.addEventListener('click', () => {
       if (!activeMarkdownResult) return;
-      insertIntoPromptTextarea(activeMarkdownResult);
+      const success = insertIntoPromptTextarea(activeMarkdownResult);
+      if (success) {
+        showToast('Context inserted into chat prompt!');
+      }
       closeModal();
     });
   }

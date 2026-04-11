@@ -793,6 +793,13 @@ body.ds-has-wallpaper .md-code-block {
   transform: translateX(-50%) translateY(0);
 }
 
+.ds-pro-toast.ds-toast-error {
+  border-color: rgba(239, 68, 68, 0.45);
+  background: rgba(30, 20, 25, 0.94);
+  box-shadow: 0 12px 32px rgba(239, 68, 68, 0.25);
+  color: #fecaca;
+}
+
 .ds-export-menu {
   position: absolute;
   top: calc(100% + 8px);
