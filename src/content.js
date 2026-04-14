@@ -1694,6 +1694,16 @@
     // Auto-Collapse R1 Thoughts
     handleAutoCollapseThoughts(root);
 
+    // Dynamic Markdown Tables (Sorting, Filtering, CSV/Excel)
+    if (window.DeepSeekOrbit && window.DeepSeekOrbit.DynamicTables) {
+      window.DeepSeekOrbit.DynamicTables.enhanceDynamicTables(root);
+    }
+
+    // Multi-File Project Bundler (1-Click ZIP)
+    if (window.DeepSeekOrbit && window.DeepSeekOrbit.ZipBundler) {
+      window.DeepSeekOrbit.ZipBundler.enhanceMultiFileProjects(root);
+    }
+
     // Mount Toolbar & Navigation Drawer
     ensureFloatingToolbar();
     ensureNavigationDrawer();

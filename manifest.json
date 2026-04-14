@@ -47,6 +47,8 @@
         "src/ui/slash-commands.js",
         "src/ui/toolbar.js",
         "src/ui/context-importer.js",
+        "src/ui/dynamic-tables.js",
+        "src/ui/zip-bundler.js",
         "src/content.js"
       ],
       "css": [
