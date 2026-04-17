@@ -1,6 +1,6 @@
 /**
  * DeepSeek Orbit — Interactive Dynamic Markdown Tables
- * Features: Click-to-sort columns, In-table Search Filtering, CSV & Excel (.xlsx) Exporter
+ * Features: Click-to-sort columns, Centered Beautiful UI, CSV & Excel (.xlsx) Exporter
  */
 (function () {
   'use strict';
@@ -10,7 +10,7 @@
 
   function parseCellVal(text) {
     const clean = (text || '').trim();
-    // Check Persian/Arabic digits and normalize to western
+    // Normalize Persian/Arabic digits
     const normalized = clean.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d))
                             .replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d));
 
@@ -43,6 +43,22 @@
     }, 100);
   }
 
+  function showToast(text, icon = ICONS.check) {
+    const existing = document.querySelector('.ds-pro-toast');
+    if (existing) existing.remove();
+
+    const toast = document.createElement('div');
+    toast.className = 'ds-pro-toast';
+    toast.innerHTML = `<span style="display: inline-flex;">${icon}</span> <span>${text}</span>`;
+    document.body.appendChild(toast);
+
+    setTimeout(() => toast.classList.add('show'), 10);
+    setTimeout(() => {
+      toast.classList.remove('show');
+      setTimeout(() => toast.remove(), 250);
+    }, 2200);
+  }
+
   function tableToCSV(table) {
     const rows = [];
     table.querySelectorAll('tr').forEach(tr => {
@@ -54,7 +70,7 @@
       });
       if (cells.length) rows.push(cells.join(','));
     });
-    // UTF-8 BOM (\uFEFF) for Excel compatibility with Persian/Arabic characters
+    // UTF-8 BOM for Excel compatibility
     return '\uFEFF' + rows.join('\r\n');
   }
 
@@ -65,9 +81,9 @@
         <meta charset="utf-8">
         <!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>DeepSeek Data</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]-->
         <style>
-          table { border-collapse: collapse; width: 100%; font-family: sans-serif; }
-          th { background: #4d6bfe; color: #ffffff; font-weight: bold; border: 1px solid #ddd; padding: 8px; }
-          td { border: 1px solid #ddd; padding: 6px 8px; }
+          table { border-collapse: collapse; width: 100%; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+          th { background: #4d6bfe; color: #ffffff; font-weight: bold; border: 1px solid #ddd; padding: 8px 12px; }
+          td { border: 1px solid #ddd; padding: 6px 10px; }
         </style>
       </head>
       <body>
@@ -80,7 +96,14 @@
 
   function enhanceTable(table) {
     if (table.dataset.dsTableEnhanced === 'true') return;
-    if (!table.querySelector('tbody tr') && !table.querySelector('tr')) return;
+    if (table.closest('.ds-dynamic-table-wrap')) return;
+
+    const allRows = Array.from(table.querySelectorAll('tr'));
+    if (allRows.length === 0) return;
+
+    const headerRow = allRows.find(tr => tr.querySelector('th')) || allRows[0];
+    const dataRows = allRows.filter(tr => tr !== headerRow);
+    const totalRowsCount = dataRows.length;
 
     table.dataset.dsTableEnhanced = 'true';
 
@@ -91,18 +114,10 @@
     const parent = table.parentNode;
     parent.insertBefore(wrapper, table);
 
-    // Initial rows
-    const thead = table.querySelector('thead');
-    const tbody = table.querySelector('tbody') || table;
-    const headerRow = thead ? thead.querySelector('tr') : table.querySelector('tr');
-    const dataRows = Array.from(tbody.querySelectorAll('tr')).filter(tr => tr !== headerRow);
-
     // Save original index on each row
     dataRows.forEach((row, idx) => {
       row.dataset.dsOrigIndex = idx;
     });
-
-    const totalRowsCount = dataRows.length;
 
     // Create Mini-Toolbar
     const toolbar = document.createElement('div');
@@ -111,17 +126,12 @@
       <div class="ds-table-toolbar-left">
         <span class="ds-table-badge">
           <span style="display: inline-flex; color: var(--ds-brand-primary);">${ICONS.table}</span>
-          <span class="ds-table-count-label">${totalRowsCount} rows</span>
+          <span class="ds-table-count-label">${totalRowsCount} ${totalRowsCount === 1 ? 'row' : 'rows'}</span>
         </span>
       </div>
 
       <div class="ds-table-toolbar-right">
-        <div class="ds-table-search-box">
-          <span style="color: var(--ds-text-muted); display: inline-flex;">${ICONS.search}</span>
-          <input type="text" class="ds-table-search-input" placeholder="Filter rows..." autocomplete="off" spellcheck="false" />
-        </div>
-
-        <button type="button" class="ds-table-btn" data-action="copy" title="Copy as CSV">
+        <button type="button" class="ds-table-btn" data-action="copy" title="Copy table as CSV">
           <span class="ds-table-btn-icon">${ICONS.copy}</span>
           <span>Copy</span>
         </button>
@@ -131,7 +141,7 @@
           <span>CSV</span>
         </button>
 
-        <button type="button" class="ds-table-btn" data-action="excel" title="Download Excel Document (.xls)">
+        <button type="button" class="ds-table-btn" data-action="excel" title="Download Excel Sheet (.xls)">
           <span class="ds-table-btn-icon" style="color: #10b981;">${ICONS.excel}</span>
           <span>Excel</span>
         </button>
@@ -145,27 +155,6 @@
     scrollContainer.appendChild(table);
     wrapper.appendChild(scrollContainer);
 
-    const searchInput = toolbar.querySelector('.ds-table-search-input');
-    const countLabel = toolbar.querySelector('.ds-table-count-label');
-
-    // In-Table Search Filter
-    searchInput.addEventListener('input', (e) => {
-      const q = e.target.value.toLowerCase().trim();
-      let visibleCount = 0;
-
-      dataRows.forEach(row => {
-        const text = (row.innerText || row.textContent || '').toLowerCase();
-        if (!q || text.includes(q)) {
-          row.style.display = '';
-          visibleCount++;
-        } else {
-          row.style.display = 'none';
-        }
-      });
-
-      countLabel.textContent = q ? `${visibleCount} of ${totalRowsCount} rows` : `${totalRowsCount} rows`;
-    });
-
     // Copy / Export Handlers
     toolbar.addEventListener('click', (e) => {
       const btn = e.target.closest('.ds-table-btn');
@@ -175,24 +164,22 @@
       if (action === 'copy') {
         const csv = tableToCSV(table);
         navigator.clipboard.writeText(csv).then(() => {
-          const orig = btn.querySelector('span:last-child').textContent;
-          btn.querySelector('span:last-child').textContent = 'Copied!';
-          setTimeout(() => {
-            btn.querySelector('span:last-child').textContent = orig;
-          }, 2000);
+          showToast('Table copied as CSV!');
         });
       } else if (action === 'csv') {
         const csv = tableToCSV(table);
         downloadFile(`deepseek_table_${Date.now()}.csv`, csv, 'text/csv;charset=utf-8');
+        showToast('Exported table as CSV');
       } else if (action === 'excel') {
         const html = tableToExcelHTML(table);
         downloadFile(`deepseek_table_${Date.now()}.xls`, html, 'application/vnd.ms-excel;charset=utf-8');
+        showToast('Exported table as Excel document');
       }
     });
 
     // Header Click-to-Sort
     if (headerRow) {
-      const headers = headerRow.querySelectorAll('th');
+      const headers = headerRow.querySelectorAll('th, td');
       headers.forEach((th, colIdx) => {
         th.classList.add('ds-sortable-th');
         th.title = 'Click to sort';
@@ -214,7 +201,7 @@
             }
           });
 
-          // Cycle state: none -> asc -> desc -> none
+          // Cycle: none -> asc -> desc -> none
           if (currentOrder === 'none') currentOrder = 'asc';
           else if (currentOrder === 'asc') currentOrder = 'desc';
           else currentOrder = 'none';
@@ -231,7 +218,8 @@
           }
 
           // Sort Rows
-          const rowsToSort = Array.from(tbody.querySelectorAll('tr')).filter(tr => tr !== headerRow);
+          const parentBody = headerRow.parentNode;
+          const rowsToSort = Array.from(table.querySelectorAll('tr')).filter(tr => tr !== headerRow);
 
           if (currentOrder === 'none') {
             rowsToSort.sort((a, b) => Number(a.dataset.dsOrigIndex) - Number(b.dataset.dsOrigIndex));
@@ -257,7 +245,7 @@
           }
 
           // Re-append in sorted order
-          rowsToSort.forEach(r => tbody.appendChild(r));
+          rowsToSort.forEach(r => parentBody.appendChild(r));
         });
       });
     }
