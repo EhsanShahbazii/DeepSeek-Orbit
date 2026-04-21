@@ -1767,19 +1767,27 @@ body.ds-has-wallpaper :not(._11d6b3a) > ._425ea0b {
    INTERACTIVE DYNAMIC MARKDOWN TABLES (CENTERED & PRETTY DEEPSEEK STYLING)
    ========================================================================= */
 
+.ds-markdown {
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
 .ds-dynamic-table-wrap {
-  margin: 16px auto;
-  width: 100%;
-  max-width: 100%;
+  margin: 16px 0;
+  width: 100% !important;
+  max-width: 100% !important;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
   overflow: hidden;
   background: #141518;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.28);
-  box-sizing: border-box;
+  box-sizing: border-box !important;
+  display: block;
 }
 
 .ds-table-toolbar {
+  width: 100% !important;
+  box-sizing: border-box !important;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -1834,17 +1842,26 @@ body.ds-has-wallpaper :not(._11d6b3a) > ._425ea0b {
 }
 
 .ds-table-scroll-container {
-  overflow-x: auto;
-  width: 100%;
+  display: block;
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch;
   background: #121316;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
 }
 
 .ds-table-scroll-container table {
-  margin: 0 auto !important;
+  margin: 0 !important;
   width: 100% !important;
+  min-width: 100% !important;
   border-collapse: collapse !important;
   font-size: 13px !important;
   text-align: left;
+  table-layout: auto !important;
+  box-sizing: border-box !important;
 }
 
 .ds-table-scroll-container table th {
