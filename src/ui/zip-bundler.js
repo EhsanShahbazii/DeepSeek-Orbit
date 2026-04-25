@@ -12,7 +12,6 @@
      1. PURE VANILLA JS ZIP GENERATOR (PKZIP STANDARD)
      ========================================================================= */
 
-  // CRC32 Table
   const CRC_TABLE = new Uint32Array(256);
   for (let i = 0; i < 256; i++) {
     let c = i;
@@ -35,28 +34,26 @@
     const fileEntries = [];
     let localOffset = 0;
 
-    // Process each file
     for (const f of files) {
       const nameBytes = textEncoder.encode(f.name);
       const contentBytes = textEncoder.encode(f.content);
       const fileCrc = crc32(contentBytes);
       const size = contentBytes.length;
 
-      // Local File Header (30 bytes + name + content)
       const localHeader = new Uint8Array(30 + nameBytes.length);
       const view = new DataView(localHeader.buffer);
 
-      view.setUint32(0, 0x04034b50, true); // Local file header signature
-      view.setUint16(4, 20, true);         // Version needed to extract (2.0)
-      view.setUint16(6, 0x0800, true);     // General purpose bit flag (UTF-8)
-      view.setUint16(8, 0, true);          // Compression method: 0 (Stored)
-      view.setUint16(10, 0, true);         // File last mod time
-      view.setUint16(12, 0, true);         // File last mod date
-      view.setUint32(14, fileCrc, true);   // CRC-32
-      view.setUint32(18, size, true);      // Compressed size
-      view.setUint32(22, size, true);      // Uncompressed size
-      view.setUint16(26, nameBytes.length, true); // File name length
-      view.setUint16(28, 0, true);         // Extra field length
+      view.setUint32(0, 0x04034b50, true);
+      view.setUint16(4, 20, true);
+      view.setUint16(6, 0x0800, true);
+      view.setUint16(8, 0, true);
+      view.setUint16(10, 0, true);
+      view.setUint16(12, 0, true);
+      view.setUint32(14, fileCrc, true);
+      view.setUint32(18, size, true);
+      view.setUint32(22, size, true);
+      view.setUint16(26, nameBytes.length, true);
+      view.setUint16(28, 0, true);
 
       localHeader.set(nameBytes, 30);
 
@@ -72,7 +69,6 @@
       localOffset += localHeader.length + contentBytes.length;
     }
 
-    // Build Central Directory
     const centralEntries = [];
     let centralSize = 0;
 
@@ -80,42 +76,40 @@
       const cdHeader = new Uint8Array(46 + e.nameBytes.length);
       const view = new DataView(cdHeader.buffer);
 
-      view.setUint32(0, 0x02014b50, true); // Central directory signature
-      view.setUint16(4, 20, true);         // Version made by
-      view.setUint16(6, 20, true);         // Version needed to extract
-      view.setUint16(8, 0x0800, true);     // Bit flag (UTF-8)
-      view.setUint16(10, 0, true);         // Compression method: 0
-      view.setUint16(12, 0, true);         // Mod time
-      view.setUint16(14, 0, true);         // Mod date
-      view.setUint32(16, e.crc, true);     // CRC-32
-      view.setUint32(20, e.size, true);    // Compressed size
-      view.setUint32(24, e.size, true);    // Uncompressed size
-      view.setUint16(28, e.nameBytes.length, true); // Name length
-      view.setUint16(30, 0, true);         // Extra field length
-      view.setUint16(32, 0, true);         // Comment length
-      view.setUint16(34, 0, true);         // Disk number start
-      view.setUint16(36, 0, true);         // Internal file attributes
-      view.setUint32(38, 0, true);         // External file attributes
-      view.setUint32(42, e.offset, true);  // Relative offset of local header
+      view.setUint32(0, 0x02014b50, true);
+      view.setUint16(4, 20, true);
+      view.setUint16(6, 20, true);
+      view.setUint16(8, 0x0800, true);
+      view.setUint16(10, 0, true);
+      view.setUint16(12, 0, true);
+      view.setUint16(14, 0, true);
+      view.setUint32(16, e.crc, true);
+      view.setUint32(20, e.size, true);
+      view.setUint32(24, e.size, true);
+      view.setUint16(28, e.nameBytes.length, true);
+      view.setUint16(30, 0, true);
+      view.setUint16(32, 0, true);
+      view.setUint16(34, 0, true);
+      view.setUint16(36, 0, true);
+      view.setUint32(38, 0, true);
+      view.setUint32(42, e.offset, true);
 
       cdHeader.set(e.nameBytes, 46);
       centralEntries.push(cdHeader);
       centralSize += cdHeader.length;
     }
 
-    // End of Central Directory Record (22 bytes)
     const eocd = new Uint8Array(22);
     const eocdView = new DataView(eocd.buffer);
-    eocdView.setUint32(0, 0x06054b50, true); // Signature
-    eocdView.setUint16(4, 0, true);          // Disk number
-    eocdView.setUint16(6, 0, true);          // Disk with central dir
-    eocdView.setUint16(8, fileEntries.length, true);  // Total entries on disk
-    eocdView.setUint16(10, fileEntries.length, true); // Total entries
-    eocdView.setUint32(12, centralSize, true);        // Size of central directory
-    eocdView.setUint32(16, localOffset, true);        // Offset of central directory
-    eocdView.setUint16(20, 0, true);         // Comment length
+    eocdView.setUint32(0, 0x06054b50, true);
+    eocdView.setUint16(4, 0, true);
+    eocdView.setUint16(6, 0, true);
+    eocdView.setUint16(8, fileEntries.length, true);
+    eocdView.setUint16(10, fileEntries.length, true);
+    eocdView.setUint32(12, centralSize, true);
+    eocdView.setUint32(16, localOffset, true);
+    eocdView.setUint16(20, 0, true);
 
-    // Assemble full ZIP blob parts
     const blobParts = [];
     for (const e of fileEntries) {
       blobParts.push(e.localHeader);
@@ -146,21 +140,23 @@
      2. MULTI-FILE CODE EXTRACTION & FILENAME DETECTOR
      ========================================================================= */
 
-  function detectFilename(codeEl, blockIdx, lang = 'txt') {
-    // 1. Check previous siblings for headers like "### index.html" or "**app.js**"
-    let prev = codeEl.closest('pre') ? codeEl.closest('pre').previousElementSibling : null;
-    while (prev && (prev.tagName === 'P' || prev.tagName.startsWith('H') || prev.tagName === 'DIV')) {
+  function detectFilename(cbEl, preEl, blockIdx, lang = 'txt') {
+    // 1. Check previous siblings for headers like "### index.html", "**app.js**", or "1. `style.css`"
+    let prev = cbEl.previousElementSibling;
+    let attempts = 0;
+    while (prev && attempts < 3) {
       const txt = (prev.textContent || '').trim();
-      const fnMatch = txt.match(/(?:file|filename|path)?[:\s*#]*([a-zA-Z0-9_\-./]+\.[a-zA-Z0-9]{1,6})[*:]?/i);
-      if (fnMatch && fnMatch[1]) {
-        return fnMatch[1].replace(/^[#*\s]+|[#*\s]+$/g, '');
+      const fnMatch = txt.match(/(?:file(?:name)?|path)?[:\s*#`]*([a-zA-Z0-9_\-./]+\.[a-zA-Z0-9]{1,6})[`*:]?/i);
+      if (fnMatch && fnMatch[1] && !fnMatch[1].startsWith('http')) {
+        return fnMatch[1].replace(/^[#*`\s]+|[#*`\s]+$/g, '');
       }
       prev = prev.previousElementSibling;
-      break;
+      attempts++;
     }
 
-    // 2. Check first line inside code for comments (e.g. "// index.js", "<!-- style.css -->")
-    const fullCode = codeEl.textContent || '';
+    // 2. Check first line inside code for comment filename (e.g. "// index.js", "<!-- style.css -->")
+    const code = preEl.querySelector('code') || preEl;
+    const fullCode = code.textContent || '';
     const firstLine = fullCode.split('\n')[0].trim();
     const commentMatch = firstLine.match(/^(?:\/\/|#|\/\*|<!--|--)\s*(?:file(?:name)?[:\s]*)?([a-zA-Z0-9_\-./]+\.[a-zA-Z0-9]{1,6})/i);
     if (commentMatch && commentMatch[1]) {
@@ -168,38 +164,55 @@
     }
 
     // 3. Fallback based on language syntax
+    const cleanLang = (lang || '').toLowerCase().replace(/[^a-z0-9]/g, '');
     const langExtMap = {
       'javascript': 'js', 'js': 'js', 'typescript': 'ts', 'ts': 'ts',
       'python': 'py', 'py': 'py', 'html': 'html', 'css': 'css',
       'json': 'json', 'markdown': 'md', 'md': 'md', 'bash': 'sh',
       'sh': 'sh', 'rust': 'rs', 'rs': 'rs', 'go': 'go', 'cpp': 'cpp',
-      'c': 'c', 'java': 'java', 'sql': 'sql', 'yaml': 'yml', 'yml': 'yml'
+      'c': 'c', 'java': 'java', 'sql': 'sql', 'yaml': 'yml', 'yml': 'yml',
+      'vue': 'vue', 'svelte': 'svelte', 'php': 'php', 'ruby': 'rb'
     };
-    const ext = langExtMap[lang.toLowerCase()] || (lang.length < 5 ? lang.toLowerCase() : 'txt');
+    const ext = langExtMap[cleanLang] || (cleanLang.length > 0 && cleanLang.length <= 4 ? cleanLang : 'txt');
     return `file_${blockIdx + 1}.${ext}`;
   }
 
   function extractProjectFiles(messageEl) {
-    const codeBlocks = messageEl.querySelectorAll('pre code, .ds-markdown pre code');
+    const codeBlocks = Array.from(messageEl.querySelectorAll('.md-code-block, pre'));
     if (codeBlocks.length < 2) return null;
 
+    // Filter unique pre elements
+    const validBlocks = [];
+    const seenPres = new Set();
+
+    codeBlocks.forEach((cb) => {
+      const pre = cb.tagName === 'PRE' ? cb : cb.querySelector('pre');
+      if (!pre || seenPres.has(pre)) return;
+      seenPres.add(pre);
+
+      const code = pre.querySelector('code') || pre;
+      const content = (code.textContent || '').trim();
+      if (!content || content.length < 5) return;
+
+      validBlocks.push({ cb, pre, code, content });
+    });
+
+    if (validBlocks.length < 2) return null;
+
     const files = [];
-    codeBlocks.forEach((codeEl, idx) => {
-      // Determine language
+    validBlocks.forEach((item, idx) => {
       let lang = 'code';
-      const classAttr = codeEl.getAttribute('class') || '';
-      const langMatch = classAttr.match(/language-([a-zA-Z0-9_-]+)/);
-      if (langMatch) lang = langMatch[1];
+      const langSpan = item.cb.querySelector('span, ._121d384');
+      if (langSpan && langSpan.textContent) {
+        lang = langSpan.textContent.trim().toLowerCase();
+      }
 
-      const content = codeEl.textContent || '';
-      if (!content.trim()) return;
-
-      const filename = detectFilename(codeEl, idx, lang);
+      const filename = detectFilename(item.cb, item.pre, idx, lang);
       files.push({
         name: filename,
-        content: content,
+        content: item.content,
         lang: lang,
-        el: codeEl
+        el: item.cb
       });
     });
 
@@ -211,13 +224,12 @@
      ========================================================================= */
 
   function enhanceMessageWithProjectBundle(messageEl) {
-    if (messageEl.dataset.dsProjectEnhanced === 'true') return;
-    if (messageEl.querySelector('.ds-project-bundle-banner')) return;
+    if (messageEl.querySelector('.ds-project-bundle-banner')) {
+      return;
+    }
 
     const files = extractProjectFiles(messageEl);
     if (!files || files.length < 2) return;
-
-    messageEl.dataset.dsProjectEnhanced = 'true';
 
     const banner = document.createElement('div');
     banner.className = 'ds-project-bundle-banner';
@@ -242,7 +254,8 @@
     const downloadBtn = banner.querySelector('.ds-bundle-download-btn');
     downloadBtn.addEventListener('click', () => {
       const zipBlob = createZipBlob(files);
-      const chatTitle = (document.querySelector('._81e7b5e._19d617c ._72b6158, title') ? document.querySelector('._81e7b5e._19d617c ._72b6158, title').textContent : 'deepseek_project')
+      const titleEl = document.querySelector('._81e7b5e._19d617c ._72b6158, title');
+      const chatTitle = (titleEl ? titleEl.textContent : 'deepseek_project')
         .replace(/[\\/:*?"<>|]/g, '-').trim() || 'project';
       downloadBlob(`${chatTitle}_bundle_${Date.now()}.zip`, zipBlob);
 
@@ -253,12 +266,17 @@
       }, 2200);
     });
 
-    // Mount banner at the top of message
-    messageEl.insertBefore(banner, messageEl.firstChild);
+    // Mount banner before the first code block or at top of message
+    const firstCode = messageEl.querySelector('.md-code-block, pre');
+    if (firstCode) {
+      firstCode.parentNode.insertBefore(banner, firstCode);
+    } else {
+      messageEl.insertBefore(banner, messageEl.firstChild);
+    }
   }
 
   function enhanceMultiFileProjects(root = document) {
-    const messages = root.querySelectorAll('.ds-markdown, [data-virtual-list-item-key] .ds-markdown');
+    const messages = root.querySelectorAll('.ds-markdown, [data-virtual-list-item-key] .ds-markdown, ._63c77b1');
     messages.forEach(msg => {
       try {
         enhanceMessageWithProjectBundle(msg);

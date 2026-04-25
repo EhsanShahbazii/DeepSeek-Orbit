@@ -94,9 +94,32 @@
     return html;
   }
 
+  function updateTableRowCounts(table, wrapper) {
+    const allRows = Array.from(table.querySelectorAll('tr'));
+    if (allRows.length === 0) return;
+
+    const headerRow = allRows.find(tr => tr.querySelector('th')) || allRows[0];
+    const dataRows = allRows.filter(tr => tr !== headerRow && tr.querySelector('td'));
+    const totalRowsCount = dataRows.length;
+
+    const countLabel = wrapper.querySelector('.ds-table-count-label');
+    if (countLabel) {
+      countLabel.textContent = `${totalRowsCount} ${totalRowsCount === 1 ? 'row' : 'rows'}`;
+    }
+
+    dataRows.forEach((row, idx) => {
+      if (!row.dataset.dsOrigIndex) {
+        row.dataset.dsOrigIndex = idx;
+      }
+    });
+  }
+
   function enhanceTable(table) {
-    if (table.dataset.dsTableEnhanced === 'true') return;
-    if (table.closest('.ds-dynamic-table-wrap')) return;
+    const existingWrapper = table.closest('.ds-dynamic-table-wrap');
+    if (existingWrapper) {
+      updateTableRowCounts(table, existingWrapper);
+      return;
+    }
 
     const allRows = Array.from(table.querySelectorAll('tr'));
     if (allRows.length === 0) return;
@@ -104,8 +127,6 @@
     const headerRow = allRows.find(tr => tr.querySelector('th')) || allRows[0];
     const dataRows = allRows.filter(tr => tr !== headerRow);
     const totalRowsCount = dataRows.length;
-
-    table.dataset.dsTableEnhanced = 'true';
 
     // Wrap table with interactive container
     const wrapper = document.createElement('div');

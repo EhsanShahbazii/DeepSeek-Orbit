@@ -752,9 +752,17 @@
      ========================================================================= */
 
   function ensureAttachContextButton(root = document) {
-    const targetWrappers = root.querySelectorAll('.bf38813a, ._78e0558, ._0bbda35, ._0a3d93b');
+    // Remove any incorrectly placed context buttons from message action bars
+    document.querySelectorAll('._78e0558 .ds-orbit-context-btn, ._0bbda35 .ds-orbit-context-btn, ._0a3d93b .ds-orbit-context-btn, .ds-markdown .ds-orbit-context-btn').forEach(el => el.remove());
+
+    // Only target the main prompt bar container (.bf38813a)
+    const targetWrappers = root.querySelectorAll('._77cefa5 .bf38813a, .bf38813a');
 
     targetWrappers.forEach(wrap => {
+      // Must be adjacent to file input or send button in the input bar
+      if (!wrap.querySelector('input[type="file"]') && !wrap.querySelector('._52c986b') && !wrap.closest('._77cefa5, ._3d616d3, ._020ab5b, ._8f7678d')) {
+        return;
+      }
       if (wrap.querySelector('.ds-orbit-context-btn')) return;
 
       const btn = document.createElement('div');
