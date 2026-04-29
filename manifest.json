@@ -49,6 +49,8 @@
         "src/ui/context-importer.js",
         "src/ui/dynamic-tables.js",
         "src/ui/zip-bundler.js",
+        "src/ui/sandbox-preview.js",
+        "src/ui/prompt-queue.js",
         "src/content.js"
       ],
       "css": [
