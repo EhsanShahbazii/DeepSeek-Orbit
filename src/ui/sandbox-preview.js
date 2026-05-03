@@ -25,49 +25,96 @@
     const raw = (currentCode || '').trim();
     const l = (currentLang || '').toLowerCase().trim();
 
-    // If it's already a full HTML document or SVG
-    if (raw.startsWith('<!DOCTYPE') || raw.startsWith('<html') || raw.startsWith('<svg')) {
-      return raw;
+    // 1. If this block itself is a complete <!DOCTYPE html> or <html> document
+    if (raw.startsWith('<!DOCTYPE') || raw.startsWith('<html')) {
+      let completeDoc = raw;
+      if (messageEl) {
+        // Collect external CSS blocks
+        const cssBlocks = Array.from(messageEl.querySelectorAll('.md-code-block, pre')).filter(cb => {
+          const banner = cb.querySelector('span, ._121d384');
+          const blkLang = (banner ? banner.textContent : '').toLowerCase().trim();
+          const txt = (cb.textContent || '').trim();
+          return blkLang.includes('css') && !txt.startsWith('<!DOCTYPE');
+        });
+
+        // Collect external JS blocks
+        const jsBlocks = Array.from(messageEl.querySelectorAll('.md-code-block, pre')).filter(cb => {
+          const banner = cb.querySelector('span, ._121d384');
+          const blkLang = (banner ? banner.textContent : '').toLowerCase().trim();
+          const txt = (cb.textContent || '').trim();
+          return (blkLang.includes('js') || blkLang.includes('javascript')) && !txt.startsWith('<!DOCTYPE');
+        });
+
+        if (cssBlocks.length > 0) {
+          const cssText = cssBlocks.map(cb => {
+            const pre = cb.tagName === 'PRE' ? cb : cb.querySelector('pre');
+            const code = pre ? (pre.querySelector('code') || pre) : cb;
+            return code.textContent || '';
+          }).join('\n');
+          if (cssText.trim() && !completeDoc.includes(cssText.trim().substring(0, 30))) {
+            completeDoc = completeDoc.replace('</head>', `<style>\n${cssText}\n</style>\n</head>`);
+          }
+        }
+
+        if (jsBlocks.length > 0) {
+          const jsText = jsBlocks.map(cb => {
+            const pre = cb.tagName === 'PRE' ? cb : cb.querySelector('pre');
+            const code = pre ? (pre.querySelector('code') || pre) : cb;
+            return code.textContent || '';
+          }).join('\n');
+          if (jsText.trim() && !completeDoc.includes(jsText.trim().substring(0, 30))) {
+            completeDoc = completeDoc.replace('</body>', `<script>\n${jsText}\n</script>\n</body>`);
+          }
+        }
+      }
+      return completeDoc;
     }
 
-    // If there are multiple blocks in the message, try to bundle HTML + CSS + JS
+    // 2. If SVG
+    if (raw.startsWith('<svg')) {
+      return `<!DOCTYPE html><html><head><meta charset="utf-8"><style>body{display:flex;align-items:center;justify-content:center;height:100vh;margin:0;background:#ffffff;}</style></head><body>${raw}</body></html>`;
+    }
+
+    // 3. Otherwise pick ONLY the single main HTML block, single CSS, and single JS block
     let htmlPart = '';
     let cssPart = '';
     let jsPart = '';
 
+    if (l.includes('html') || l.includes('xml')) {
+      htmlPart = raw;
+    } else if (l.includes('css')) {
+      cssPart = raw;
+    } else if (l.includes('js') || l.includes('javascript')) {
+      jsPart = raw;
+    }
+
     if (messageEl) {
-      const codeBlocks = messageEl.querySelectorAll('.md-code-block, pre');
-      codeBlocks.forEach(cb => {
+      const codeBlocks = Array.from(messageEl.querySelectorAll('.md-code-block, pre'));
+      for (const cb of codeBlocks) {
         const pre = cb.tagName === 'PRE' ? cb : cb.querySelector('pre');
-        if (!pre) return;
+        if (!pre) continue;
         const code = pre.querySelector('code') || pre;
         const text = (code.textContent || '').trim();
         const banner = cb.querySelector('span, ._121d384');
         const blkLang = (banner ? banner.textContent : '').toLowerCase().trim();
 
-        if (blkLang.includes('html') || blkLang.includes('xml') || text.startsWith('<')) {
-          htmlPart = htmlPart ? htmlPart + '\n' + text : text;
-        } else if (blkLang.includes('css')) {
-          cssPart = cssPart ? cssPart + '\n' + text : text;
-        } else if (blkLang.includes('js') || blkLang.includes('javascript')) {
-          jsPart = jsPart ? jsPart + '\n' + text : text;
+        if (!htmlPart && (blkLang.includes('html') || text.startsWith('<'))) {
+          htmlPart = text;
+        } else if (!cssPart && blkLang.includes('css')) {
+          cssPart = text;
+        } else if (!jsPart && (blkLang.includes('js') || blkLang.includes('javascript'))) {
+          jsPart = text;
         }
-      });
+      }
     }
 
-    if (!htmlPart && !cssPart && !jsPart) {
-      if (l === 'css') cssPart = raw;
-      else if (l === 'js' || l === 'javascript') jsPart = raw;
-      else htmlPart = raw;
-    }
-
-    const doc = `
+    return `
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DeepSeek Sandbox Artifact</title>
+  <title>Artifact Preview</title>
   <style>
     * { box-sizing: border-box; }
     body {
@@ -90,9 +137,7 @@
     }
   </script>
 </body>
-</html>
-    `;
-    return doc;
+</html>`;
   }
 
   function openSandboxModal(code, language, messageEl) {
@@ -109,7 +154,7 @@
         <!-- Top Toolbar -->
         <div class="ds-sandbox-header">
           <div class="ds-sandbox-title">
-            <span style="color: #38bdf8; display: inline-flex;">${ICONS.play}</span>
+            <span style="color: var(--ds-brand-primary); display: inline-flex;">${ICONS.play}</span>
             <span>Live Sandbox Preview</span>
             <span class="ds-sandbox-badge">Artifact</span>
           </div>
@@ -239,7 +284,7 @@
       banner.appendChild(btnGroup);
     }
 
-    // Preview Button
+    // Preview Button matching exact DeepSeek button format
     const previewBtn = document.createElement('div');
     previewBtn.setAttribute('role', 'button');
     previewBtn.className = 'ds-button ds-button--borderlessNeutral ds-button--borderless ds-button--capsule ds-button--xs ds-button--icon-relative-m ds-button--min-width ds-code-btn-native ds-sandbox-preview-btn';
@@ -247,16 +292,16 @@
     previewBtn.title = 'Live Sandbox Preview Artifact';
     previewBtn.innerHTML = `
       <div class="ds-button__background"></div>
-      <div class="ds-button__icon" style="color: #38bdf8;">${ICONS.play}</div>
-      <span class="ds-button__content"><span class="code-info-button-text" style="color: #38bdf8; font-weight: 600;">Preview</span></span>
+      <div class="ds-button__icon">${ICONS.play}</div>
+      <span class="ds-button__content"><span class="code-info-button-text">Preview</span></span>
     `;
 
     previewBtn.addEventListener('click', () => {
-      const msg = codeBlock.closest('.ds-markdown, [data-virtual-list-item-key]');
+      const msg = codeBlock.closest('.ds-markdown, [data-virtual-list-item-key], ._63c77b1');
       openSandboxModal(text, lang, msg);
     });
 
-    btnGroup.insertBefore(previewBtn, btnGroup.firstChild);
+    btnGroup.appendChild(previewBtn);
   }
 
   function enhanceSandboxPreviews(root = document) {

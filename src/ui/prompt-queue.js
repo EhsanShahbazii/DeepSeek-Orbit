@@ -29,14 +29,21 @@
   }
 
   function isDeepSeekGenerating() {
-    // Check for stop generation button or streaming indicators
-    const stopBtn = document.querySelector('button[aria-label*="Stop"], button[aria-label*="stop"], .ds-stop-button, ._01264cb, svg[viewBox="0 0 16 16"] rect');
-    if (stopBtn && stopBtn.offsetParent !== null) return true;
+    // Specifically inspect the main prompt bar action button (.bf38813a)
+    const promptBar = document.querySelector('.bf38813a, ._77cefa5, ._3d616d3, ._020ab5b');
+    if (promptBar) {
+      const stopBtn = promptBar.querySelector('button[aria-label*="Stop"], button[aria-label*="stop"], button[aria-label*="停止"], .ds-stop-button');
+      if (stopBtn && stopBtn.offsetParent !== null) return true;
 
-    // Check loading/thinking spinners
-    const loadingSpinners = document.querySelectorAll('.ds-loading, .ds-loading-spin, ._0579e0a');
-    for (const spin of loadingSpinners) {
-      if (spin.offsetParent !== null) return true;
+      const rectIcon = promptBar.querySelector('button rect, .ds-button rect');
+      if (rectIcon && rectIcon.closest('button') && rectIcon.closest('button').offsetParent !== null) {
+        return true;
+      }
+    }
+
+    const streamingEl = document.querySelector('.ds-loading-spin, .result-streaming, .ds-markdown-streaming');
+    if (streamingEl && streamingEl.offsetParent !== null) {
+      return true;
     }
 
     return false;

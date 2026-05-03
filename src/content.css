@@ -422,15 +422,27 @@ body > #root .ds-scroll-area > .ds-scroll-area__gutters,
   width: 100% !important;
 }
 
-/* Custom code button active state (matches DeepSeek style) */
-.ds-button.ds-btn-active .ds-button__background {
-  opacity: 1 !important;
-  background: var(--ds-brand-primary) !important;
+.ds-code-btn-group {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  margin-right: 4px !important;
 }
 
-.ds-button.ds-btn-active .ds-button__icon svg,
-.ds-button.ds-btn-active .code-info-button-text {
-  color: #ffffff !important;
+.ds-code-btn-native,
+.ds-sandbox-preview-btn {
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 24px !important;
+  vertical-align: middle !important;
+  user-select: none !important;
+}
+
+.ds-sandbox-preview-btn:hover .code-info-button-text,
+.ds-sandbox-preview-btn:hover .ds-button__icon {
+  color: var(--ds-brand-primary) !important;
 }
 
 /* =========================================================================
