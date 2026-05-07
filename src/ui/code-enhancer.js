@@ -133,6 +133,18 @@
       const banner = cb.querySelector('._121d384, .md-code-block-banner');
       if (!banner) return;
 
+      // Remove DeepSeek's native Run button and its divider line
+      banner.querySelectorAll('.ds-button, button, div[role="button"]').forEach(btn => {
+        const txt = (btn.textContent || '').trim().toLowerCase();
+        if (txt === 'run') {
+          const prev = btn.previousElementSibling;
+          if (prev && (prev.textContent.trim() === '|' || prev.className.includes('divider'))) {
+            prev.remove();
+          }
+          btn.remove();
+        }
+      });
+
       const pre = cb.querySelector('pre');
       if (!pre) return;
 
