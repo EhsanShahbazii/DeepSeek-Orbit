@@ -122,6 +122,30 @@
           </div>
         </div>
       `;
+
+      // Scroll to Top of Message Button
+      let scrollToTopBtn = actionsBar.querySelector('.ds-scroll-top-btn');
+      if (!scrollToTopBtn) {
+        scrollToTopBtn = document.createElement('div');
+        scrollToTopBtn.setAttribute('role', 'button');
+        scrollToTopBtn.className = 'ds-button ds-button--iconLabelTertiary ds-button--icon ds-button--capsule ds-button--xs ds-button--icon-relative-l db183363 ds-scroll-top-btn';
+        scrollToTopBtn.setAttribute('tabindex', '0');
+        scrollToTopBtn.title = 'Scroll to top of message';
+        scrollToTopBtn.innerHTML = `
+          <div class="ds-button__background"></div>
+          <div class="ds-button__icon ds-button__icon--last-child">
+            <div class="ds-icon" style="font-size: inherit;">
+              ${ICONS.arrowUp}
+            </div>
+          </div>
+        `;
+        scrollToTopBtn.onclick = (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          msg.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        };
+        actionsBar.appendChild(scrollToTopBtn);
+      }
     });
   }
 
