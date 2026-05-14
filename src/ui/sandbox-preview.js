@@ -188,7 +188,7 @@
         <!-- Frame Body -->
         <div class="ds-sandbox-body">
           <div class="ds-sandbox-frame-wrap" id="sandboxFrameWrap" style="width: 100%;">
-            <iframe class="ds-sandbox-iframe" id="sandboxIframe" sandbox="allow-scripts allow-modals allow-forms allow-same-origin"></iframe>
+            <iframe class="ds-sandbox-iframe" id="sandboxIframe" sandbox="allow-scripts allow-modals allow-forms"></iframe>
           </div>
         </div>
       </div>

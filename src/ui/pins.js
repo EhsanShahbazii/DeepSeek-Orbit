@@ -89,9 +89,12 @@
   }
 
   function enhanceMessagePinButtons(root = document) {
-    const actionBars = root.querySelectorAll('._78e0558, ._965abe9');
+    const actionBars = root.querySelectorAll('._965abe9, ._54866f7, ._78e0558, ._0bbda35, ._0a3d93b > .ds-flex');
     actionBars.forEach((actionsBar) => {
-      const msg = actionsBar.closest('._9663006, [data-virtual-list-item-key], .ds-message') || actionsBar.parentElement;
+      // Ensure we don't attach to input bar
+      if (actionsBar.closest('.bf38813a, ._77cefa5')) return;
+
+      const msg = actionsBar.closest('._9663006, [data-virtual-list-item-key], .ds-message, ._4f09d84') || actionsBar.parentElement?.parentElement || actionsBar.parentElement;
       if (!msg) return;
 
       const msgId = getMessageStableId(msg);
@@ -118,7 +121,9 @@
         <div class="ds-button__background"></div>
         <div class="ds-button__icon ds-button__icon--last-child">
           <div class="ds-icon" style="font-size: inherit;">
-            ${ICONS.pin}
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 2.5L13.5 6L11.5 8L12.5 12L8.5 11L6.5 13L5.5 10.5L2 14L5.5 10.5L3 9.5L5 7.5L4 3.5L8 4.5L10 2.5Z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
           </div>
         </div>
       `;
@@ -130,12 +135,14 @@
         scrollToTopBtn.setAttribute('role', 'button');
         scrollToTopBtn.className = 'ds-button ds-button--iconLabelTertiary ds-button--icon ds-button--capsule ds-button--xs ds-button--icon-relative-l db183363 ds-scroll-top-btn';
         scrollToTopBtn.setAttribute('tabindex', '0');
-        scrollToTopBtn.title = 'Scroll to top of message';
+        scrollToTopBtn.title = 'Scroll to top of this message';
         scrollToTopBtn.innerHTML = `
           <div class="ds-button__background"></div>
           <div class="ds-button__icon ds-button__icon--last-child">
             <div class="ds-icon" style="font-size: inherit;">
-              ${ICONS.arrowUp}
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3.5 10.5L8 5.5L12.5 10.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
             </div>
           </div>
         `;
