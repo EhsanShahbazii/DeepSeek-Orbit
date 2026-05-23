@@ -25,25 +25,29 @@
     setTimeout(() => {
       toast.classList.remove('show');
       setTimeout(() => toast.remove(), 250);
-    }, 2200);
+    }, 2400);
   }
 
   function isDeepSeekGenerating() {
-    // Specifically inspect the main prompt bar action button (.bf38813a)
-    const promptBar = document.querySelector('.bf38813a, ._77cefa5, ._3d616d3, ._020ab5b');
-    if (promptBar) {
-      const stopBtn = promptBar.querySelector('button[aria-label*="Stop"], button[aria-label*="stop"], button[aria-label*="停止"], .ds-stop-button');
-      if (stopBtn && stopBtn.offsetParent !== null) return true;
-
-      const rectIcon = promptBar.querySelector('button rect, .ds-button rect');
-      if (rectIcon && rectIcon.closest('button') && rectIcon.closest('button').offsetParent !== null) {
-        return true;
+    // 1. Check prompt bar for Stop button (or rect stop square icon)
+    const promptContainer = document.querySelector('.bf38813a, ._77cefa5, ._3d616d3, ._020ab5b, form');
+    if (promptContainer) {
+      const stopElements = promptContainer.querySelectorAll(
+        'button[aria-label*="Stop"], button[aria-label*="stop"], button[aria-label*="停止"], .ds-stop-button, button rect, div[role="button"] rect'
+      );
+      for (const el of stopElements) {
+        if (el.offsetParent !== null || el.closest('button')?.offsetParent !== null) {
+          return true;
+        }
       }
     }
 
-    const streamingEl = document.querySelector('.ds-loading-spin, .result-streaming, .ds-markdown-streaming');
-    if (streamingEl && streamingEl.offsetParent !== null) {
-      return true;
+    // 2. Check for active streaming indicators in the chat
+    const streamingElements = document.querySelectorAll(
+      '.ds-loading-spin, .result-streaming, .ds-markdown-streaming, [class*="streaming"], ._0579e0a, .ds-loading'
+    );
+    for (const el of streamingElements) {
+      if (el.offsetParent !== null) return true;
     }
 
     return false;
@@ -107,7 +111,6 @@
       bar = document.createElement('div');
       bar.className = 'ds-prompt-queue-bar';
 
-      // Insert above the chat input box container
       const inputWrap = document.querySelector('._77cefa5, ._3d616d3, ._020ab5b, .bf38813a')?.closest('div[class*="chat"], form, div') || document.querySelector('.bf38813a')?.parentElement;
       if (inputWrap) {
         inputWrap.parentNode.insertBefore(bar, inputWrap);
@@ -153,7 +156,11 @@
     if (pollTimer) clearInterval(pollTimer);
 
     pollTimer = setInterval(() => {
-      if (promptQueue.length === 0) return;
+      if (promptQueue.length === 0) {
+        clearInterval(pollTimer);
+        pollTimer = null;
+        return;
+      }
 
       const generating = isDeepSeekGenerating();
       if (!generating) {
@@ -165,35 +172,56 @@
             if (ok) {
               showToast('Auto-submitted queued prompt!');
             }
-          }, 350);
+          }, 400);
         }
         renderQueueUI();
       }
-    }, 600);
+    }, 500);
   }
 
   function attachQueueListener() {
     if (isListening) return;
-    const textarea = getTextarea();
-    if (!textarea) return;
-
     isListening = true;
 
-    textarea.addEventListener('keydown', (e) => {
+    // Use Capture phase on document to guarantee interception before DeepSeek
+    document.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) {
-        const generating = isDeepSeekGenerating();
-        if (generating) {
-          const text = (textarea.tagName === 'TEXTAREA' ? textarea.value : textarea.innerText || '').trim();
-          if (text) {
-            e.preventDefault();
-            e.stopPropagation();
+        const target = e.target;
+        if (target && (target.tagName === 'TEXTAREA' || target.getAttribute('contenteditable') === 'true' || target.closest('.bf38813a, ._77cefa5, ._3d616d3'))) {
+          if (isDeepSeekGenerating()) {
+            const text = (target.tagName === 'TEXTAREA' ? target.value : target.innerText || '').trim();
+            if (text) {
+              e.preventDefault();
+              e.stopPropagation();
+              e.stopImmediatePropagation();
 
-            promptQueue.push({ id: Date.now(), text: text });
-            setPromptValue('');
-            renderQueueUI();
-            showToast('Prompt queued! Will auto-send when done.');
-            startQueueWatcher();
+              promptQueue.push({ id: Date.now(), text: text });
+              setPromptValue('');
+              renderQueueUI();
+              showToast('Prompt queued! Will auto-send when response finishes.');
+              startQueueWatcher();
+            }
           }
+        }
+      }
+    }, true);
+
+    // Also intercept click on Send button during generation
+    document.addEventListener('click', (e) => {
+      const sendBtn = e.target.closest('button[aria-label*="Send"], button[aria-label*="send"], ._52c986b, .bf38813a button:last-child');
+      if (sendBtn && isDeepSeekGenerating()) {
+        const textarea = getTextarea();
+        const text = (textarea ? (textarea.tagName === 'TEXTAREA' ? textarea.value : textarea.innerText || '') : '').trim();
+        if (text) {
+          e.preventDefault();
+          e.stopPropagation();
+          e.stopImmediatePropagation();
+
+          promptQueue.push({ id: Date.now(), text: text });
+          setPromptValue('');
+          renderQueueUI();
+          showToast('Prompt queued! Will auto-send when response finishes.');
+          startQueueWatcher();
         }
       }
     }, true);
