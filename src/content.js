@@ -1739,11 +1739,6 @@
       window.DeepSeekOrbit.SandboxPreview.enhanceSandboxPreviews(root);
     }
 
-    // Smart Auto-Submit Prompt Queue
-    if (window.DeepSeekOrbit && window.DeepSeekOrbit.PromptQueue) {
-      window.DeepSeekOrbit.PromptQueue.initPromptQueue(root);
-    }
-
     // Mount Toolbar & Navigation Drawer
     ensureFloatingToolbar();
     ensureNavigationDrawer();
