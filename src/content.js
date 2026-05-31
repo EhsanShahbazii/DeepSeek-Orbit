@@ -1739,6 +1739,11 @@
       window.DeepSeekOrbit.SandboxPreview.enhanceSandboxPreviews(root);
     }
 
+    // Persona Indicator for Custom Instructions
+    if (window.DeepSeekOrbit && window.DeepSeekOrbit.CustomInstructions) {
+      window.DeepSeekOrbit.CustomInstructions.ensurePersonaIndicator(root);
+    }
+
     // Mount Toolbar & Navigation Drawer
     ensureFloatingToolbar();
     ensureNavigationDrawer();

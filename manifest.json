@@ -50,6 +50,7 @@
         "src/ui/dynamic-tables.js",
         "src/ui/zip-bundler.js",
         "src/ui/sandbox-preview.js",
+        "src/ui/custom-instructions.js",
         "src/content.js"
       ],
       "css": [
