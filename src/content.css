@@ -632,15 +632,15 @@ body.ds-has-wallpaper .md-code-block {
    ========================================================================= */
 
 .ds-export-toolbar {
-  position: fixed;
-  top: 14px;
-  right: 20px;
-  z-index: 10000;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  position: fixed !important;
+  top: 14px !important;
+  right: 20px !important;
+  z-index: 99999 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
   direction: ltr !important;
-  user-select: none;
+  user-select: none !important;
 }
 
 /* DeepSeek Native Toggle Button Style (ds-toggle-button--m) */

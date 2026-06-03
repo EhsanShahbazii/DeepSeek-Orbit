@@ -1402,6 +1402,9 @@
       <button type="button" class="ds-suite-btn" id="dsToolbarPinsBtn" title="Pinned Messages">
         <span class="ds-suite-btn-icon">${ICONS.pinFilled}</span> <span>Pins</span>
       </button>
+      <button type="button" class="ds-suite-btn" id="dsToolbarMemoryBtn" title="Persistent Instructions & Persona Memory">
+        <span class="ds-suite-btn-icon">${ICONS.brain}</span> <span>Memory</span>
+      </button>
       <button type="button" class="ds-suite-btn" id="dsExportToggleBtn" title="Export & Share Chat">
         <span class="ds-suite-btn-icon">${ICONS.export}</span> <span>Export</span>
       </button>
@@ -1430,6 +1433,7 @@
     const searchNextBtn = toolbar.querySelector('#dsSearchNextBtn');
     const searchCloseBtn = toolbar.querySelector('#dsSearchCloseBtn');
     const pinsBtn = toolbar.querySelector('#dsToolbarPinsBtn');
+    const memoryBtn = toolbar.querySelector('#dsToolbarMemoryBtn');
     const toggleExportBtn = toolbar.querySelector('#dsExportToggleBtn');
     const exportMenu = toolbar.querySelector('#dsExportMenu');
 
@@ -1451,6 +1455,12 @@
     searchCloseBtn.addEventListener('click', closeSearchBar);
     searchBtn.addEventListener('click', toggleSearchBar);
     pinsBtn.addEventListener('click', openPinsDrawer);
+
+    memoryBtn.addEventListener('click', () => {
+      if (window.DeepSeekOrbit && window.DeepSeekOrbit.CustomInstructions) {
+        window.DeepSeekOrbit.CustomInstructions.openCustomInstructionsModal();
+      }
+    });
 
     toggleExportBtn.addEventListener('click', (e) => {
       e.stopPropagation();
