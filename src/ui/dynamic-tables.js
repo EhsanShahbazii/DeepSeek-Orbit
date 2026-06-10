@@ -273,8 +273,9 @@
   }
 
   function enhanceDynamicTables(root = document) {
-    const tables = root.querySelectorAll('.ds-markdown table, table:not(.ds-table-exempt)');
+    const tables = root.querySelectorAll('.ds-markdown table:not(.ds-table-exempt), ._63c77b1 table:not(.ds-table-exempt)');
     tables.forEach(table => {
+      if (table.closest('.ds-code-modal, .ds-instructions-modal, .ds-nav-drawer, .ds-modal-container')) return;
       try {
         enhanceTable(table);
       } catch (err) {}
