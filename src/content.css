@@ -2145,8 +2145,9 @@ body.ds-has-wallpaper :not(._11d6b3a) > ._425ea0b {
 
 .ds-instructions-modal.ds-memory-studio-modal {
   width: 92vw !important;
-  max-width: 840px !important;
-  max-height: 88vh !important;
+  max-width: 820px !important;
+  height: auto !important;
+  max-height: 85vh !important;
   background: #141518 !important;
   border: 1px solid rgba(255, 255, 255, 0.12) !important;
   border-radius: 16px !important;
@@ -2263,9 +2264,8 @@ body.ds-has-wallpaper :not(._11d6b3a) > ._425ea0b {
 
 /* Memory Table Layout */
 .ds-memory-table-wrap {
-  flex: 1;
   overflow-y: auto;
-  max-height: 46vh;
+  max-height: 52vh;
   padding: 0;
   background: #101114;
 }
@@ -2297,7 +2297,19 @@ body.ds-has-wallpaper :not(._11d6b3a) > ._425ea0b {
 
 .ds-memory-row {
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  transition: background 0.15s ease;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: dsFadeInRow 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes dsFadeInRow {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .ds-memory-row:hover {
@@ -2321,17 +2333,10 @@ body.ds-has-wallpaper :not(._11d6b3a) > ._425ea0b {
   cursor: pointer;
 }
 
-.ds-memory-icon-badge {
-  width: 28px;
-  height: 28px;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--ds-brand-primary);
-  flex-shrink: 0;
+.ds-memory-title-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .ds-memory-title {
@@ -2439,7 +2444,15 @@ body.ds-has-wallpaper :not(._11d6b3a) > ._425ea0b {
   background: #181a20;
   border-top: 1px solid rgba(255, 255, 255, 0.12);
   box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.4);
-  animation: dsFadeSlideIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.22s ease;
+}
+
+.ds-memory-edit-drawer.open {
+  max-height: 420px;
+  opacity: 1;
 }
 
 .ds-mem-drawer-header {
