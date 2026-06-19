@@ -51,6 +51,7 @@
         "src/ui/zip-bundler.js",
         "src/ui/sandbox-preview.js",
         "src/ui/custom-instructions.js",
+        "src/ui/textarea-expander.js",
         "src/content.js"
       ],
       "css": [

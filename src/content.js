@@ -1754,6 +1754,11 @@
       window.DeepSeekOrbit.CustomInstructions.ensurePersonaIndicator(root);
     }
 
+    // Textarea Auto-Expand & Maximize Button
+    if (window.DeepSeekOrbit && window.DeepSeekOrbit.TextareaExpander) {
+      window.DeepSeekOrbit.TextareaExpander.ensureTextareaExpandButton(root);
+    }
+
     // Mount Toolbar & Navigation Drawer
     ensureFloatingToolbar();
     ensureNavigationDrawer();

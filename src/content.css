@@ -2569,3 +2569,61 @@ body.ds-has-wallpaper :not(._11d6b3a) > ._425ea0b {
   border-radius: 9999px;
   margin-left: 4px;
 }
+
+/* =========================================================================
+   TEXTAREA EXPAND / COLLAPSE CONTROLS
+   ========================================================================= */
+
+._24fad49 {
+  position: relative !important;
+}
+
+.ds-textarea-expand-btn {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  z-index: 10;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--ds-text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+.ds-textarea-expand-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: scale(1.05);
+}
+
+.ds-textarea-expand-btn.active {
+  background: rgba(77, 107, 254, 0.25);
+  border-color: var(--ds-brand-primary);
+  color: #ffffff;
+}
+
+/* Smooth expansion upward */
+._77cefa5,
+._3d616d3,
+._020ab5b,
+._24fad49,
+textarea._27c9245 {
+  transition: height 0.28s cubic-bezier(0.16, 1, 0.3, 1), min-height 0.28s cubic-bezier(0.16, 1, 0.3, 1), max-height 0.28s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.ds-input-expanded ._24fad49,
+.ds-textarea-expanded {
+  min-height: 280px !important;
+  max-height: 60vh !important;
+  height: 320px !important;
+}

@@ -1,6 +1,6 @@
 /**
  * DeepSeek Orbit — Multi-Memory & Custom Instructions Studio
- * Features: Native prompt bar toggle button (enable/disable), Table Layout, No icon clutter, Smooth Animations, Full CRUD
+ * Features: Native prompt bar toggle button (enable/disable), Stable table layout without shaking, Full CRUD
  */
 (function () {
   'use strict';
@@ -225,7 +225,7 @@
                   <th style="width: 80px; text-align: right;">Actions</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody id="memTableBody">
                 ${tableRowsHtml || '<tr><td colspan="5" style="text-align: center; padding: 24px; color: var(--ds-text-muted);">No memories found in this filter.</td></tr>'}
               </tbody>
             </table>
@@ -238,7 +238,7 @@
               <button type="button" class="ds-code-modal-close-btn" id="closeDrawerBtn">✕</button>
             </div>
             <div class="ds-mem-drawer-body">
-              <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 12px; margin-bottom: 10px;">
+              <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 12px; margin-bottom: 12px;">
                 <div>
                   <label class="ds-mem-form-label">Title / Persona Name</label>
                   <input type="text" class="ds-ctx-input" id="drawerTitleInput" placeholder="e.g. Next.js & Tailwind Specialist" />
@@ -253,12 +253,12 @@
                 </div>
               </div>
 
-              <div style="margin-bottom: 8px;">
+              <div style="margin-bottom: 10px;">
                 <label class="ds-mem-form-label">Role Description</label>
                 <input type="text" class="ds-ctx-input" id="drawerSubInput" placeholder="e.g. Modern UI Architecture & Clean Design" />
               </div>
 
-              <div style="margin-bottom: 6px;">
+              <div style="margin-bottom: 8px;">
                 <label class="ds-mem-form-label">Quick Rules Injector</label>
                 <div class="ds-rule-tags-wrap">
                   ${QUICK_TAGS.map(t => `<button type="button" class="ds-rule-tag-btn drawer-tag" data-insert="${t.insert}">${t.label}</button>`).join('')}
@@ -267,10 +267,10 @@
 
               <div>
                 <label class="ds-mem-form-label">System Instructions Text</label>
-                <textarea class="ds-instructions-textarea" id="drawerTextInput" style="height: 80px;" placeholder="Write specific rules and instructions for DeepSeek to follow..."></textarea>
+                <textarea class="ds-instructions-textarea" id="drawerTextInput" style="height: 85px;" placeholder="Write specific rules and instructions for DeepSeek to follow..."></textarea>
               </div>
 
-              <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px;">
+              <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 14px;">
                 <button type="button" class="ds-suite-btn ds-ctx-btn-secondary" id="cancelDrawerBtn">Cancel</button>
                 <button type="button" class="ds-suite-btn ds-ctx-btn-primary" id="saveDrawerBtn">Save Memory</button>
               </div>
@@ -283,7 +283,7 @@
               <span>Reset to Defaults</span>
             </button>
             <div style="display: flex; align-items: center; gap: 12px;">
-              <span style="font-size: 12px; color: var(--ds-text-secondary);">${activeCount} active simultaneously</span>
+              <span id="footerActiveLabel" style="font-size: 12px; color: var(--ds-text-secondary);">${activeCount} active simultaneously</span>
               <button type="button" class="ds-suite-btn ds-ctx-btn-primary" id="instApplySaveBtn">
                 <span class="ds-suite-btn-icon">${MEM_ICONS.check}</span>
                 <span>Save & Apply</span>
@@ -317,14 +317,21 @@
       const cancelDrawerBtn = backdrop.querySelector('#cancelDrawerBtn');
       const closeDrawerBtn = backdrop.querySelector('#closeDrawerBtn');
 
+      // Master switch toggle
       globalToggle.addEventListener('change', () => {
         memoryStore.globalEnabled = globalToggle.checked;
         saveMemoryStore(() => {
           updatePromptBarMemoryButton();
-          renderModalContent();
+          const pill = backdrop.querySelector('.ds-memory-active-pill');
+          const count = memoryStore.memories.filter(m => m.enabled).length;
+          if (pill) {
+            pill.className = `ds-memory-active-pill ${count > 0 && memoryStore.globalEnabled ? 'active' : ''}`;
+            pill.textContent = memoryStore.globalEnabled ? `${count} Active` : 'Disabled';
+          }
         });
       });
 
+      // Filter tabs switching
       filterBtns.forEach(btn => {
         btn.addEventListener('click', () => {
           activeFilter = btn.dataset.filter;
@@ -332,6 +339,7 @@
         });
       });
 
+      // In-place checkbox toggle without re-rendering or shaking
       checkBoxes.forEach(chk => {
         chk.addEventListener('change', () => {
           const id = chk.dataset.id;
@@ -342,14 +350,21 @@
               updatePromptBarMemoryButton();
               const row = chk.closest('tr');
               if (row) row.classList.toggle('row-active', chk.checked);
-              const pill = backdrop.querySelector('.ds-memory-active-pill');
+
               const count = memoryStore.memories.filter(m => m.enabled).length;
-              if (pill) pill.textContent = `${count} Active`;
+              const pill = backdrop.querySelector('.ds-memory-active-pill');
+              if (pill) {
+                pill.className = `ds-memory-active-pill ${count > 0 && memoryStore.globalEnabled ? 'active' : ''}`;
+                pill.textContent = memoryStore.globalEnabled ? `${count} Active` : 'Disabled';
+              }
+              const footerLbl = backdrop.querySelector('#footerActiveLabel');
+              if (footerLbl) footerLbl.textContent = `${count} active simultaneously`;
             });
           }
         });
       });
 
+      // Edit memory
       backdrop.querySelectorAll('.mem-edit-btn').forEach(btn => {
         btn.addEventListener('click', () => {
           const id = btn.dataset.id;
@@ -367,6 +382,7 @@
         });
       });
 
+      // Delete memory with smooth fade
       backdrop.querySelectorAll('.mem-del-btn').forEach(btn => {
         btn.addEventListener('click', () => {
           const id = btn.dataset.id;
@@ -386,6 +402,7 @@
         });
       });
 
+      // Add custom memory
       addBtn.addEventListener('click', () => {
         editingMemoryId = null;
         drawerTitleText.textContent = 'Add Custom Memory';
@@ -397,6 +414,7 @@
         drawerTitleInput.focus();
       });
 
+      // Drawer quick tags
       drawer.querySelectorAll('.drawer-tag').forEach(t => {
         t.addEventListener('click', () => {
           const ins = t.dataset.insert;
@@ -408,6 +426,7 @@
         });
       });
 
+      // Save drawer item
       saveDrawerBtn.addEventListener('click', () => {
         const title = drawerTitleInput.value.trim();
         const text = drawerTextInput.value.trim();
@@ -454,6 +473,7 @@
         drawer.classList.remove('open');
       });
 
+      // Reset all to defaults
       resetBtn.addEventListener('click', () => {
         memoryStore.memories = JSON.parse(JSON.stringify(DEFAULT_MEMORIES));
         memoryStore.globalEnabled = true;
@@ -464,6 +484,7 @@
         });
       });
 
+      // Apply & Close
       applyBtn.addEventListener('click', () => {
         saveMemoryStore(() => {
           showToast('Active memories saved and applied!');
@@ -528,16 +549,19 @@
 
         const currentActive = memoryStore.memories.filter(m => m.enabled).length;
         if (currentActive === 0 && !memoryStore.globalEnabled) {
-          openCustomInstructionsModal();
-          return;
+          // If no active memories, enable the first preset and activate
+          if (memoryStore.memories[0]) memoryStore.memories[0].enabled = true;
+          memoryStore.globalEnabled = true;
+        } else {
+          memoryStore.globalEnabled = !memoryStore.globalEnabled;
         }
 
-        memoryStore.globalEnabled = !memoryStore.globalEnabled;
         saveMemoryStore(() => {
           updatePromptBarMemoryButton();
+          const newActive = memoryStore.memories.filter(m => m.enabled).length;
           showToast(
             memoryStore.globalEnabled 
-              ? `Memory Active (${currentActive} persona${currentActive > 1 ? 's' : ''})` 
+              ? `Memory Enabled (${newActive} active)` 
               : 'Memory Disabled'
           );
         });
