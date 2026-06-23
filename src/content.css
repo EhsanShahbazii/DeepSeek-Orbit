@@ -2146,8 +2146,8 @@ body.ds-has-wallpaper :not(._11d6b3a) > ._425ea0b {
 .ds-instructions-modal.ds-memory-studio-modal {
   width: 92vw !important;
   max-width: 820px !important;
-  height: auto !important;
-  max-height: 85vh !important;
+  height: 520px !important;
+  max-height: 88vh !important;
   background: #141518 !important;
   border: 1px solid rgba(255, 255, 255, 0.12) !important;
   border-radius: 16px !important;
@@ -2264,10 +2264,12 @@ body.ds-has-wallpaper :not(._11d6b3a) > ._425ea0b {
 
 /* Memory Table Layout */
 .ds-memory-table-wrap {
-  overflow-y: auto;
-  max-height: 52vh;
-  padding: 0;
-  background: #101114;
+  height: 340px !important;
+  min-height: 340px !important;
+  max-height: 340px !important;
+  overflow-y: auto !important;
+  padding: 0 !important;
+  background: #101114 !important;
 }
 
 .ds-memory-table {
@@ -2451,7 +2453,7 @@ body.ds-has-wallpaper :not(._11d6b3a) > ._425ea0b {
 }
 
 .ds-memory-edit-drawer.open {
-  max-height: 420px;
+  max-height: 440px;
   opacity: 1;
 }
 
@@ -2459,14 +2461,15 @@ body.ds-has-wallpaper :not(._11d6b3a) > ._425ea0b {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 18px;
+  padding: 12px 20px;
   background: #1d2027;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   font-size: 13px;
+  font-weight: 600;
 }
 
 .ds-mem-drawer-body {
-  padding: 14px 18px;
+  padding: 16px 20px 20px;
 }
 
 .ds-mem-form-label {
@@ -2580,36 +2583,32 @@ body.ds-has-wallpaper :not(._11d6b3a) > ._425ea0b {
 
 .ds-textarea-expand-btn {
   position: absolute;
-  top: 10px;
-  right: 12px;
+  top: 6px;
+  right: 8px;
   z-index: 10;
-  width: 24px;
-  height: 24px;
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: var(--ds-text-secondary);
+  width: 22px;
+  height: 22px;
+  border: none !important;
+  background: transparent !important;
+  color: var(--ds-text-muted);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   opacity: 0;
   pointer-events: none;
+  border-radius: 5px;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
 }
 
 .ds-textarea-expand-btn:hover {
-  background: rgba(255, 255, 255, 0.16);
-  color: #ffffff;
-  border-color: rgba(255, 255, 255, 0.25);
-  transform: scale(1.05);
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #ffffff !important;
 }
 
 .ds-textarea-expand-btn.active {
-  background: rgba(77, 107, 254, 0.25);
-  border-color: var(--ds-brand-primary);
-  color: #ffffff;
+  color: var(--ds-brand-primary) !important;
+  background: rgba(77, 107, 254, 0.15) !important;
 }
 
 /* Smooth expansion upward */

@@ -1,6 +1,6 @@
 /**
  * DeepSeek Orbit — Textarea Auto-Expand & Maximize Controller
- * Features: Smooth upward expansion, collapse toggle, scrollbar auto-detection
+ * Features: Borderless sleek expand button near top-right, smooth upward expansion, Esc collapse
  */
 (function () {
   'use strict';
@@ -35,7 +35,7 @@
   function checkTextareaScrollbar(textarea, btn) {
     if (!textarea || !btn) return;
     const hasScroll = textarea.scrollHeight > textarea.clientHeight + 4;
-    const hasContent = (textarea.value || '').length > 60 || (textarea.value || '').includes('\n');
+    const hasContent = (textarea.value || '').length > 40 || (textarea.value || '').includes('\n');
 
     if (hasScroll || hasContent || isExpanded) {
       btn.style.opacity = '1';

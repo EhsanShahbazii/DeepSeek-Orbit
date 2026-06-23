@@ -541,38 +541,6 @@
       btn.style.transform = 'translateZ(0px)';
       btn.title = 'Memory (Click to toggle on/off, right-click to configure)';
       toggleContainer.appendChild(btn);
-
-      // Left click toggles enable/disable
-      btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-
-        const currentActive = memoryStore.memories.filter(m => m.enabled).length;
-        if (currentActive === 0 && !memoryStore.globalEnabled) {
-          // If no active memories, enable the first preset and activate
-          if (memoryStore.memories[0]) memoryStore.memories[0].enabled = true;
-          memoryStore.globalEnabled = true;
-        } else {
-          memoryStore.globalEnabled = !memoryStore.globalEnabled;
-        }
-
-        saveMemoryStore(() => {
-          updatePromptBarMemoryButton();
-          const newActive = memoryStore.memories.filter(m => m.enabled).length;
-          showToast(
-            memoryStore.globalEnabled 
-              ? `Memory Enabled (${newActive} active)` 
-              : 'Memory Disabled'
-          );
-        });
-      });
-
-      // Right click opens settings modal
-      btn.addEventListener('contextmenu', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        openCustomInstructionsModal();
-      });
     }
 
     btn.setAttribute('aria-pressed', isSelected ? 'true' : 'false');
@@ -592,6 +560,45 @@
       <div class="ds-focus-ring" style="--dsl-focus-ring-offset: -1px;"></div>
     `;
   }
+
+  // Global capture-phase click handler guaranteeing reliable toggle on click
+  document.addEventListener('click', (e) => {
+    const memoryBtn = e.target.closest('.ds-orbit-memory-btn');
+    if (memoryBtn) {
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+
+      const currentActive = memoryStore.memories.filter(m => m.enabled).length;
+      if (currentActive === 0 && !memoryStore.globalEnabled) {
+        if (memoryStore.memories[0]) memoryStore.memories[0].enabled = true;
+        memoryStore.globalEnabled = true;
+      } else {
+        memoryStore.globalEnabled = !memoryStore.globalEnabled;
+      }
+
+      saveMemoryStore(() => {
+        updatePromptBarMemoryButton();
+        const newActive = memoryStore.memories.filter(m => m.enabled).length;
+        showToast(
+          memoryStore.globalEnabled 
+            ? `Memory Enabled (${newActive} active)` 
+            : 'Memory Disabled'
+        );
+      });
+    }
+  }, true);
+
+  // Global right-click or contextmenu handler on memory toggle button to open modal
+  document.addEventListener('contextmenu', (e) => {
+    const memoryBtn = e.target.closest('.ds-orbit-memory-btn');
+    if (memoryBtn) {
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      openCustomInstructionsModal();
+    }
+  }, true);
 
   function ensurePersonaIndicator(root = document) {
     updatePromptBarMemoryButton();
