@@ -2270,6 +2270,14 @@ body.ds-has-wallpaper :not(._11d6b3a) > ._425ea0b {
   overflow-y: auto !important;
   padding: 0 !important;
   background: #101114 !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.ds-memory-table-wrap::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
 }
 
 .ds-memory-table {
