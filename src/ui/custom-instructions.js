@@ -1,6 +1,6 @@
 /**
  * DeepSeek Orbit — Multi-Memory & Custom Instructions Studio
- * Features: Native prompt bar toggle button (enable/disable), Stable table layout without shaking, Full CRUD
+ * Features: Native prompt bar toggle button, In-place view switching for Edit/Add, DeepSeek palette styling, Full CRUD
  */
 (function () {
   'use strict';
@@ -12,7 +12,8 @@
     edit: `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>`,
     trash: `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>`,
     plus: `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>`,
-    check: `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`
+    check: `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`,
+    back: `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>`
   };
 
   const DEFAULT_MEMORIES = [
@@ -77,6 +78,8 @@
   };
 
   let activeFilter = 'all'; // 'all' | 'fa' | 'en' | 'custom'
+  let currentView = 'table'; // 'table' | 'editor'
+  let editingMemoryId = null;
 
   function showToast(text, icon = MEM_ICONS.check) {
     const existing = document.querySelector('.ds-pro-toast');
@@ -136,6 +139,9 @@
     const existing = document.querySelector('.ds-instructions-modal-backdrop');
     if (existing) existing.remove();
 
+    currentView = 'table';
+    editingMemoryId = null;
+
     const backdrop = document.createElement('div');
     backdrop.className = 'ds-code-modal-backdrop ds-instructions-modal-backdrop';
 
@@ -166,7 +172,7 @@
             </span>
           </td>
           <td>
-            <div class="ds-memory-preview-text" title="Click to edit instruction">${escapeHtml(m.text)}</div>
+            <div class="ds-memory-preview-text" data-id="${m.id}" title="Click to edit instruction">${escapeHtml(m.text)}</div>
           </td>
           <td style="width: 80px; text-align: right;">
             <div class="ds-memory-row-actions">
@@ -176,6 +182,9 @@
           </td>
         </tr>
       `).join('');
+
+      // Active editing item if in editor view
+      const targetMem = editingMemoryId ? memoryStore.memories.find(m => m.id === editingMemoryId) : null;
 
       backdrop.innerHTML = `
         <div class="ds-code-modal ds-instructions-modal ds-memory-studio-modal">
@@ -198,96 +207,111 @@
             </div>
           </div>
 
-          <!-- Filter Toolbar -->
-          <div class="ds-memory-toolbar-strip">
-            <div class="ds-memory-filter-pills">
-              <button type="button" class="ds-mem-filter-btn ${activeFilter === 'all' ? 'active' : ''}" data-filter="all">All (${memoryStore.memories.length})</button>
-              <button type="button" class="ds-mem-filter-btn ${activeFilter === 'fa' ? 'active' : ''}" data-filter="fa">Persian (${memoryStore.memories.filter(m => m.lang === 'fa').length})</button>
-              <button type="button" class="ds-mem-filter-btn ${activeFilter === 'en' ? 'active' : ''}" data-filter="en">English (${memoryStore.memories.filter(m => m.lang === 'en').length})</button>
-              <button type="button" class="ds-mem-filter-btn ${activeFilter === 'custom' ? 'active' : ''}" data-filter="custom">Custom (${memoryStore.memories.filter(m => !m.isDefault).length})</button>
-            </div>
-
-            <button type="button" class="ds-suite-btn ds-ctx-btn-primary" id="addNewMemBtn">
-              <span class="ds-suite-btn-icon">${MEM_ICONS.plus}</span>
-              <span>Add Custom Memory</span>
-            </button>
-          </div>
-
-          <!-- Memory Table Area -->
-          <div class="ds-memory-table-wrap">
-            <table class="ds-memory-table ds-table-exempt" data-no-dynamic="true">
-              <thead>
-                <tr>
-                  <th style="width: 44px; text-align: center;">Active</th>
-                  <th style="width: 210px;">Persona Name</th>
-                  <th style="width: 90px;">Language</th>
-                  <th>Instruction Rules</th>
-                  <th style="width: 80px; text-align: right;">Actions</th>
-                </tr>
-              </thead>
-              <tbody id="memTableBody">
-                ${tableRowsHtml || '<tr><td colspan="5" style="text-align: center; padding: 24px; color: var(--ds-text-muted);">No memories found in this filter.</td></tr>'}
-              </tbody>
-            </table>
-          </div>
-
-          <!-- Edit / Add Drawer Form -->
-          <div class="ds-memory-edit-drawer" id="memEditDrawer">
-            <div class="ds-mem-drawer-header">
-              <span id="drawerTitleText" style="font-weight: 600; color: #ffffff;">Add Custom Memory</span>
-              <button type="button" class="ds-code-modal-close-btn" id="closeDrawerBtn">✕</button>
-            </div>
-            <div class="ds-mem-drawer-body">
-              <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 12px; margin-bottom: 12px;">
-                <div>
-                  <label class="ds-mem-form-label">Title / Persona Name</label>
-                  <input type="text" class="ds-ctx-input" id="drawerTitleInput" placeholder="e.g. Next.js & Tailwind Specialist" />
+          <!-- Main Body Switcher -->
+          <div class="ds-memory-modal-body">
+            <!-- VIEW 1: TABLE VIEW -->
+            <div class="ds-memory-view-pane ds-memory-table-view ${currentView === 'table' ? 'active-view' : ''}">
+              <!-- Filter Toolbar -->
+              <div class="ds-memory-toolbar-strip">
+                <div class="ds-memory-filter-pills">
+                  <button type="button" class="ds-mem-filter-btn ${activeFilter === 'all' ? 'active' : ''}" data-filter="all">All (${memoryStore.memories.length})</button>
+                  <button type="button" class="ds-mem-filter-btn ${activeFilter === 'fa' ? 'active' : ''}" data-filter="fa">Persian (${memoryStore.memories.filter(m => m.lang === 'fa').length})</button>
+                  <button type="button" class="ds-mem-filter-btn ${activeFilter === 'en' ? 'active' : ''}" data-filter="en">English (${memoryStore.memories.filter(m => m.lang === 'en').length})</button>
+                  <button type="button" class="ds-mem-filter-btn ${activeFilter === 'custom' ? 'active' : ''}" data-filter="custom">Custom (${memoryStore.memories.filter(m => !m.isDefault).length})</button>
                 </div>
-                <div>
-                  <label class="ds-mem-form-label">Language / Category</label>
-                  <select class="ds-ctx-input" id="drawerLangSelect">
-                    <option value="fa">Persian (فارسی)</option>
-                    <option value="en">English</option>
-                    <option value="custom">Custom</option>
-                  </select>
+
+                <button type="button" class="ds-suite-btn ds-ctx-btn-primary" id="addNewMemBtn">
+                  <span class="ds-suite-btn-icon">${MEM_ICONS.plus}</span>
+                  <span>Add Custom Memory</span>
+                </button>
+              </div>
+
+              <!-- Memory Table Area -->
+              <div class="ds-memory-table-wrap">
+                <table class="ds-memory-table ds-table-exempt" data-no-dynamic="true">
+                  <thead>
+                    <tr>
+                      <th style="width: 44px; text-align: center;">Active</th>
+                      <th style="width: 210px;">Persona Name</th>
+                      <th style="width: 90px;">Language</th>
+                      <th>Instruction Rules</th>
+                      <th style="width: 80px; text-align: right;">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="memTableBody">
+                    ${tableRowsHtml || '<tr><td colspan="5" style="text-align: center; padding: 24px; color: var(--ds-text-muted);">No memories found in this filter.</td></tr>'}
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Bottom Footer Strip for Table -->
+              <div class="ds-memory-footer-strip">
+                <button type="button" class="ds-suite-btn ds-ctx-btn-secondary" id="instResetAllBtn">
+                  <span>Reset to Defaults</span>
+                </button>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                  <span id="footerActiveLabel" style="font-size: 12px; color: var(--ds-text-secondary);">${activeCount} active simultaneously</span>
+                  <button type="button" class="ds-suite-btn ds-ctx-btn-primary" id="instApplySaveBtn">
+                    <span class="ds-suite-btn-icon">${MEM_ICONS.check}</span>
+                    <span>Save & Apply</span>
+                  </button>
                 </div>
               </div>
+            </div>
 
-              <div style="margin-bottom: 10px;">
-                <label class="ds-mem-form-label">Role Description</label>
-                <input type="text" class="ds-ctx-input" id="drawerSubInput" placeholder="e.g. Modern UI Architecture & Clean Design" />
+            <!-- VIEW 2: IN-PLACE EDITOR VIEW -->
+            <div class="ds-memory-view-pane ds-memory-editor-view ${currentView === 'editor' ? 'active-view' : ''}">
+              <div class="ds-mem-editor-header">
+                <button type="button" class="ds-mem-back-btn" id="editorBackBtn">
+                  <span style="display: inline-flex;">${MEM_ICONS.back}</span>
+                  <span>Back to Memory List</span>
+                </button>
+                <span id="editorViewTitle" style="font-weight: 600; color: #ffffff; font-size: 13.5px;">
+                  ${editingMemoryId ? 'Edit Memory Persona' : 'Create Custom Memory'}
+                </span>
               </div>
 
-              <div style="margin-bottom: 8px;">
-                <label class="ds-mem-form-label">Quick Rules Injector</label>
-                <div class="ds-rule-tags-wrap">
-                  ${QUICK_TAGS.map(t => `<button type="button" class="ds-rule-tag-btn drawer-tag" data-insert="${t.insert}">${t.label}</button>`).join('')}
+              <div class="ds-mem-editor-body">
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 14px; margin-bottom: 12px;">
+                  <div>
+                    <label class="ds-mem-form-label">Title / Persona Name</label>
+                    <input type="text" class="ds-ctx-input" id="editorTitleInput" value="${targetMem ? escapeHtml(targetMem.title) : ''}" placeholder="e.g. Next.js & Tailwind Specialist" />
+                  </div>
+                  <div>
+                    <label class="ds-mem-form-label">Language / Category</label>
+                    <select class="ds-ctx-input" id="editorLangSelect">
+                      <option value="fa" ${targetMem && targetMem.lang === 'fa' ? 'selected' : ''}>Persian (فارسی)</option>
+                      <option value="en" ${targetMem && targetMem.lang === 'en' ? 'selected' : ''}>English</option>
+                      <option value="custom" ${targetMem && targetMem.lang === 'custom' ? 'selected' : ''}>Custom</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div style="margin-bottom: 12px;">
+                  <label class="ds-mem-form-label">Role Description</label>
+                  <input type="text" class="ds-ctx-input" id="editorSubInput" value="${targetMem ? escapeHtml(targetMem.subtitle || '') : ''}" placeholder="e.g. Modern UI Architecture & Clean Design" />
+                </div>
+
+                <div style="margin-bottom: 10px;">
+                  <label class="ds-mem-form-label">Quick Rules Injector</label>
+                  <div class="ds-rule-tags-wrap">
+                    ${QUICK_TAGS.map(t => `<button type="button" class="ds-rule-tag-btn editor-tag" data-insert="${t.insert}">${t.label}</button>`).join('')}
+                  </div>
+                </div>
+
+                <div style="margin-bottom: 14px;">
+                  <label class="ds-mem-form-label">System Instructions Text</label>
+                  <textarea class="ds-instructions-textarea" id="editorTextInput" style="height: 120px;" placeholder="Write specific rules and instructions for DeepSeek to follow...">${targetMem ? escapeHtml(targetMem.text) : ''}</textarea>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 10px; border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 14px;">
+                  <button type="button" class="ds-suite-btn ds-ctx-btn-secondary" id="editorCancelBtn">Cancel</button>
+                  <button type="button" class="ds-suite-btn ds-ctx-btn-primary" id="editorSaveBtn">
+                    <span class="ds-suite-btn-icon">${MEM_ICONS.check}</span>
+                    <span>Save Changes</span>
+                  </button>
                 </div>
               </div>
-
-              <div>
-                <label class="ds-mem-form-label">System Instructions Text</label>
-                <textarea class="ds-instructions-textarea" id="drawerTextInput" style="height: 85px;" placeholder="Write specific rules and instructions for DeepSeek to follow..."></textarea>
-              </div>
-
-              <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 14px;">
-                <button type="button" class="ds-suite-btn ds-ctx-btn-secondary" id="cancelDrawerBtn">Cancel</button>
-                <button type="button" class="ds-suite-btn ds-ctx-btn-primary" id="saveDrawerBtn">Save Memory</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Bottom Footer Strip -->
-          <div class="ds-memory-footer-strip">
-            <button type="button" class="ds-suite-btn ds-ctx-btn-secondary" id="instResetAllBtn">
-              <span>Reset to Defaults</span>
-            </button>
-            <div style="display: flex; align-items: center; gap: 12px;">
-              <span id="footerActiveLabel" style="font-size: 12px; color: var(--ds-text-secondary);">${activeCount} active simultaneously</span>
-              <button type="button" class="ds-suite-btn ds-ctx-btn-primary" id="instApplySaveBtn">
-                <span class="ds-suite-btn-icon">${MEM_ICONS.check}</span>
-                <span>Save & Apply</span>
-              </button>
             </div>
           </div>
         </div>
@@ -295,8 +319,6 @@
 
       bindModalEvents();
     }
-
-    let editingMemoryId = null;
 
     function bindModalEvents() {
       const globalToggle = backdrop.querySelector('#instGlobalToggle');
@@ -307,29 +329,29 @@
       const applyBtn = backdrop.querySelector('#instApplySaveBtn');
       const closeBtn = backdrop.querySelector('#instCloseBtn');
 
-      const drawer = backdrop.querySelector('#memEditDrawer');
-      const drawerTitleText = backdrop.querySelector('#drawerTitleText');
-      const drawerTitleInput = backdrop.querySelector('#drawerTitleInput');
-      const drawerLangSelect = backdrop.querySelector('#drawerLangSelect');
-      const drawerSubInput = backdrop.querySelector('#drawerSubInput');
-      const drawerTextInput = backdrop.querySelector('#drawerTextInput');
-      const saveDrawerBtn = backdrop.querySelector('#saveDrawerBtn');
-      const cancelDrawerBtn = backdrop.querySelector('#cancelDrawerBtn');
-      const closeDrawerBtn = backdrop.querySelector('#closeDrawerBtn');
+      const editorBackBtn = backdrop.querySelector('#editorBackBtn');
+      const editorCancelBtn = backdrop.querySelector('#editorCancelBtn');
+      const editorSaveBtn = backdrop.querySelector('#editorSaveBtn');
+      const editorTitleInput = backdrop.querySelector('#editorTitleInput');
+      const editorLangSelect = backdrop.querySelector('#editorLangSelect');
+      const editorSubInput = backdrop.querySelector('#editorSubInput');
+      const editorTextInput = backdrop.querySelector('#editorTextInput');
 
       // Master switch toggle
-      globalToggle.addEventListener('change', () => {
-        memoryStore.globalEnabled = globalToggle.checked;
-        saveMemoryStore(() => {
-          updatePromptBarMemoryButton();
-          const pill = backdrop.querySelector('.ds-memory-active-pill');
-          const count = memoryStore.memories.filter(m => m.enabled).length;
-          if (pill) {
-            pill.className = `ds-memory-active-pill ${count > 0 && memoryStore.globalEnabled ? 'active' : ''}`;
-            pill.textContent = memoryStore.globalEnabled ? `${count} Active` : 'Disabled';
-          }
+      if (globalToggle) {
+        globalToggle.addEventListener('change', () => {
+          memoryStore.globalEnabled = globalToggle.checked;
+          saveMemoryStore(() => {
+            updatePromptBarMemoryButton();
+            const pill = backdrop.querySelector('.ds-memory-active-pill');
+            const count = memoryStore.memories.filter(m => m.enabled).length;
+            if (pill) {
+              pill.className = `ds-memory-active-pill ${count > 0 && memoryStore.globalEnabled ? 'active' : ''}`;
+              pill.textContent = memoryStore.globalEnabled ? `${count} Active` : 'Disabled';
+            }
+          });
         });
-      });
+      }
 
       // Filter tabs switching
       filterBtns.forEach(btn => {
@@ -364,21 +386,13 @@
         });
       });
 
-      // Edit memory
-      backdrop.querySelectorAll('.mem-edit-btn').forEach(btn => {
+      // Edit memory (Switch to In-Place Editor View)
+      backdrop.querySelectorAll('.mem-edit-btn, .ds-memory-preview-text').forEach(btn => {
         btn.addEventListener('click', () => {
           const id = btn.dataset.id;
-          const target = memoryStore.memories.find(m => m.id === id);
-          if (target) {
-            editingMemoryId = id;
-            drawerTitleText.textContent = `Edit Memory: ${target.title}`;
-            drawerTitleInput.value = target.title;
-            drawerLangSelect.value = target.lang || 'custom';
-            drawerSubInput.value = target.subtitle || '';
-            drawerTextInput.value = target.text;
-            drawer.classList.add('open');
-            drawerTitleInput.focus();
-          }
+          editingMemoryId = id;
+          currentView = 'editor';
+          renderModalContent();
         });
       });
 
@@ -402,96 +416,109 @@
         });
       });
 
-      // Add custom memory
-      addBtn.addEventListener('click', () => {
-        editingMemoryId = null;
-        drawerTitleText.textContent = 'Add Custom Memory';
-        drawerTitleInput.value = '';
-        drawerLangSelect.value = 'custom';
-        drawerSubInput.value = '';
-        drawerTextInput.value = '';
-        drawer.classList.add('open');
-        drawerTitleInput.focus();
-      });
+      // Add custom memory (Switch to In-Place Editor View)
+      if (addBtn) {
+        addBtn.addEventListener('click', () => {
+          editingMemoryId = null;
+          currentView = 'editor';
+          renderModalContent();
+        });
+      }
 
-      // Drawer quick tags
-      drawer.querySelectorAll('.drawer-tag').forEach(t => {
+      // Back to Table View
+      if (editorBackBtn) {
+        editorBackBtn.addEventListener('click', () => {
+          currentView = 'table';
+          renderModalContent();
+        });
+      }
+
+      if (editorCancelBtn) {
+        editorCancelBtn.addEventListener('click', () => {
+          currentView = 'table';
+          renderModalContent();
+        });
+      }
+
+      // Quick Tag Insertions in Editor
+      backdrop.querySelectorAll('.editor-tag').forEach(t => {
         t.addEventListener('click', () => {
           const ins = t.dataset.insert;
-          if (drawerTextInput.value.trim()) {
-            drawerTextInput.value += ' ' + ins;
+          if (editorTextInput) {
+            if (editorTextInput.value.trim()) {
+              editorTextInput.value += ' ' + ins;
+            } else {
+              editorTextInput.value = ins;
+            }
+          }
+        });
+      });
+
+      // Save Changes in In-Place Editor
+      if (editorSaveBtn) {
+        editorSaveBtn.addEventListener('click', () => {
+          const title = editorTitleInput.value.trim();
+          const text = editorTextInput.value.trim();
+          if (!title || !text) {
+            showToast('Title and instructions cannot be empty', MEM_ICONS.trash);
+            return;
+          }
+
+          const lang = editorLangSelect.value;
+          const sub = editorSubInput.value.trim();
+
+          if (editingMemoryId) {
+            const mem = memoryStore.memories.find(m => m.id === editingMemoryId);
+            if (mem) {
+              mem.title = title;
+              mem.lang = lang;
+              mem.subtitle = sub;
+              mem.text = text;
+            }
           } else {
-            drawerTextInput.value = ins;
+            memoryStore.memories.push({
+              id: 'mem_' + Date.now(),
+              title: title,
+              subtitle: sub,
+              lang: lang,
+              enabled: true,
+              isDefault: false,
+              text: text
+            });
           }
-        });
-      });
 
-      // Save drawer item
-      saveDrawerBtn.addEventListener('click', () => {
-        const title = drawerTitleInput.value.trim();
-        const text = drawerTextInput.value.trim();
-        if (!title || !text) {
-          showToast('Title and instructions cannot be empty', MEM_ICONS.trash);
-          return;
-        }
-
-        const lang = drawerLangSelect.value;
-        const sub = drawerSubInput.value.trim();
-
-        if (editingMemoryId) {
-          const mem = memoryStore.memories.find(m => m.id === editingMemoryId);
-          if (mem) {
-            mem.title = title;
-            mem.lang = lang;
-            mem.subtitle = sub;
-            mem.text = text;
-          }
-        } else {
-          memoryStore.memories.push({
-            id: 'mem_' + Date.now(),
-            title: title,
-            subtitle: sub,
-            lang: lang,
-            enabled: true,
-            isDefault: false,
-            text: text
+          saveMemoryStore(() => {
+            showToast(editingMemoryId ? 'Memory persona updated!' : 'New memory persona created!');
+            currentView = 'table';
+            updatePromptBarMemoryButton();
+            renderModalContent();
           });
-        }
-
-        saveMemoryStore(() => {
-          showToast(editingMemoryId ? 'Memory updated!' : 'New memory created & activated!');
-          drawer.classList.remove('open');
-          updatePromptBarMemoryButton();
-          renderModalContent();
         });
-      });
-
-      cancelDrawerBtn.addEventListener('click', () => {
-        drawer.classList.remove('open');
-      });
-      closeDrawerBtn.addEventListener('click', () => {
-        drawer.classList.remove('open');
-      });
+      }
 
       // Reset all to defaults
-      resetBtn.addEventListener('click', () => {
-        memoryStore.memories = JSON.parse(JSON.stringify(DEFAULT_MEMORIES));
-        memoryStore.globalEnabled = true;
-        saveMemoryStore(() => {
-          showToast('Reset memories to default presets');
-          updatePromptBarMemoryButton();
-          renderModalContent();
+      if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+          memoryStore.memories = JSON.parse(JSON.stringify(DEFAULT_MEMORIES));
+          memoryStore.globalEnabled = true;
+          saveMemoryStore(() => {
+            showToast('Reset memories to default presets');
+            updatePromptBarMemoryButton();
+            renderModalContent();
+          });
         });
-      });
+      }
 
       // Apply & Close
-      applyBtn.addEventListener('click', () => {
-        saveMemoryStore(() => {
-          showToast('Active memories saved and applied!');
-          closeModal();
-          updatePromptBarMemoryButton();
+      if (applyBtn) {
+        applyBtn.addEventListener('click', () => {
+          saveMemoryStore(() => {
+            showToast('Active memories saved and applied!');
+            closeModal();
+            updatePromptBarMemoryButton();
+          });
         });
-      });
+      }
 
       let isClosing = false;
       const closeModal = () => {
@@ -504,13 +531,20 @@
         }, 240);
       };
 
-      closeBtn.addEventListener('click', closeModal);
+      if (closeBtn) closeBtn.addEventListener('click', closeModal);
       backdrop.addEventListener('click', (e) => {
         if (e.target === backdrop) closeModal();
       });
 
       const escHandler = (e) => {
-        if (e.key === 'Escape' && !drawer.classList.contains('open')) closeModal();
+        if (e.key === 'Escape') {
+          if (currentView === 'editor') {
+            currentView = 'table';
+            renderModalContent();
+          } else {
+            closeModal();
+          }
+        }
       };
       document.addEventListener('keydown', escHandler);
     }

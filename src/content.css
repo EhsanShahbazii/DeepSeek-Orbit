@@ -2262,14 +2262,43 @@ body.ds-has-wallpaper :not(._11d6b3a) > ._425ea0b {
   font-weight: 600;
 }
 
-/* Memory Table Layout */
+/* Memory Modal Body & Views */
+.ds-memory-modal-body {
+  position: relative;
+  height: 460px;
+  overflow: hidden;
+}
+
+.ds-memory-view-pane {
+  display: none;
+  height: 100%;
+  flex-direction: column;
+}
+
+.ds-memory-view-pane.active-view {
+  display: flex;
+  animation: dsFadeView 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes dsFadeView {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* DeepSeek Native Color Palette for Table */
 .ds-memory-table-wrap {
   height: 340px !important;
   min-height: 340px !important;
   max-height: 340px !important;
   overflow-y: auto !important;
-  padding: 0 !important;
-  background: #101114 !important;
+  padding: 6px 12px !important;
+  background: #141518 !important;
   scrollbar-width: none !important;
   -ms-overflow-style: none !important;
 }
@@ -2282,7 +2311,8 @@ body.ds-has-wallpaper :not(._11d6b3a) > ._425ea0b {
 
 .ds-memory-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0 4px;
   font-size: 12.5px;
   table-layout: fixed;
 }
@@ -2290,50 +2320,58 @@ body.ds-has-wallpaper :not(._11d6b3a) > ._425ea0b {
 .ds-memory-table thead {
   position: sticky;
   top: 0;
-  background: #14161a;
+  background: #141518;
   z-index: 2;
 }
 
 .ds-memory-table th {
-  padding: 10px 14px;
+  padding: 8px 12px;
   font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   color: var(--ds-text-muted);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   text-align: left;
 }
 
 .ds-memory-row {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
   animation: dsFadeInRow 0.22s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@keyframes dsFadeInRow {
-  from {
-    opacity: 0;
-    transform: translateY(4px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.ds-memory-row td {
+  padding: 10px 12px;
+  vertical-align: middle;
+  color: #e2e8f0;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.ds-memory-row td:first-child {
+  border-left: 1px solid rgba(255, 255, 255, 0.04);
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.ds-memory-row td:last-child {
+  border-right: 1px solid rgba(255, 255, 255, 0.04);
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
 }
 
 .ds-memory-row:hover {
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.065);
 }
 
 .ds-memory-row.row-active {
-  background: rgba(77, 107, 254, 0.06);
+  background: rgba(77, 107, 254, 0.1);
 }
 
-.ds-memory-table td {
-  padding: 10px 14px;
-  vertical-align: middle;
-  color: #e2e8f0;
+.ds-memory-row.row-active td {
+  border-color: rgba(77, 107, 254, 0.25);
 }
 
 .ds-memory-check {
@@ -2449,35 +2487,41 @@ body.ds-has-wallpaper :not(._11d6b3a) > ._425ea0b {
   transform: translateY(-1px);
 }
 
-/* Edit / Add Drawer */
-.ds-memory-edit-drawer {
-  background: #181a20;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.4);
-  max-height: 0;
-  opacity: 0;
-  overflow: hidden;
-  transition: max-height 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.22s ease;
-}
-
-.ds-memory-edit-drawer.open {
-  max-height: 440px;
-  opacity: 1;
-}
-
-.ds-mem-drawer-header {
+/* In-Place Editor View Styling */
+.ds-mem-editor-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 12px 20px;
-  background: #1d2027;
+  background: #18191e;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  font-size: 13px;
-  font-weight: 600;
 }
 
-.ds-mem-drawer-body {
-  padding: 16px 20px 20px;
+.ds-mem-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: #cbd5e1;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.ds-mem-back-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.ds-mem-editor-body {
+  padding: 20px 24px;
+  overflow-y: auto;
+  flex: 1;
 }
 
 .ds-mem-form-label {
