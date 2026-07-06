@@ -1,6 +1,6 @@
 /**
  * DeepSeek Orbit — Multi-Memory & Custom Instructions Studio
- * Features: Native prompt bar toggle button, In-place view switching for Edit/Add, DeepSeek palette styling, Full CRUD
+ * Features: Native prompt bar toggle button (reliable on/off), In-place view switching for Edit/Add, Context-modal styling, Full CRUD
  */
 (function () {
   'use strict';
@@ -183,7 +183,6 @@
         </tr>
       `).join('');
 
-      // Active editing item if in editor view
       const targetMem = editingMemoryId ? memoryStore.memories.find(m => m.id === editingMemoryId) : null;
 
       backdrop.innerHTML = `
@@ -595,6 +594,19 @@
     `;
   }
 
+  // Prevent parent container from swallowing pointer & mouse events
+  document.addEventListener('pointerdown', (e) => {
+    if (e.target.closest('.ds-orbit-memory-btn')) {
+      e.stopPropagation();
+    }
+  }, true);
+
+  document.addEventListener('mousedown', (e) => {
+    if (e.target.closest('.ds-orbit-memory-btn')) {
+      e.stopPropagation();
+    }
+  }, true);
+
   // Global capture-phase click handler guaranteeing reliable toggle on click
   document.addEventListener('click', (e) => {
     const memoryBtn = e.target.closest('.ds-orbit-memory-btn');
@@ -603,12 +615,14 @@
       e.stopPropagation();
       e.stopImmediatePropagation();
 
-      const currentActive = memoryStore.memories.filter(m => m.enabled).length;
-      if (currentActive === 0 && !memoryStore.globalEnabled) {
-        if (memoryStore.memories[0]) memoryStore.memories[0].enabled = true;
-        memoryStore.globalEnabled = true;
-      } else {
-        memoryStore.globalEnabled = !memoryStore.globalEnabled;
+      memoryStore.globalEnabled = !memoryStore.globalEnabled;
+
+      // If enabling, ensure at least one persona is checked
+      const activeCount = memoryStore.memories.filter(m => m.enabled).length;
+      if (memoryStore.globalEnabled && activeCount === 0) {
+        if (memoryStore.memories[0]) {
+          memoryStore.memories[0].enabled = true;
+        }
       }
 
       saveMemoryStore(() => {

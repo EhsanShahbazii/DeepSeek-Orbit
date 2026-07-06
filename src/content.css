@@ -2148,7 +2148,7 @@ body.ds-has-wallpaper :not(._11d6b3a) > ._425ea0b {
   max-width: 820px !important;
   height: 520px !important;
   max-height: 88vh !important;
-  background: #141518 !important;
+  background: #18191d !important;
   border: 1px solid rgba(255, 255, 255, 0.12) !important;
   border-radius: 16px !important;
   box-shadow: 0 24px 70px rgba(0, 0, 0, 0.75) !important;
@@ -2238,7 +2238,7 @@ body.ds-has-wallpaper :not(._11d6b3a) > ._425ea0b {
 }
 
 .ds-mem-filter-btn {
-  background: rgba(255, 255, 255, 0.05);
+  background: #202227;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 9999px;
   padding: 4px 11px;
@@ -2251,7 +2251,8 @@ body.ds-has-wallpaper :not(._11d6b3a) > ._425ea0b {
 }
 
 .ds-mem-filter-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: #2b2e35;
+  border-color: rgba(255, 255, 255, 0.16);
   color: #ffffff;
 }
 
@@ -2267,6 +2268,7 @@ body.ds-has-wallpaper :not(._11d6b3a) > ._425ea0b {
   position: relative;
   height: 460px;
   overflow: hidden;
+  background: #121316;
 }
 
 .ds-memory-view-pane {
@@ -2291,14 +2293,14 @@ body.ds-has-wallpaper :not(._11d6b3a) > ._425ea0b {
   }
 }
 
-/* DeepSeek Native Color Palette for Table */
+/* DeepSeek Context Modal Color Palette for Table */
 .ds-memory-table-wrap {
   height: 340px !important;
   min-height: 340px !important;
   max-height: 340px !important;
   overflow-y: auto !important;
-  padding: 6px 12px !important;
-  background: #141518 !important;
+  padding: 8px 14px !important;
+  background: #121316 !important;
   scrollbar-width: none !important;
   -ms-overflow-style: none !important;
 }
@@ -2312,7 +2314,7 @@ body.ds-has-wallpaper :not(._11d6b3a) > ._425ea0b {
 .ds-memory-table {
   width: 100%;
   border-collapse: separate;
-  border-spacing: 0 4px;
+  border-spacing: 0 6px;
   font-size: 12.5px;
   table-layout: fixed;
 }
@@ -2320,7 +2322,7 @@ body.ds-has-wallpaper :not(._11d6b3a) > ._425ea0b {
 .ds-memory-table thead {
   position: sticky;
   top: 0;
-  background: #141518;
+  background: #121316;
   z-index: 2;
 }
 
@@ -2331,12 +2333,12 @@ body.ds-has-wallpaper :not(._11d6b3a) > ._425ea0b {
   text-transform: uppercase;
   letter-spacing: 0.5px;
   color: var(--ds-text-muted);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   text-align: left;
 }
 
 .ds-memory-row {
-  background: rgba(255, 255, 255, 0.03);
+  background: #18191d;
   border-radius: 8px;
   transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
   animation: dsFadeInRow 0.22s cubic-bezier(0.16, 1, 0.3, 1);
@@ -2346,32 +2348,36 @@ body.ds-has-wallpaper :not(._11d6b3a) > ._425ea0b {
   padding: 10px 12px;
   vertical-align: middle;
   color: #e2e8f0;
-  border-top: 1px solid rgba(255, 255, 255, 0.04);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .ds-memory-row td:first-child {
-  border-left: 1px solid rgba(255, 255, 255, 0.04);
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;
 }
 
 .ds-memory-row td:last-child {
-  border-right: 1px solid rgba(255, 255, 255, 0.04);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
   border-top-right-radius: 8px;
   border-bottom-right-radius: 8px;
 }
 
 .ds-memory-row:hover {
-  background: rgba(255, 255, 255, 0.065);
+  background: #202227;
+}
+
+.ds-memory-row:hover td {
+  border-color: rgba(255, 255, 255, 0.16);
 }
 
 .ds-memory-row.row-active {
-  background: rgba(77, 107, 254, 0.1);
+  background: rgba(77, 107, 254, 0.12);
 }
 
 .ds-memory-row.row-active td {
-  border-color: rgba(77, 107, 254, 0.25);
+  border-color: rgba(77, 107, 254, 0.35);
 }
 
 .ds-memory-check {
