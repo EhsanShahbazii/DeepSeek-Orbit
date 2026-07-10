@@ -248,13 +248,10 @@
                 <button type="button" class="ds-suite-btn ds-ctx-btn-secondary" id="instResetAllBtn">
                   <span>Reset to Defaults</span>
                 </button>
-                <div style="display: flex; align-items: center; gap: 12px;">
-                  <span id="footerActiveLabel" style="font-size: 12px; color: var(--ds-text-secondary);">${activeCount} active simultaneously</span>
-                  <button type="button" class="ds-suite-btn ds-ctx-btn-primary" id="instApplySaveBtn">
-                    <span class="ds-suite-btn-icon">${MEM_ICONS.check}</span>
-                    <span>Save & Apply</span>
-                  </button>
-                </div>
+                <button type="button" class="ds-suite-btn ds-ctx-btn-primary" id="instApplySaveBtn">
+                  <span class="ds-suite-btn-icon">${MEM_ICONS.check}</span>
+                  <span>Save & Apply</span>
+                </button>
               </div>
             </div>
 
@@ -378,8 +375,6 @@
                 pill.className = `ds-memory-active-pill ${count > 0 && memoryStore.globalEnabled ? 'active' : ''}`;
                 pill.textContent = memoryStore.globalEnabled ? `${count} Active` : 'Disabled';
               }
-              const footerLbl = backdrop.querySelector('#footerActiveLabel');
-              if (footerLbl) footerLbl.textContent = `${count} active simultaneously`;
             });
           }
         });

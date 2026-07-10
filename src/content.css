@@ -2528,6 +2528,14 @@ body.ds-has-wallpaper :not(._11d6b3a) > ._425ea0b {
   padding: 20px 24px;
   overflow-y: auto;
   flex: 1;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.ds-mem-editor-body::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
 }
 
 .ds-mem-form-label {
