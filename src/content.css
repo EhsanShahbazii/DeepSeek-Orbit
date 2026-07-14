@@ -2293,11 +2293,26 @@ body.ds-has-wallpaper :not(._11d6b3a) > ._425ea0b {
   }
 }
 
+/* Fixed Table Header Bar (Never scrolls awkwardly) */
+.ds-mem-table-header-bar {
+  display: flex;
+  align-items: center;
+  padding: 10px 26px;
+  background: #141518;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--ds-text-muted);
+  box-sizing: border-box;
+}
+
 /* DeepSeek Context Modal Color Palette for Table */
 .ds-memory-table-wrap {
-  height: 340px !important;
-  min-height: 340px !important;
-  max-height: 340px !important;
+  height: 310px !important;
+  min-height: 310px !important;
+  max-height: 310px !important;
   overflow-y: auto !important;
   padding: 8px 14px !important;
   background: #121316 !important;
@@ -2317,24 +2332,6 @@ body.ds-has-wallpaper :not(._11d6b3a) > ._425ea0b {
   border-spacing: 0 6px;
   font-size: 12.5px;
   table-layout: fixed;
-}
-
-.ds-memory-table thead {
-  position: sticky;
-  top: 0;
-  background: #121316;
-  z-index: 2;
-}
-
-.ds-memory-table th {
-  padding: 8px 12px;
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: var(--ds-text-muted);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  text-align: left;
 }
 
 .ds-memory-row {

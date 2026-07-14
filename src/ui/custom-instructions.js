@@ -1,6 +1,6 @@
 /**
  * DeepSeek Orbit — Multi-Memory & Custom Instructions Studio
- * Features: Native prompt bar toggle button (reliable on/off), In-place view switching for Edit/Add, Context-modal styling, Full CRUD
+ * Features: Fixed non-scrolling table header, In-place view switching, Context-modal styling, Full CRUD
  */
 (function () {
   'use strict';
@@ -225,18 +225,18 @@
                 </button>
               </div>
 
-              <!-- Memory Table Area -->
+              <!-- Fixed Non-Scrolling Column Header Bar -->
+              <div class="ds-mem-table-header-bar">
+                <div style="width: 44px; text-align: center;">Active</div>
+                <div style="width: 210px; padding-left: 6px;">Persona Name</div>
+                <div style="width: 90px; padding-left: 4px;">Language</div>
+                <div style="flex: 1; padding-left: 4px;">Instruction Rules</div>
+                <div style="width: 80px; text-align: right; padding-right: 6px;">Actions</div>
+              </div>
+
+              <!-- Scrollable Rows Container -->
               <div class="ds-memory-table-wrap">
                 <table class="ds-memory-table ds-table-exempt" data-no-dynamic="true">
-                  <thead>
-                    <tr>
-                      <th style="width: 44px; text-align: center;">Active</th>
-                      <th style="width: 210px;">Persona Name</th>
-                      <th style="width: 90px;">Language</th>
-                      <th>Instruction Rules</th>
-                      <th style="width: 80px; text-align: right;">Actions</th>
-                    </tr>
-                  </thead>
                   <tbody id="memTableBody">
                     ${tableRowsHtml || '<tr><td colspan="5" style="text-align: center; padding: 24px; color: var(--ds-text-muted);">No memories found in this filter.</td></tr>'}
                   </tbody>
