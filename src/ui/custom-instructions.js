@@ -1,6 +1,6 @@
 /**
  * DeepSeek Orbit — Multi-Memory & Custom Instructions Studio
- * Features: Fixed non-scrolling table header, In-place view switching, Context-modal styling, Full CRUD
+ * Features: Native prompt bar toggle button (Master switch behavior), In-place view switching, Context-modal styling, Full CRUD
  */
 (function () {
   'use strict';
@@ -133,6 +133,42 @@
       prompt += `• [${m.title}]: ${m.text.trim()}\n`;
     });
     return prompt.trim();
+  }
+
+  function toggleMemoryMasterState() {
+    memoryStore.globalEnabled = !memoryStore.globalEnabled;
+
+    // If turning on and no persona is enabled, enable the first preset
+    const activeCount = memoryStore.memories.filter(m => m.enabled).length;
+    if (memoryStore.globalEnabled && activeCount === 0) {
+      if (memoryStore.memories[0]) {
+        memoryStore.memories[0].enabled = true;
+      }
+    }
+
+    // Immediately update prompt bar toggle button synchronously
+    updatePromptBarMemoryButton();
+
+    // Sync modal controls if open
+    const modalToggle = document.querySelector('#instGlobalToggle');
+    if (modalToggle) {
+      modalToggle.checked = memoryStore.globalEnabled;
+    }
+    const pill = document.querySelector('.ds-memory-active-pill');
+    if (pill) {
+      const count = memoryStore.memories.filter(m => m.enabled).length;
+      pill.className = `ds-memory-active-pill ${count > 0 && memoryStore.globalEnabled ? 'active' : ''}`;
+      pill.textContent = memoryStore.globalEnabled ? `${count} Active` : 'Disabled';
+    }
+
+    const currentCount = memoryStore.memories.filter(m => m.enabled).length;
+    showToast(
+      memoryStore.globalEnabled 
+        ? `Memory Enabled (${currentCount} active)` 
+        : 'Memory Disabled'
+    );
+
+    saveMemoryStore();
   }
 
   function openCustomInstructionsModal() {
@@ -558,7 +594,7 @@
     if (!toggleContainer) return;
 
     const activeCount = memoryStore.memories.filter(m => m.enabled).length;
-    const isSelected = memoryStore.globalEnabled && activeCount > 0;
+    const isSelected = !!(memoryStore.globalEnabled && activeCount > 0);
 
     let btn = toggleContainer.querySelector('.ds-orbit-memory-btn');
     if (!btn) {
@@ -569,6 +605,12 @@
       btn.style.transform = 'translateZ(0px)';
       btn.title = 'Memory (Click to toggle on/off, right-click to configure)';
       toggleContainer.appendChild(btn);
+
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleMemoryMasterState();
+      });
     }
 
     btn.setAttribute('aria-pressed', isSelected ? 'true' : 'false');
@@ -589,7 +631,7 @@
     `;
   }
 
-  // Prevent parent container from swallowing pointer & mouse events
+  // Prevent DeepSeek container from swallowing pointer & mouse events
   document.addEventListener('pointerdown', (e) => {
     if (e.target.closest('.ds-orbit-memory-btn')) {
       e.stopPropagation();
@@ -609,26 +651,7 @@
       e.preventDefault();
       e.stopPropagation();
       e.stopImmediatePropagation();
-
-      memoryStore.globalEnabled = !memoryStore.globalEnabled;
-
-      // If enabling, ensure at least one persona is checked
-      const activeCount = memoryStore.memories.filter(m => m.enabled).length;
-      if (memoryStore.globalEnabled && activeCount === 0) {
-        if (memoryStore.memories[0]) {
-          memoryStore.memories[0].enabled = true;
-        }
-      }
-
-      saveMemoryStore(() => {
-        updatePromptBarMemoryButton();
-        const newActive = memoryStore.memories.filter(m => m.enabled).length;
-        showToast(
-          memoryStore.globalEnabled 
-            ? `Memory Enabled (${newActive} active)` 
-            : 'Memory Disabled'
-        );
-      });
+      toggleMemoryMasterState();
     }
   }, true);
 

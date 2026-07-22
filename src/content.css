@@ -2646,46 +2646,54 @@ body.ds-has-wallpaper :not(._11d6b3a) > ._425ea0b {
 
 .ds-textarea-expand-btn {
   position: absolute;
-  top: 6px;
-  right: 8px;
+  top: 8px;
+  right: 10px;
   z-index: 10;
-  width: 22px;
-  height: 22px;
+  width: 28px;
+  height: 28px;
   border: none !important;
-  background: transparent !important;
-  color: var(--ds-text-muted);
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: var(--ds-text-secondary);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   opacity: 0;
   pointer-events: none;
-  border-radius: 5px;
+  border-radius: 6px;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .ds-textarea-expand-btn:hover {
-  background: rgba(255, 255, 255, 0.08) !important;
+  background: rgba(255, 255, 255, 0.12) !important;
   color: #ffffff !important;
+  transform: scale(1.05);
 }
 
 .ds-textarea-expand-btn.active {
-  color: var(--ds-brand-primary) !important;
-  background: rgba(77, 107, 254, 0.15) !important;
+  color: #ffffff !important;
+  background: rgba(77, 107, 254, 0.25) !important;
 }
 
-/* Smooth expansion upward */
+/* Smooth expansion upward (85-90vh) */
 ._77cefa5,
 ._3d616d3,
 ._020ab5b,
 ._24fad49,
 textarea._27c9245 {
-  transition: height 0.28s cubic-bezier(0.16, 1, 0.3, 1), min-height 0.28s cubic-bezier(0.16, 1, 0.3, 1), max-height 0.28s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  transition: height 0.32s cubic-bezier(0.16, 1, 0.3, 1), min-height 0.32s cubic-bezier(0.16, 1, 0.3, 1), max-height 0.32s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 .ds-input-expanded ._24fad49,
+.ds-input-expanded ._020ab5b,
 .ds-textarea-expanded {
-  min-height: 280px !important;
-  max-height: 60vh !important;
-  height: 320px !important;
+  min-height: 75vh !important;
+  max-height: 90vh !important;
+  height: 85vh !important;
+}
+
+.ds-input-expanded textarea._27c9245 {
+  min-height: calc(85vh - 54px) !important;
+  max-height: calc(90vh - 54px) !important;
+  height: calc(85vh - 54px) !important;
 }
