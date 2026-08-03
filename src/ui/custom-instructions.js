@@ -603,14 +603,8 @@
       btn.setAttribute('role', 'button');
       btn.className = 'f79352dc ds-toggle-button ds-toggle-button--m ds-orbit-memory-btn';
       btn.style.transform = 'translateZ(0px)';
-      btn.title = 'Memory (Click to toggle on/off, right-click to configure)';
+      btn.title = 'Memory (Click to toggle on/off)';
       toggleContainer.appendChild(btn);
-
-      btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        toggleMemoryMasterState();
-      });
     }
 
     btn.setAttribute('aria-pressed', isSelected ? 'true' : 'false');
@@ -644,7 +638,7 @@
     }
   }, true);
 
-  // Global capture-phase click handler guaranteeing reliable toggle on click
+  // Single global capture-phase click handler guaranteeing reliable toggle on click
   document.addEventListener('click', (e) => {
     const memoryBtn = e.target.closest('.ds-orbit-memory-btn');
     if (memoryBtn) {
@@ -652,17 +646,6 @@
       e.stopPropagation();
       e.stopImmediatePropagation();
       toggleMemoryMasterState();
-    }
-  }, true);
-
-  // Global right-click or contextmenu handler on memory toggle button to open modal
-  document.addEventListener('contextmenu', (e) => {
-    const memoryBtn = e.target.closest('.ds-orbit-memory-btn');
-    if (memoryBtn) {
-      e.preventDefault();
-      e.stopPropagation();
-      e.stopImmediatePropagation();
-      openCustomInstructionsModal();
     }
   }, true);
 

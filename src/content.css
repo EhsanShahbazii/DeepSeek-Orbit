@@ -2636,6 +2636,25 @@ body.ds-has-wallpaper :not(._11d6b3a) > ._425ea0b {
   margin-left: 4px;
 }
 
+/* Prompt Bar Memory Button Styling */
+.ds-orbit-memory-btn {
+  cursor: pointer !important;
+  user-select: none !important;
+  transition: all 0.15s ease !important;
+}
+
+.ds-orbit-memory-btn.ds-toggle-button--selected {
+  background: rgba(77, 107, 254, 0.15) !important;
+  color: var(--ds-brand-primary) !important;
+  border: 1px solid var(--ds-brand-primary) !important;
+}
+
+.ds-orbit-memory-btn.ds-toggle-button--selected ._6dbc175,
+.ds-orbit-memory-btn.ds-toggle-button--selected svg {
+  color: var(--ds-brand-primary) !important;
+  stroke: var(--ds-brand-primary) !important;
+}
+
 /* =========================================================================
    TEXTAREA EXPAND / COLLAPSE CONTROLS
    ========================================================================= */
