@@ -775,29 +775,30 @@ body.ds-has-wallpaper .md-code-block {
   color: #f87171;
 }
 
-/* Floating Toast Notification */
+/* Floating Toast Notification (Top Center to never block prompt area) */
 .ds-pro-toast {
   position: fixed;
-  bottom: 28px;
+  top: 28px;
+  bottom: auto;
   left: 50%;
-  transform: translateX(-50%) translateY(20px);
-  background: var(--ds-surface-card);
+  transform: translateX(-50%) translateY(-20px);
+  background: #18191d;
   color: var(--ds-text-primary);
-  border: 1px solid var(--ds-border-highlight);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 9999px;
-  padding: 10px 22px;
-  font-size: 13px;
+  padding: 8px 18px;
+  font-size: 12.5px;
   font-weight: 500;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55);
-  z-index: 999999;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.65);
+  z-index: 9999999;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
   align-items: center;
   gap: 8px;
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(16px);
 }
 
 .ds-pro-toast.show {
@@ -807,8 +808,8 @@ body.ds-has-wallpaper .md-code-block {
 
 .ds-pro-toast.ds-toast-error {
   border-color: rgba(239, 68, 68, 0.45);
-  background: rgba(30, 20, 25, 0.94);
-  box-shadow: 0 12px 32px rgba(239, 68, 68, 0.25);
+  background: rgba(30, 20, 25, 0.96);
+  box-shadow: 0 12px 32px rgba(239, 68, 68, 0.3);
   color: #fecaca;
 }
 
@@ -2638,9 +2639,16 @@ body.ds-has-wallpaper :not(._11d6b3a) > ._425ea0b {
 
 /* Prompt Bar Memory Button Styling */
 .ds-orbit-memory-btn {
+  position: relative !important;
+  z-index: 5 !important;
   cursor: pointer !important;
   user-select: none !important;
+  pointer-events: auto !important;
   transition: all 0.15s ease !important;
+}
+
+.ds-orbit-memory-btn * {
+  pointer-events: none !important;
 }
 
 .ds-orbit-memory-btn.ds-toggle-button--selected {
