@@ -1,6 +1,6 @@
 /**
  * DeepSeek Orbit — Multi-Memory & Custom Instructions Studio
- * Features: Native prompt bar toggle button (Master switch behavior), In-place view switching, Context-modal styling, Full CRUD
+ * Features: Zero-shake in-place category filtering, Native prompt toggle, In-place view switching, Context-modal styling, Full CRUD
  */
 (function () {
   'use strict';
@@ -184,40 +184,40 @@
     function renderModalContent() {
       const activeCount = memoryStore.memories.filter(m => m.enabled).length;
 
-      const filteredList = memoryStore.memories.filter(m => {
-        if (activeFilter === 'fa') return m.lang === 'fa';
-        if (activeFilter === 'en') return m.lang === 'en';
-        if (activeFilter === 'custom') return !m.isDefault;
-        return true;
-      });
+      const tableRowsHtml = memoryStore.memories.map((m) => {
+        let isVisible = true;
+        if (activeFilter === 'fa') isVisible = (m.lang === 'fa');
+        else if (activeFilter === 'en') isVisible = (m.lang === 'en');
+        else if (activeFilter === 'custom') isVisible = !m.isDefault;
 
-      const tableRowsHtml = filteredList.map((m) => `
-        <tr class="ds-memory-row ${m.enabled ? 'row-active' : ''}" data-id="${m.id}">
-          <td style="width: 44px; text-align: center;">
-            <input type="checkbox" class="ds-memory-check" data-id="${m.id}" ${m.enabled ? 'checked' : ''} />
-          </td>
-          <td style="width: 210px;">
-            <div class="ds-memory-title-wrap">
-              <div class="ds-memory-title">${escapeHtml(m.title)}</div>
-              <div class="ds-memory-sub">${escapeHtml(m.subtitle || '')}</div>
-            </div>
-          </td>
-          <td style="width: 90px;">
-            <span class="ds-memory-lang-badge lang-${m.lang}">
-              ${m.lang === 'fa' ? 'Persian' : m.lang === 'en' ? 'English' : 'Custom'}
-            </span>
-          </td>
-          <td>
-            <div class="ds-memory-preview-text" data-id="${m.id}" title="Click to edit instruction">${escapeHtml(m.text)}</div>
-          </td>
-          <td style="width: 80px; text-align: right;">
-            <div class="ds-memory-row-actions">
-              <button type="button" class="ds-mem-action-btn mem-edit-btn" data-id="${m.id}" title="Edit Memory">${MEM_ICONS.edit}</button>
-              <button type="button" class="ds-mem-action-btn mem-del-btn" data-id="${m.id}" title="Delete Memory">${MEM_ICONS.trash}</button>
-            </div>
-          </td>
-        </tr>
-      `).join('');
+        return `
+          <tr class="ds-memory-row ${m.enabled ? 'row-active' : ''}" data-id="${m.id}" data-lang="${m.lang}" data-default="${m.isDefault ? '1' : '0'}" style="display: ${isVisible ? '' : 'none'};">
+            <td style="width: 44px; text-align: center;">
+              <input type="checkbox" class="ds-memory-check" data-id="${m.id}" ${m.enabled ? 'checked' : ''} />
+            </td>
+            <td style="width: 210px;">
+              <div class="ds-memory-title-wrap">
+                <div class="ds-memory-title">${escapeHtml(m.title)}</div>
+                <div class="ds-memory-sub">${escapeHtml(m.subtitle || '')}</div>
+              </div>
+            </td>
+            <td style="width: 90px;">
+              <span class="ds-memory-lang-badge lang-${m.lang}">
+                ${m.lang === 'fa' ? 'Persian' : m.lang === 'en' ? 'English' : 'Custom'}
+              </span>
+            </td>
+            <td>
+              <div class="ds-memory-preview-text" data-id="${m.id}" title="Click to edit instruction">${escapeHtml(m.text)}</div>
+            </td>
+            <td style="width: 80px; text-align: right;">
+              <div class="ds-memory-row-actions">
+                <button type="button" class="ds-mem-action-btn mem-edit-btn" data-id="${m.id}" title="Edit Memory">${MEM_ICONS.edit}</button>
+                <button type="button" class="ds-mem-action-btn mem-del-btn" data-id="${m.id}" title="Delete Memory">${MEM_ICONS.trash}</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
 
       const targetMem = editingMemoryId ? memoryStore.memories.find(m => m.id === editingMemoryId) : null;
 
@@ -274,7 +274,8 @@
               <div class="ds-memory-table-wrap">
                 <table class="ds-memory-table ds-table-exempt" data-no-dynamic="true">
                   <tbody id="memTableBody">
-                    ${tableRowsHtml || '<tr><td colspan="5" style="text-align: center; padding: 24px; color: var(--ds-text-muted);">No memories found in this filter.</td></tr>'}
+                    ${tableRowsHtml}
+                    <tr id="memEmptyRow" style="display: none;"><td colspan="5" style="text-align: center; padding: 24px; color: var(--ds-text-muted);">No memories found in this filter.</td></tr>
                   </tbody>
                 </table>
               </div>
@@ -385,11 +386,31 @@
         });
       }
 
-      // Filter tabs switching
+      // Zero-shake instant category filtering
       filterBtns.forEach(btn => {
         btn.addEventListener('click', () => {
           activeFilter = btn.dataset.filter;
-          renderModalContent();
+          filterBtns.forEach(b => b.classList.toggle('active', b === btn));
+
+          let visibleCount = 0;
+          const rows = backdrop.querySelectorAll('.ds-memory-row');
+          rows.forEach(row => {
+            const lang = row.dataset.lang;
+            const isDef = row.dataset.default === '1';
+
+            let show = true;
+            if (activeFilter === 'fa') show = (lang === 'fa');
+            else if (activeFilter === 'en') show = (lang === 'en');
+            else if (activeFilter === 'custom') show = !isDef;
+
+            row.style.display = show ? '' : 'none';
+            if (show) visibleCount++;
+          });
+
+          const emptyRow = backdrop.querySelector('#memEmptyRow');
+          if (emptyRow) {
+            emptyRow.style.display = (visibleCount === 0) ? '' : 'none';
+          }
         });
       });
 
