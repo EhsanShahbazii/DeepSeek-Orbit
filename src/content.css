@@ -2126,7 +2126,8 @@ body.ds-has-wallpaper :not(._11d6b3a) > ._425ea0b {
 
 .ds-sandbox-frame-wrap {
   height: 100%;
-  background: #ffffff;
+  background: #0d0e11;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
@@ -2138,6 +2139,7 @@ body.ds-has-wallpaper :not(._11d6b3a) > ._425ea0b {
   height: 100%;
   border: none;
   display: block;
+  background: transparent;
 }
 
 /* =========================================================================

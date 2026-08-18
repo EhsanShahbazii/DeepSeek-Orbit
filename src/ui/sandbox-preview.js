@@ -72,7 +72,7 @@
 
     // 2. If SVG
     if (raw.startsWith('<svg')) {
-      return `<!DOCTYPE html><html><head><meta charset="utf-8"><style>body{display:flex;align-items:center;justify-content:center;height:100vh;margin:0;background:#ffffff;}</style></head><body>${raw}</body></html>`;
+      return `<!DOCTYPE html><html><head><meta charset="utf-8"><style>html,body{display:flex;align-items:center;justify-content:center;height:100vh;margin:0;padding:0;overflow:hidden;background:transparent;}</style></head><body>${raw}</body></html>`;
     }
 
     // 3. Otherwise pick ONLY the single main HTML block, single CSS, and single JS block
@@ -117,12 +117,15 @@
   <title>Artifact Preview</title>
   <style>
     * { box-sizing: border-box; }
-    body {
+    html, body {
       margin: 0;
-      padding: 16px;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow-x: hidden;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: #ffffff;
-      color: #1a1a1a;
+      background: #0f1115;
+      color: #f8fafc;
     }
     ${cssPart}
   </style>
