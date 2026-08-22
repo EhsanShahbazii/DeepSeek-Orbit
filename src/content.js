@@ -128,6 +128,13 @@
 
     // 4. Custom Background Wallpaper
     applyWallpaper();
+
+    // 5. Wide Chat Mode (Widescreen layout)
+    const isWideActive = config.enabled && config.enableWideChat;
+    document.documentElement.classList.toggle('ds-wide-chat-active', !!isWideActive);
+    if (document.body) {
+      document.body.classList.toggle('ds-wide-chat-active', !!isWideActive);
+    }
   }
 
   function applyWallpaper() {
@@ -1910,13 +1917,14 @@
   function loadSettings() {
     const storageApi = (typeof chrome !== 'undefined' && chrome.storage) ? (chrome.storage.local || chrome.storage.sync) : null;
     if (storageApi) {
-      storageApi.get(['enabled', 'mode', 'fontFamily', 'customFont', 'enableWordWrap', 'autoCollapseThoughts', 'enableWallpaper', 'wallpaperImage', 'wallpaperOpacity', 'wallpaperBlur'], (res) => {
+      storageApi.get(['enabled', 'mode', 'fontFamily', 'customFont', 'enableWordWrap', 'enableWideChat', 'autoCollapseThoughts', 'enableWallpaper', 'wallpaperImage', 'wallpaperOpacity', 'wallpaperBlur'], (res) => {
         if (res) {
           config.enabled = res.enabled !== undefined ? res.enabled : true;
           config.mode = res.mode || 'auto';
           config.fontFamily = res.fontFamily || 'Vazirmatn';
           config.customFont = res.customFont || '';
           config.enableWordWrap = res.enableWordWrap || false;
+          config.enableWideChat = res.enableWideChat || false;
           config.autoCollapseThoughts = res.autoCollapseThoughts || false;
           config.enableWallpaper = res.enableWallpaper || false;
           config.wallpaperImage = res.wallpaperImage || '';
@@ -1934,6 +1942,7 @@
           if (changes.fontFamily !== undefined) config.fontFamily = changes.fontFamily.newValue;
           if (changes.customFont !== undefined) config.customFont = changes.customFont.newValue;
           if (changes.enableWordWrap !== undefined) config.enableWordWrap = changes.enableWordWrap.newValue;
+          if (changes.enableWideChat !== undefined) config.enableWideChat = changes.enableWideChat.newValue;
           if (changes.autoCollapseThoughts !== undefined) config.autoCollapseThoughts = changes.autoCollapseThoughts.newValue;
           if (changes.enableWallpaper !== undefined) config.enableWallpaper = changes.enableWallpaper.newValue;
           if (changes.wallpaperImage !== undefined) config.wallpaperImage = changes.wallpaperImage.newValue;

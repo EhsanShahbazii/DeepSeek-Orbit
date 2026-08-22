@@ -156,6 +156,9 @@
       <button type="button" class="ds-suite-btn" id="dsToolbarPinsBtn" title="Pinned Messages">
         <span class="ds-suite-btn-icon">${ICONS.pinFilled}</span> <span>Pins</span>
       </button>
+      <button type="button" class="ds-suite-btn" id="dsToolbarWideBtn" title="Toggle Wide Chat Mode">
+        <span class="ds-suite-btn-icon">${ICONS.wide || '<svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1.5 8H14.5M1.5 8L4.5 5M1.5 8L4.5 11M14.5 8L11.5 5M14.5 8L11.5 11" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>'}</span> <span>Wide</span>
+      </button>
       <button type="button" class="ds-suite-btn" id="dsToolbarMemoryBtn" title="Persistent Instructions & Persona Memory">
         <span class="ds-suite-btn-icon">${ICONS.brain}</span> <span>Memory</span>
       </button>
@@ -187,6 +190,7 @@
     const searchNextBtn = toolbar.querySelector('#dsSearchNextBtn');
     const searchCloseBtn = toolbar.querySelector('#dsSearchCloseBtn');
     const pinsBtn = toolbar.querySelector('#dsToolbarPinsBtn');
+    const wideBtn = toolbar.querySelector('#dsToolbarWideBtn');
     const memoryBtn = toolbar.querySelector('#dsToolbarMemoryBtn');
     const toggleExportBtn = toolbar.querySelector('#dsExportToggleBtn');
     const exportMenu = toolbar.querySelector('#dsExportMenu');
@@ -197,6 +201,19 @@
     if (callbacks.onSearchClose) searchCloseBtn.addEventListener('click', callbacks.onSearchClose);
     if (callbacks.onSearchToggle) searchBtn.addEventListener('click', callbacks.onSearchToggle);
     if (callbacks.onPinsOpen) pinsBtn.addEventListener('click', callbacks.onPinsOpen);
+
+    if (wideBtn) {
+      wideBtn.addEventListener('click', () => {
+        if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
+          chrome.storage.local.get(['enableWideChat'], (res) => {
+            const newVal = !res.enableWideChat;
+            chrome.storage.local.set({ enableWideChat: newVal }, () => {
+              showToast(newVal ? 'Wide Chat Mode Enabled' : 'Wide Chat Mode Disabled');
+            });
+          });
+        }
+      });
+    }
 
     memoryBtn.addEventListener('click', () => {
       if (window.DeepSeekOrbit && window.DeepSeekOrbit.CustomInstructions) {

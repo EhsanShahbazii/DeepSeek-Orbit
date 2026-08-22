@@ -12,6 +12,7 @@
     fontFamily: 'Vazirmatn',
     customFont: '',
     enableWordWrap: false,
+    enableWideChat: false,
     autoCollapseThoughts: false,
     enableWallpaper: false,
     wallpaperImage: '',
@@ -20,6 +21,7 @@
   };
 
   window.DeepSeekOrbit.ICONS = {
+    wide: `<svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1.5 8H14.5M1.5 8L4.5 5M1.5 8L4.5 11M14.5 8L11.5 5M14.5 8L11.5 11" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
     wrap: `<svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 3.5H14M2 8H10.5C12 8 13.5 9.2 13.5 11C13.5 12.8 12 14 10.5 14H7.5M7.5 14L9.5 12M7.5 14L9.5 16M2 12.5H5.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
     expand: `<svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 6V2H6M14 6V2H10M2 10V14H6M14 10V14H10" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
     copy: `<svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11 4.5H5C3.9 4.5 3 5.4 3 6.5V12.5C3 13.6 3.9 14.5 5 14.5H11C12.1 14.5 13 13.6 13 12.5V6.5C13 5.4 12.1 4.5 11 4.5Z" stroke="currentColor" stroke-width="1.3"/><path d="M5 4.5V3.5C5 2.4 5.9 1.5 7 1.5H13C14.1 1.5 15 2.4 15 3.5V9.5C15 10.6 14.1 11.5 13 11.5H12.5" stroke="currentColor" stroke-width="1.3"/></svg>`,

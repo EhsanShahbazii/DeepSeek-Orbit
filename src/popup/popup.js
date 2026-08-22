@@ -5,6 +5,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const enabledToggle = document.getElementById('enabledToggle');
   const autoCollapseThoughtsToggle = document.getElementById('autoCollapseThoughtsToggle');
+  const wideChatToggle = document.getElementById('wideChatToggle');
   const wordWrapToggle = document.getElementById('wordWrapToggle');
   const statusBadge = document.getElementById('statusBadge');
   const fontSelect = document.getElementById('fontSelect');
@@ -30,6 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
     fontFamily: 'Vazirmatn',
     customFont: '',
     enableWordWrap: false,
+    enableWideChat: false,
     autoCollapseThoughts: false,
     enableWallpaper: false,
     wallpaperImage: '',
@@ -61,6 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
     currentSettings = { ...settings };
     enabledToggle.checked = settings.enabled;
     if (autoCollapseThoughtsToggle) autoCollapseThoughtsToggle.checked = settings.autoCollapseThoughts || false;
+    if (wideChatToggle) wideChatToggle.checked = settings.enableWideChat || false;
     if (wordWrapToggle) wordWrapToggle.checked = settings.enableWordWrap || false;
 
     if (settings.enabled) {
@@ -140,6 +143,12 @@ document.addEventListener('DOMContentLoaded', () => {
   if (autoCollapseThoughtsToggle) {
     autoCollapseThoughtsToggle.addEventListener('change', () => {
       saveAndBroadcast('autoCollapseThoughts', autoCollapseThoughtsToggle.checked);
+    });
+  }
+
+  if (wideChatToggle) {
+    wideChatToggle.addEventListener('change', () => {
+      saveAndBroadcast('enableWideChat', wideChatToggle.checked);
     });
   }
 
