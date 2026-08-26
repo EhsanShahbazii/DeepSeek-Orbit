@@ -251,20 +251,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  const openWallpaperStudioBtn = document.getElementById('openWallpaperStudioBtn');
-  if (openWallpaperStudioBtn) {
-    openWallpaperStudioBtn.addEventListener('click', () => {
-      if (typeof chrome !== 'undefined' && chrome.tabs && chrome.tabs.query) {
-        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-          if (tabs[0] && tabs[0].id) {
-            chrome.tabs.sendMessage(tabs[0].id, { action: 'openWallpaperModal' });
-            window.close();
-          }
-        });
-      }
-    });
-  }
-
   resetBtn.addEventListener('click', () => {
     if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
       chrome.storage.local.set(defaultSettings, () => {
