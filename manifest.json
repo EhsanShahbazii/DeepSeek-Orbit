@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "DeepSeek Orbit - Smart Workspace & RTL Flow",
-  "version": "1.5.0",
+  "version": "2.0.0",
   "author": "Ehsan Shahbazi <ehsan.shahbazipc@gmail.com>",
   "homepage_url": "https://github.com/EhsanShahbazii/DeepSeek-Orbit",
   "description": "Smart Persian/Arabic RTL alignment, Developer Code Tools (Line numbers, Word wrap, Fullscreen viewer), In-Chat Keyword Search, Bookmark Pins, Slash Commands, Custom Wallpapers, and Chat Exporter for DeepSeek.",
