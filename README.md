@@ -43,6 +43,100 @@ Crafted with DeepSeek's authentic **Royal Blue & Dark Obsidian** aesthetic, the 
 
 ---
 
+## 📸 Feature Walkthrough & Visual Showcase
+
+### 1. 🔄 Bi-Directional RTL Alignment & Persian Typography
+<p align="center">
+  <img src="assets/screenshots/preview_1.png" alt="RTL Alignment & Persian Typography Preview" width="100%" style="border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.3);" />
+</p>
+
+- **Smart Direction Engine**: Paragraph-by-paragraph Unicode text analysis automatically applies natural Right-to-Left alignment for Persian, Arabic, and Urdu text.
+- **Monospace Code Isolation**: Monospace programming blocks (`pre`, `code`, `.md-code-block`) and LaTeX formulas are strictly isolated to Left-to-Right.
+- **Persian Font Presets**: Select from curated typefaces including **Vazirmatn**, **Sahel**, **Shabnam**, **Estedad**, **Samim**, **Dana**, **Tahoma**, or any custom installed font.
+- **Direction Hotkey**: Press <kbd>Ctrl + Shift + X</kbd> (or <kbd>Cmd + Shift + X</kbd>) to instantly toggle input direction.
+
+---
+
+### 2. 🧠 Persistent Persona Memory & Custom Instructions Studio
+- **Multi-Persona Management**: Configure and switch between specialized personas (e.g. *Senior Full-Stack Architect*, *Clean Code Auditor*, *Persian Translator*).
+- **Prompt Bar Master Toggle**: Click the native **`Memory`** button directly in the prompt bar (next to DeepThink & Search) to activate or deactivate persistent instructions with one click.
+- **Curated Presets**: Comes out-of-the-box with battle-tested instruction sets tailored for high-precision engineering and fluent bilingual communication.
+- **Non-Disruptive In-Place Editor**: Edit, clone, or delete instruction templates smoothly inside DeepSeek's native dark palette with zero layout shifting.
+
+---
+
+### 3. 📥 Codebase & Context Ingestion Studio
+- **Local Directory Ingest**: Ingest full local multi-file codebases with interactive directory tree visualization and instant token estimation.
+- **GitHub Repository Ingest**: Fetch public repositories directly from GitHub with branch switching, subfolder targeting, and file extension filtering.
+- **Web Page Reader**: Extract clean, stripped text from documentation and technical articles directly into your active prompt buffer.
+
+---
+
+### 4. 🚀 Live Sandbox HTML/CSS/JS Preview & ZIP Scaffolder
+- **Interactive Live Sandbox**: Renders HTML/CSS/JS frontend code in an isolated iframe artifact with real-time responsive viewport toggling (**Desktop 100%**, **Tablet 768px**, **Mobile 375px**).
+- **Zero Edge Bleeding**: Framed in obsidian dark aesthetic with zero white-edge artifacts.
+- **1-Click ZIP Scaffolder**: Automatically detects multi-file code snippets (HTML, CSS, JS, Python, React) generated across the chat and bundles them into a downloadable `.zip` project.
+
+---
+
+### 5. 📊 Interactive Dynamic Markdown Tables
+- **1-Click Export**: Copy any markdown table as clean CSV or download it directly as an Excel-compatible spreadsheet (`.xls`).
+- **Interactive Sorting**: Click any column header to sort rows ascending or descending with visual sort indicator arrows.
+- **Row Counters**: Live streaming badge indicating total row count in real-time.
+
+---
+
+### 6. 🖥️ Wide Chat Mode & Textarea Expander
+- **Widescreen Layout**: Expands chat messages and the prompt input box to a comfortable `1200px` layout with fluid `0.35s` transitions.
+- **Prompt Expander**: Expand the textarea up to `60vh` for complex multi-line prompts while keeping bottom buttons permanently docked and accessible.
+- **Scroll to Top of Message**: Jump directly to the top of lengthy responses using the dedicated scroll-to-top button on each message bar.
+
+---
+
+### 7. 💻 Developer Code Enhancements & Fullscreen Viewer
+<p align="center">
+  <img src="assets/screenshots/preview_3.png" alt="Developer Code Enhancements Preview" width="100%" style="border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.3);" />
+</p>
+
+- **Unselectable Sticky Line Numbers**: Clean, synchronized line numbering on all code snippets.
+- **Word Wrap Toggle**: Switch between horizontal code scrolling and wrapped view with one click.
+- **Fullscreen Syntax Viewer**: Expand code into a focused, distraction-free modal with syntax highlighting and copy tools.
+
+---
+
+### 8. 🖼️ Custom Wallpaper Compositor
+<p align="center">
+  <img src="assets/screenshots/preview_2.png" alt="Custom Wallpaper Preview" width="100%" style="border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.3);" />
+</p>
+
+- **Hardware-Accelerated Compositing**: Custom wallpaper renders underneath all chat content with zero CPU overhead.
+- **Real-Time Sliders**: Adjust background opacity (5%–60%) and Gaussian blur (0px–20px) directly in the extension dashboard.
+- **Glassmorphic Chat UI**: Transparent message bubbles and action bars designed to blend seamlessly with your custom background.
+
+---
+
+### 9. 🔍 In-Chat Keyword Search & Message Pins
+<p align="center">
+  <img src="assets/screenshots/preview_4.png" alt="Keyword Search and Message Pins Preview" width="100%" style="border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.3);" />
+</p>
+
+- **Integrated Search Bar**: Press <kbd>Ctrl + F</kbd> or click Search on the floating toolbar to locate words across long conversations.
+- **Quick Match Navigation**: Use <kbd>Enter</kbd> / <kbd>Shift + Enter</kbd> to jump between matches with viewport auto-scrolling.
+- **Pinned Messages Drawer**: Save vital assistant responses or prompts with native pushpin buttons and browse them in a slide-out drawer.
+
+---
+
+### 10. ✍️ Slash Commands & Prompt History
+<p align="center">
+  <img src="assets/screenshots/preview_5.png" alt="Slash Commands & Prompt History Preview" width="100%" style="border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.3);" />
+</p>
+
+- **Instant Templates (`/`)**: Trigger structured coding, explanation, refactoring, and translation prompts in milliseconds.
+- **History Cycling (<kbd>↑</kbd> / <kbd>↓</kbd>)**: Recall past prompts sequentially without re-typing.
+- **Auto-Collapse R1 Thinking**: Keeps DeepSeek-R1 reasoning accordions neatly collapsed until you choose to expand them.
+
+---
+
 ## 📂 Modular Project Structure
 
 ```
