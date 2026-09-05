@@ -58,6 +58,10 @@ Crafted with DeepSeek's authentic **Royal Blue & Dark Obsidian** aesthetic, the 
 ---
 
 ### 2. 🧠 Persistent Persona Memory & Custom Instructions Studio
+<p align="center">
+  <img src="assets/screenshots/preview_6.png" alt="Persistent Persona Memory Studio Preview" width="100%" style="border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.3);" />
+</p>
+
 - **Multi-Persona Management**: Configure and switch between specialized personas (e.g. *Senior Full-Stack Architect*, *Clean Code Auditor*, *Persian Translator*).
 - **Prompt Bar Master Toggle**: Click the native **`Memory`** button directly in the prompt bar (next to DeepThink & Search) to activate or deactivate persistent instructions with one click.
 - **Curated Presets**: Comes out-of-the-box with battle-tested instruction sets tailored for high-precision engineering and fluent bilingual communication.
@@ -66,6 +70,10 @@ Crafted with DeepSeek's authentic **Royal Blue & Dark Obsidian** aesthetic, the 
 ---
 
 ### 3. 📥 Codebase & Context Ingestion Studio
+<p align="center">
+  <img src="assets/screenshots/preview_7.png" alt="Codebase & Context Ingestion Studio Preview" width="100%" style="border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.3);" />
+</p>
+
 - **Local Directory Ingest**: Ingest full local multi-file codebases with interactive directory tree visualization and instant token estimation.
 - **GitHub Repository Ingest**: Fetch public repositories directly from GitHub with branch switching, subfolder targeting, and file extension filtering.
 - **Web Page Reader**: Extract clean, stripped text from documentation and technical articles directly into your active prompt buffer.
@@ -73,6 +81,10 @@ Crafted with DeepSeek's authentic **Royal Blue & Dark Obsidian** aesthetic, the 
 ---
 
 ### 4. 🚀 Live Sandbox HTML/CSS/JS Preview & ZIP Scaffolder
+<p align="center">
+  <img src="assets/screenshots/preview_8.png" alt="Live Sandbox HTML/CSS/JS Preview Artifacts" width="100%" style="border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.3);" />
+</p>
+
 - **Interactive Live Sandbox**: Renders HTML/CSS/JS frontend code in an isolated iframe artifact with real-time responsive viewport toggling (**Desktop 100%**, **Tablet 768px**, **Mobile 375px**).
 - **Zero Edge Bleeding**: Framed in obsidian dark aesthetic with zero white-edge artifacts.
 - **1-Click ZIP Scaffolder**: Automatically detects multi-file code snippets (HTML, CSS, JS, Python, React) generated across the chat and bundles them into a downloadable `.zip` project.
@@ -80,6 +92,10 @@ Crafted with DeepSeek's authentic **Royal Blue & Dark Obsidian** aesthetic, the 
 ---
 
 ### 5. 📊 Interactive Dynamic Markdown Tables
+<p align="center">
+  <img src="assets/screenshots/preview_9.png" alt="Interactive Dynamic Markdown Tables Preview" width="100%" style="border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.3);" />
+</p>
+
 - **1-Click Export**: Copy any markdown table as clean CSV or download it directly as an Excel-compatible spreadsheet (`.xls`).
 - **Interactive Sorting**: Click any column header to sort rows ascending or descending with visual sort indicator arrows.
 - **Row Counters**: Live streaming badge indicating total row count in real-time.
@@ -87,6 +103,10 @@ Crafted with DeepSeek's authentic **Royal Blue & Dark Obsidian** aesthetic, the 
 ---
 
 ### 6. 🖥️ Wide Chat Mode & Textarea Expander
+<p align="center">
+  <img src="assets/screenshots/preview_10.png" alt="Wide Chat Mode & Textarea Expander Preview" width="100%" style="border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.3);" />
+</p>
+
 - **Widescreen Layout**: Expands chat messages and the prompt input box to a comfortable `1200px` layout with fluid `0.35s` transitions.
 - **Prompt Expander**: Expand the textarea up to `60vh` for complex multi-line prompts while keeping bottom buttons permanently docked and accessible.
 - **Scroll to Top of Message**: Jump directly to the top of lengthy responses using the dedicated scroll-to-top button on each message bar.
