@@ -84,7 +84,9 @@ Crafted with DeepSeek's authentic **Royal Blue & Dark Obsidian** aesthetic, the 
 <p align="center">
   <img src="assets/screenshots/preview_8.png" alt="Live Sandbox HTML/CSS/JS Preview Artifacts" width="100%" style="border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.3);" />
 </p>
-
+<p align="center">
+  <img src="assets/screenshots/preview_8-1.png" alt="Live Sandbox HTML/CSS/JS Preview Artifacts" width="100%" style="border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.3);" />
+</p>
 - **Interactive Live Sandbox**: Renders HTML/CSS/JS frontend code in an isolated iframe artifact with real-time responsive viewport toggling (**Desktop 100%**, **Tablet 768px**, **Mobile 375px**).
 - **Zero Edge Bleeding**: Framed in obsidian dark aesthetic with zero white-edge artifacts.
 - **1-Click ZIP Scaffolder**: Automatically detects multi-file code snippets (HTML, CSS, JS, Python, React) generated across the chat and bundles them into a downloadable `.zip` project.
