@@ -1,5 +1,4 @@
-# 🌌 DeepSeek Orbit — Smart Workspace & RTL Flow (v2.0.0)
-
+## 🌌 DeepSeek Orbit - Smart Workspace & RTL Flow (v2.0.0)
 <p align="center">
   <img src="assets/banner.png" alt="DeepSeek Orbit Preview Banner" width="100%" style="border-radius: 12px; box-shadow: 0 16px 48px rgba(0,0,0,0.6);" />
 </p>
